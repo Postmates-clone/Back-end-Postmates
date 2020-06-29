@@ -1,11 +1,15 @@
 [tool.poetry]
-name = "back-end-postmates"
+name = "postmates"
 version = "0.1.0"
 description = ""
-authors = ["kimdooh2019 <choiinhee2020@gmail.com>"]
+authors = ["jam <nevvjann@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+django = "^3.0.7"
+djangorestframework = "^3.11.0"
+Pillow = "^7.1.2"
+django-filter = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
 

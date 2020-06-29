@@ -37,7 +37,7 @@ class Store(models.Model):
     is_partner = models.BooleanField(
         help_text='파트너인지 여부')
     thumb_image = models.ImageField(
-        upload_to=store_img_dir, help_text='썸네일 이미지')
+        upload_to=store_img_dir, help_text='썸네일 이미지', null=True, blank=True)
     state = models.CharField(
         choices=STATE_CHOICES, max_length=5, help_text='판매 여부')
     address = models.CharField(
@@ -85,7 +85,7 @@ def food_img_dir(instance, filename):
 
 class Menu(models.Model):
     store = models.ForeignKey(
-        'Store', on_delete=models.CASCADE, related_name='Menus')
+        'Store', on_delete=models.CASCADE, related_name='menus')
     name = models.CharField(
         max_length=50, help_text='음식 이름')
     description = models.TextField(

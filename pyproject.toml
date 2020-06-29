@@ -12,6 +12,8 @@ Pillow = "^7.1.2"
 django-filter = "^2.3.0"
 
 [tool.poetry.dev-dependencies]
+django-extensions = "^2.2.9"
+notebook = "^6.0.3"
 
 [build-system]
 requires = ["poetry>=0.12"]

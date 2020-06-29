@@ -2,6 +2,24 @@
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux,python,jetbrains+all,django
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,python,jetbrains+all,django
 
+### projects ###
+secrets.json
+
+### JupyterNotebooks ###
+# gitignore template for Jupyter Notebooks
+# website: http://jupyter.org/
+
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Remove previous ipynb_checkpoints
+#   git rm -r .ipynb_checkpoints/
+
+
 ### Django ###
 *.log
 *.pot

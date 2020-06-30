@@ -37,7 +37,7 @@ class Store(models.Model):
     is_partner = models.BooleanField(
         help_text='파트너인지 여부')
     thumb_image = models.ImageField(
-        upload_to=store_img_dir, help_text='썸네일 이미지')
+        upload_to=store_img_dir, help_text='썸네일 이미지', null=True, blank=True)
     state = models.CharField(
         choices=STATE_CHOICES, max_length=5, help_text='판매 여부')
     address = models.CharField(
@@ -51,10 +51,14 @@ class Store(models.Model):
     food_type = models.CharField(
         choices=FOOD_TYPES_CHOICES, max_length=10, help_text='가게 요리 분류')
 
+    class Meta:
+        verbose_name = '가게'
+        verbose_name_plural = '가게'
+
 
 class DailyOpenTime(models.Model):
     store = models.ForeignKey(
-        'Store', on_delete=models.CASCADE, related_name='open_time')
+        'Store', on_delete=models.CASCADE, related_name='daily_opens')
     Monday = models.CharField(
         max_length=30, help_text='월요일')
     Tuesday = models.CharField(
@@ -70,14 +74,18 @@ class DailyOpenTime(models.Model):
     Sunday = models.CharField(
         max_length=30, help_text='일요일')
 
+    class Meta:
+        verbose_name = '가게 오픈 시간'
+        verbose_name_plural = '가게 오픈 시간'
+
 
 def food_img_dir(instance, filename):
     return '/'.join(['store/food', f'{instance.name}-{filename}'])
 
 
-class Food(models.Model):
+class Menu(models.Model):
     store = models.ForeignKey(
-        'Store', on_delete=models.CASCADE)
+        'Store', on_delete=models.CASCADE, related_name='menus')
     name = models.CharField(
         max_length=50, help_text='음식 이름')
     description = models.TextField(
@@ -87,13 +95,21 @@ class Food(models.Model):
     image = models.ImageField(
         upload_to=food_img_dir, help_text='음식 대표 이미지')
 
+    class Meta:
+        verbose_name = '음식 메뉴'
+        verbose_name_plural = '음식 메뉴'
+
 
 class Topping(models.Model):
     food = models.ForeignKey(
-        'Food', on_delete=models.CASCADE)
+        'Menu', on_delete=models.CASCADE, related_name='toppings')
     category = models.CharField(
         max_length=50, help_text='토핑 카테고리')
     name = models.CharField(
         max_length=30, help_text='토핑 이름')
     parent_topping = models.ForeignKey(
         'self', on_delete=models.CASCADE, null=True)
+
+    class Meta:
+        verbose_name = '토핑'
+        verbose_name_plural = '토핑'

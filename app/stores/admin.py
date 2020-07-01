@@ -1,19 +1,36 @@
 from django.contrib import admin
-from .models import Store, OpenHour, Menu, Option
+from .models import (
+    Store,
+    OpenHour,
+    Menu,
+    Option,
+    Badge,
+    OptionCategory,
+    MenuCategory)
 
 
 @admin.register(Store)
-class MembersAdmin(admin.ModelAdmin):
+class StoresAdmin(admin.ModelAdmin):
     list_display = ['name', 'address']
     list_filter = ['name', 'address']
     search_fields = ['username', 'phone']
 
 
-@admin.register(Menu)
-class MembersAdmin(admin.ModelAdmin):
+@admin.register(Menu, MenuCategory)
+class StoresAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Option)
-class MembersAdmin(admin.ModelAdmin):
+@admin.register(Option, OptionCategory)
+class StoresAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(Badge)
+class StoresAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(OpenHour)
+class StoresAdmin(admin.ModelAdmin):
     pass

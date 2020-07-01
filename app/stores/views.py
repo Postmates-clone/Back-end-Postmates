@@ -1,3 +1,15 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView
+from .models import Store
+from .serializers import InitialFeedSerializer
+from .filters import InitialFeedFilter
 
-# Create your views here.
+
+class InitialFeed(ListAPIView):
+    """
+    Feed 카테고리별 API
+
+    ### GET /feed/
+    """
+    queryset = Store.objects.all()
+    serializer_class = InitialFeedSerializer
+    filter_class = InitialFeedFilter

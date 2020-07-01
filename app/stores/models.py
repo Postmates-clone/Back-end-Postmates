@@ -42,9 +42,15 @@ class Store(models.Model):
         choices=FOOD_TYPES_CHOICES, max_length=10, help_text='가게 요리 분류')
     city = models.CharField(
         max_length=30, help_text='도시')
-    menu_categories = models.ManyToManyField(
-        'Menu', through='MenuCategory', help_text='메뉴 카테고리')
-    badges = models.ManyToManyField('Badge', related_name='stores')
+    badges = models.ManyToManyField(
+        'Badge', blank=True, related_name='stores')
+
+    @property
+    def favorite_count(self):
+        return self.favorites.count()
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '가게'
@@ -54,6 +60,13 @@ class Store(models.Model):
 class Badge(models.Model):
     text = models.CharField(
         max_length=30, help_text='가게 특이사항')
+
+    def __str__(self):
+        return self.text
+
+    class Meta:
+        verbose_name = '가게 뱃지'
+        verbose_name_plural = '가게 뱃지'
 
 
 class OpenHour(models.Model):
@@ -74,6 +87,9 @@ class OpenHour(models.Model):
     sunday = models.CharField(
         max_length=30, help_text='일요일')
 
+    def __str__(self):
+        return f'{self.store.name}의 가게 오픈 시간'
+
     class Meta:
         verbose_name = '가게 오픈 시간'
         verbose_name_plural = '가게 오픈 시간'
@@ -85,8 +101,11 @@ def food_img_dir(instance, filename):
 
 class MenuCategory(models.Model):
     store = models.ForeignKey('Store', on_delete=models.CASCADE)
-    menu = models.ForeignKey('Menu', on_delete=models.CASCADE)
+    menu = models.ManyToManyField('Menu', related_name='menu_categories')
     name = models.CharField(max_length=50, help_text='메뉴 카테고리')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '메뉴 카테고리'
@@ -104,32 +123,43 @@ class Menu(models.Model):
         help_text='음식 대표 이미지')
     base_price = models.IntegerField(
         help_text='음식 가격')
-    option_categories = models.ManyToManyField('Option', through='OptionCategory')
+    option_categories = models.ManyToManyField(
+        'OptionCategory', help_text='옵션 카테고리')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
-        verbose_name = '음식 메뉴'
-        verbose_name_plural = '음식 메뉴'
+        verbose_name = '메뉴'
+        verbose_name_plural = '메뉴'
 
 
 class OptionCategory(models.Model):
-    option = models.ForeignKey('Option', on_delete=models.CASCADE)
-    menu = models.ForeignKey('Menu', on_delete=models.CASCADE)
+    option_category = models.ForeignKey(
+        'self', on_delete=models.CASCADE, blank=True, null=True, related_name='child_option_categories')
     name = models.CharField(
         max_length=30, help_text='옵션 카테고리 이름')
     is_required = models.BooleanField(
         help_text='필수 선택 여부')
 
+    def __str__(self):
+        return self.name
+
     class Meta:
-        verbose_name = '옵션'
-        verbose_name_plural = '옵션'
+        verbose_name = '옵션 카테고리'
+        verbose_name_plural = '옵션 카테고리'
 
 
 class Option(models.Model):
-    option = models.ForeignKey('self', on_delete=models.CASCADE, related_name='options')
+    option_category = models.ForeignKey(
+        'OptionCategory', on_delete=models.CASCADE, related_name='options')
     name = models.CharField(
         max_length=50, help_text='옵션 이름')
     option_price = models.IntegerField(
         help_text='옵션 가격')
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name = '옵션'

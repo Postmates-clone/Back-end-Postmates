@@ -3,6 +3,8 @@ import json
 
 from utils.make_dir import make_dir
 
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
 BASE_DIR = make_dir(os.path.abspath(__file__), 3)
 ROOT_DIR = make_dir(BASE_DIR)
 

@@ -10,6 +10,8 @@ django = "^3.0.7"
 djangorestframework = "^3.11.0"
 Pillow = "^7.1.2"
 django-filter = "^2.3.0"
+gunicorn = "^20.0.4"
+supervisor = "^4.2.0"
 
 [tool.poetry.dev-dependencies]
 django-extensions = "^2.2.9"

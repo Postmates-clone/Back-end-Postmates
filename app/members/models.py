@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from stores.models import Store
 
 
 def profile_img_dir(instance, filename):
@@ -15,7 +16,15 @@ class User(AbstractUser):
         upload_to=profile_img_dir, blank=True, help_text='프로필 사진')
     phone = models.CharField(
         max_length=13, help_text='핸드폰 번호')
+    favorites = models.ManyToManyField(
+        Store, through='Favorite', related_name='users', help_text='좋아요')
 
     class Meta:
         verbose_name = '유저'
         verbose_name_plural = '유저'
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    store = models.ForeignKey(Store, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)

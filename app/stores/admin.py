@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Store, DailyOpenTime, Menu, Topping
+from .models import Store, OpenHour, Menu, Option
 
 
 @admin.register(Store)
@@ -14,6 +14,6 @@ class MembersAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Topping)
+@admin.register(Option)
 class MembersAdmin(admin.ModelAdmin):
     pass

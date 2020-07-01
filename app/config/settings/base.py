@@ -18,7 +18,9 @@ SECRET_KEY = SECRETS_BASE['DJANGO_SECRET']
 
 # Application definition
 REST_FRAMEWORK = {
-
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
 }
 
 DJANGO_APPS = [

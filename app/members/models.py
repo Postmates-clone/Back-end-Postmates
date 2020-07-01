@@ -29,5 +29,5 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         'User', on_delete=models.CASCADE)
     store = models.ForeignKey(
-        Store,  related_name='favorites', on_delete=models.CASCADE)
+        Store, related_name='favorites', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)

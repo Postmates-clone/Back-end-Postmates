@@ -45,6 +45,10 @@ class Store(models.Model):
     badges = models.ManyToManyField(
         'Badge', blank=True, related_name='stores')
 
+    @property
+    def favorite_count(self):
+        return self.favorites.count()
+
     def __str__(self):
         return self.name
 

@@ -56,6 +56,10 @@ class Store(models.Model):
         verbose_name = '가게'
         verbose_name_plural = '가게'
 
+    class Meta:
+        verbose_name = '가게'
+        verbose_name_plural = '가게'
+
 
 class Badge(models.Model):
     text = models.CharField(
@@ -133,6 +137,10 @@ class Menu(models.Model):
         verbose_name = '메뉴'
         verbose_name_plural = '메뉴'
 
+    class Meta:
+        verbose_name = '음식 메뉴'
+        verbose_name_plural = '음식 메뉴'
+
 
 class OptionCategory(models.Model):
     option_category = models.ForeignKey(
@@ -164,3 +172,4 @@ class Option(models.Model):
     class Meta:
         verbose_name = '옵션'
         verbose_name_plural = '옵션'
+

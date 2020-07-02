@@ -31,3 +31,7 @@ class Favorite(models.Model):
     store = models.ForeignKey(
         Store, related_name='favorites', on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = '좋아요'
+        verbose_name_plural = '좋아요'

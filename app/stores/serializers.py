@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Store
 
 
-class InitialFeedSerializer(serializers.ModelSerializer):
+class FeedSerializer(serializers.ModelSerializer):
     badges = serializers.StringRelatedField(many=True)
 
     class Meta:

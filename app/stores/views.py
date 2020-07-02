@@ -1,7 +1,7 @@
 from rest_framework.generics import ListAPIView
 from .models import Store
-from .serializers import InitialFeedSerializer
-from .filters import InitialFeedFilter
+from .serializers import FeedSerializer
+from .filters import InitialFeedFilter, NearbyFilter
 
 
 class InitialFeed(ListAPIView):
@@ -11,5 +11,16 @@ class InitialFeed(ListAPIView):
     ### GET /feed/
     """
     queryset = Store.objects.all()
-    serializer_class = InitialFeedSerializer
+    serializer_class = FeedSerializer
     filter_class = InitialFeedFilter
+
+
+class NearbyFeed(ListAPIView):
+    """
+    Feed 거리순 API
+
+    ### GET /feed/
+    """
+    queryset = Store.objects.all()
+    serializer_class = FeedSerializer
+    filter_class = NearbyFilter

@@ -1,4 +1,5 @@
-from django.db import models
+from django.contrib.gis.geos import Point
+from django.contrib.gis.db import models
 
 FOOD_TYPES_CHOICES = [
     ('korean', '한식'),
@@ -38,6 +39,8 @@ class Store(models.Model):
         help_text='위도')
     lng = models.FloatField(
         help_text='경도')
+    latlng = models.PointField(
+        null=True, blank=True, help_text='위도 경도 좌표 객체')
     food_type = models.CharField(
         choices=FOOD_TYPES_CHOICES, max_length=10, help_text='가게 요리 분류')
     city = models.CharField(
@@ -51,6 +54,10 @@ class Store(models.Model):
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.latlng = Point(self.lat, self.lng)
+        return super(Store, self).save(*args, **kwargs)
 
     class Meta:
         verbose_name = '가게'

@@ -1,7 +1,7 @@
 server {
     listen 80;
     charset utf-8;
-
+    client_max_body_size 128M;
     location / {
         include         /etc/nginx/proxy_params;
         proxy_pass      http://unix:/run/postmates.sock;

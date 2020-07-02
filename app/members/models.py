@@ -24,7 +24,6 @@ class User(AbstractUser):
         verbose_name = '유저'
         verbose_name_plural = '유저'
 
-
 class Favorite(models.Model):
     user = models.ForeignKey(
         'User', on_delete=models.CASCADE)

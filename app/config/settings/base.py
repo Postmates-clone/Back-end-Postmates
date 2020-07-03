@@ -3,6 +3,8 @@ import json
 
 from utils.make_dir import make_dir
 
+os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+
 BASE_DIR = make_dir(os.path.abspath(__file__), 3)
 ROOT_DIR = make_dir(BASE_DIR)
 
@@ -16,7 +18,11 @@ SECRET_KEY = SECRETS_BASE['DJANGO_SECRET']
 
 # Application definition
 REST_FRAMEWORK = {
-
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
 }
 
 DJANGO_APPS = [

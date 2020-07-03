@@ -4,6 +4,7 @@ from django.urls import path, include
 
 apps_urlpatterns = [
     path('members/', include('members.urls')),
+    path('feed/', include('stores.urls')),
 ]
 
 urlpatterns = [

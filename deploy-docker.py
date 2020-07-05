@@ -1,8 +1,13 @@
 #!/usr/bin/env python3
 import os
 import subprocess
-
+import json
 from pathlib import Path
+
+with open('./secrets.json') as json_file:
+    SECRETS_FULL = json.load(json_file)
+    SECRETS_BASE = SECRETS_FULL['base']
+
 
 DOCKER_IMAGE_TAG = 'johnkdo2020/postmates'
 DOCKER_OPTIONS = [
@@ -14,7 +19,7 @@ DOCKER_OPTIONS = [
     ('--name', 'postmates'),
 ]
 USER = 'ubuntu'
-HOST = '13.125.224.247'
+HOST = SECRETS_BASE['HOST']
 TARGET = f'{USER}@{HOST}'
 HOME = str(Path.home())
 IDENTITY_FILE = os.path.join(HOME, '.ssh', 'postmates.pem')
@@ -37,7 +42,7 @@ def local_build_push():
     run(f'pip freeze > requirements.txt')
     run(f'sudo docker build -t {DOCKER_IMAGE_TAG} .')
     run(f'sudo docker push {DOCKER_IMAGE_TAG}')
-
+    print('build finish*************************')
 
 def server_init():
     print('*******************server init ************************')
@@ -64,11 +69,26 @@ def copy_secrets():
     ssh_run(f'sudo docker cp /tmp/secrets.json postmates:/srv/Back-end-Postmates')
     print('*******************copy secrets************************')
 
+
 def server_cmd():
+
     ssh_run(f'sudo docker exec postmates /usr/sbin/nginx -s stop', ignore_error=True)
-    # ssh_run(f'sudo docker exec postmates python manage.py collectstatic --noinput')
+    ssh_run(f'sudo docker exec postmates pip install "django<3.0"', ignore_error=True)
+    print('**********************server nginx stop*********************')
+    ssh_run(f'sudo docker exec postmates python manage.py collectstatic --noinput', ignore_error=True)
+    print('*******************collect static************************')
+    ssh_run(f'sudo docker exec postmates python manage.py makemigrations stores', ignore_error=True)
+    print('*******************makemigrations members************************')
+    ssh_run(f'sudo docker exec postmates python manage.py makemigrations members', ignore_error=True)
+    # print('*******************makemigrations stores************************')
+    ssh_run(f'sudo docker exec postmates python manage.py sqlmigrate stores 0001', ignore_error=True)
+    ssh_run(f'sudo docker exec postmates python manage.py sqlmigrate members 0001', ignore_error=True)
+
+    print('**********************migrate***************************')
+    ssh_run(f'sudo docker exec postmates python manage.py migrate')
     ssh_run(f'sudo docker exec -it -d postmates '
             f'supervisord -c /srv/Back-end-Postmates/.config/local_dev/supervisord.conf -n')
+    print('**********************manage***************************')
 
 
 if __name__ == '__main__':

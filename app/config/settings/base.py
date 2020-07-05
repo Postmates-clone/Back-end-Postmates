@@ -7,12 +7,12 @@ os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
 
 BASE_DIR = make_dir(os.path.abspath(__file__), 3)
 ROOT_DIR = make_dir(BASE_DIR)
-print(ROOT_DIR)
+
 with open(os.path.join(ROOT_DIR, 'secrets.json')) as json_file:
     SECRETS_FULL = json.load(json_file)
     SECRETS_BASE = SECRETS_FULL['base']
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 
 SECRET_KEY = SECRETS_BASE['DJANGO_SECRET']
 

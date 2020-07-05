@@ -4,7 +4,7 @@
 
 ### projects ###
 secrets.json
-
+secrets_do.json
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/

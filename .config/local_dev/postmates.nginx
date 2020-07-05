@@ -6,4 +6,7 @@ server {
         include         /etc/nginx/proxy_params;
         proxy_pass      http://unix:/run/postmates.sock;
     }
+    location /static/ {
+        alias           /srv/Back-end-Postmates/.static/;
+    }
 }

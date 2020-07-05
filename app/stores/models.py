@@ -1,6 +1,5 @@
 from django.contrib.gis.geos import Point
 from django.contrib.gis.db import models
-
 FOOD_TYPES_CHOICES = [
     ('korean', '한식'),
     ('chinese', '중식'),
@@ -42,7 +41,7 @@ class Store(models.Model):
     latlng = models.PointField(
         null=True, blank=True, help_text='위도 경도 좌표 객체')
     food_type = models.CharField(
-        choices=FOOD_TYPES_CHOICES, max_length=10, help_text='가게 요리 분류')
+        max_length=10, help_text='가게 요리 분류')
     city = models.CharField(
         max_length=30, help_text='도시')
     badges = models.ManyToManyField(

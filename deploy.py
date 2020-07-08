@@ -13,7 +13,7 @@ SECRETS_FILE = os.path.join(ROOT_DIR, 'secrets.json')
 USER = 'ubuntu'
 HOST = json.load(open(SECRETS_FILE))['base']['HOST']
 TARGET = f'{USER}@{HOST}'
-EC2_CERT = os.path.join(HOME, '.ssh', f'postmates.pem')
+EC2_CERT = os.path.join(HOME, '.ssh', f'airbnb-clone.pem')
 
 DOCKER_IMAGE = f'newjam/{PROJECT_NAME}'
 DOCKER_IMAGE_TAG = 'test'
@@ -21,7 +21,7 @@ DOCKER_OPTS = [
     ('--rm', ''),
     ('-t', ''),
     ('-d', ''),
-    ('-p', '80:80'),
+    ('-p', '8001:80'),
     ('-e', 'DJANGO_SETTINGS_MODULE="config.settings.production"'),
     # ('-p', '443:443'),
     # ('-v', '/etc/letsencrypt:/etc/letsencrypt'),

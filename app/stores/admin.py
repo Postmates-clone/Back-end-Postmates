@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import (
     Store,
     OpenHour,
+    Hour,
     Menu,
     Option,
     Badge,
@@ -31,6 +32,6 @@ class StoresAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(OpenHour)
+@admin.register(OpenHour, Hour)
 class StoresAdmin(admin.ModelAdmin):
     pass

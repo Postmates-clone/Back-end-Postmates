@@ -4,6 +4,7 @@
 
 ### projects ###
 secrets.json
+crawling/**/*.json
 
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks

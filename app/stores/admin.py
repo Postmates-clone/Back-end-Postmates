@@ -5,9 +5,9 @@ from .models import (
     Hour,
     Menu,
     Option,
-    Badge,
     OptionCategory,
-    MenuCategory)
+    MenuCategory
+)
 
 
 @admin.register(Store)

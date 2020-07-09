@@ -19,8 +19,10 @@ class Store(models.Model):
         max_length=30, help_text='가게 이름')
     description = models.TextField(
         help_text='가게 설명')
-    delivery_time = models.CharField(
-        max_length=30, help_text='주문 가능 시간')
+    delivery_message = models.CharField(
+        max_length=30, help_text='주문 가능 메세지')
+    last_order_time = models.DateTimeField(
+        max_length=30, help_text='라스트 오더 시간')
     is_delivery = models.BooleanField(
         help_text='배달 여부')
     is_pickup = models.BooleanField(

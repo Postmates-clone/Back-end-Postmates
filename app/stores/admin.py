@@ -27,11 +27,11 @@ class StoresAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Badge)
-class StoresAdmin(admin.ModelAdmin):
-    pass
+class HoursInline(admin.TabularInline):
+    model = Hour
+    extra = 1
 
 
-@admin.register(OpenHour, Hour)
+@admin.register(OpenHour)
 class StoresAdmin(admin.ModelAdmin):
-    pass
+    inlines = [HoursInline]

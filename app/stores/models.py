@@ -106,8 +106,8 @@ class Hour(models.Model):
         return f'Day {self.day} - Open : {self.start}, Close : {self.end}'
 
     class Meta:
-        verbose_name = '요일별 오픈 시간'
-        verbose_name_plural = '요일별 오픈 시간'
+        verbose_name = '가게  요일별 오픈 시간'
+        verbose_name_plural = '가게 요일별 오픈 시간'
 
 
 def food_img_dir(instance, filename):

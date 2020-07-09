@@ -21,7 +21,7 @@ class Store(models.Model):
         help_text='가게 설명')
     delivery_message = models.CharField(
         max_length=30, help_text='주문 가능 메세지')
-    last_order_time = models.DateTimeField(
+    last_order_time = models.TimeField(
         max_length=30, help_text='라스트 오더 시간')
     is_delivery = models.BooleanField(
         help_text='배달 여부')
@@ -117,7 +117,8 @@ def food_img_dir(instance, filename):
 
 
 class MenuCategory(models.Model):
-    store = models.ForeignKey('Store', on_delete=models.CASCADE)
+    store = models.ForeignKey(
+        'Store', on_delete=models.CASCADE, related_name='menu_categories')
     menu = models.ManyToManyField('Menu', related_name='menu_categories')
     name = models.CharField(max_length=50, help_text='메뉴 카테고리')
 
@@ -166,11 +167,11 @@ class OptionCategory(models.Model):
 
 
 class Option(models.Model):
-    option_category = models.ForeignKey(
+    category = models.ForeignKey(
         'OptionCategory', on_delete=models.CASCADE, related_name='options')
     name = models.CharField(
         max_length=50, help_text='옵션 이름')
-    option_price = models.FloatField(
+    price = models.FloatField(
         help_text='옵션 가격')
 
     def __str__(self):

@@ -4,6 +4,7 @@ from .models import (
     OpenHour,
     Hour,
     Menu,
+    Badge,
     Option,
     OptionCategory,
     MenuCategory
@@ -15,6 +16,11 @@ class StoresAdmin(admin.ModelAdmin):
     list_display = ['name', 'address']
     list_filter = ['name', 'address']
     search_fields = ['username', 'phone']
+
+
+@admin.register(Badge)
+class StoresAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Menu, MenuCategory)

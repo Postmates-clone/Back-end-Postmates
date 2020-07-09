@@ -27,7 +27,7 @@ class Store(models.Model):
         help_text='배달 여부')
     is_pickup = models.BooleanField(
         help_text='테이크아웃 여부')
-    delivery_fee = models.IntegerField(
+    delivery_fee = models.FloatField(
         help_text='배달 비')
     estimated_prep_time = models.IntegerField(
         help_text='예상 준비 시간')
@@ -170,7 +170,7 @@ class Option(models.Model):
         'OptionCategory', on_delete=models.CASCADE, related_name='options')
     name = models.CharField(
         max_length=50, help_text='옵션 이름')
-    option_price = models.IntegerField(
+    option_price = models.FloatField(
         help_text='옵션 가격')
 
     def __str__(self):

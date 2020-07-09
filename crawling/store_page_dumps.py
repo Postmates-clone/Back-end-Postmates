@@ -1,8 +1,8 @@
 import os
 from selenium import webdriver
 
-from .store_detail import get_store_detail
-from .stores_url import get_all_nearby_store_url, search_by_location
+from crawling.functions.store_detail import get_store_detail
+from crawling.functions.stores_url import get_all_nearby_store_url, search_by_location
 
 root_dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -36,12 +36,12 @@ for city, urls in cities_urls.items():
     urls.extend(stores_url)
 
 for city, urls in cities_urls.items():
-    os.makedirs(f'{root_dir}/{city}', exist_ok=True)
+    os.makedirs(f'{root_dir}/data/{city}', exist_ok=True)
     for url in urls:
         store_json = get_store_detail(url)
 
         try:      
-            with open(f'{root_dir}/{city}/{url[31:]}.json', 'w') as f:
+            with open(f'{root_dir}/data/{city}/{url[31:]}.json', 'w') as f:
                 f.write(store_json)
         except TypeError:
             print(store_json)

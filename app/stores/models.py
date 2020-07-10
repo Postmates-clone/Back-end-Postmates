@@ -33,8 +33,8 @@ class Store(models.Model):
         help_text='예상 준비 시간')
     is_partner = models.BooleanField(
         help_text='파트너인지 여부')
-    store_img = models.ImageField(
-        upload_to=store_img_dir, help_text='썸네일 이미지', null=True, blank=True)
+    store_img = models.TextField(
+        null=True, blank=True, help_text='썸네일 이미지', )
     address = models.CharField(
         max_length=50, help_text='가게 주소')
     lat = models.FloatField(

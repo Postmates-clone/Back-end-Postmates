@@ -24,7 +24,7 @@ class FeedSerializer(serializers.ModelSerializer):
 class OptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Option
-        fields = ['name', 'price']
+        fields = ['id', 'name', 'price']
 
 
 class OptionCategorySerializer(serializers.ModelSerializer):
@@ -37,7 +37,7 @@ class OptionCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OptionCategory
-        fields = ['category', 'is_required', 'options']
+        fields = ['id', 'category', 'is_required', 'options']
 
 
 class MenuSerializer(serializers.ModelSerializer):
@@ -49,7 +49,7 @@ class MenuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Menu
-        fields = ['name', 'description', 'image_url', 'price', 'option_groups']
+        fields = ['id', 'name', 'description', 'image_url', 'price', 'option_groups']
 
 
 class MenuCategorySerializer(serializers.ModelSerializer):
@@ -62,7 +62,7 @@ class MenuCategorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MenuCategory
-        fields = ['category', 'menus']
+        fields = ['id', 'category', 'menus']
 
 
 class HoursSerializer(serializers.ModelSerializer):
@@ -87,6 +87,7 @@ class StoreDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Store
         fields = (
+            'id',
             'url',
             'name',
             'description',

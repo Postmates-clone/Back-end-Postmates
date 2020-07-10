@@ -8,6 +8,8 @@ from .models import Store
 
 
 class InitialFeedFilter(FilterSet):
+    search = CharFilter(
+        method='search_city', lookup_expr='exact', help_text='도시 검색')
     category = CharFilter(
         method='order_by_category', lookup_expr='exact', help_text='Feed 카테고리')
 
@@ -20,6 +22,9 @@ class InitialFeedFilter(FilterSet):
         if qs_value[value] == 'favorites':
             return Store.objects.annotate(favorite_counts=Count('favorites')).order_by('favorite_counts')
         return Store.objects.order_by(qs_value[value])
+
+    def search_city(self, qs, name, value):
+        return Store.objects.filter(city__exact=value)
 
     class Meta:
         model = Store

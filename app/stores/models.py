@@ -21,7 +21,7 @@ class Store(models.Model):
         help_text='가게 설명')
     delivery_message = models.CharField(
         max_length=30, help_text='주문 가능 메세지')
-    last_order_time = models.TimeField(
+    last_order_time = models.FloatField(
         max_length=30, help_text='라스트 오더 시간')
     is_delivery = models.BooleanField(
         help_text='배달 여부')

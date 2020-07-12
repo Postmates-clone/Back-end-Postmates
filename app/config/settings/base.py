@@ -19,9 +19,6 @@ SECRET_KEY = SECRETS_BASE['DJANGO_SECRET']
 
 # Application definition
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),

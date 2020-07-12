@@ -22,6 +22,5 @@ class UserInfo(ModelViewSet):
 class UserSignUp(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = (AllowAny,)
 
 # TODO 좋아요

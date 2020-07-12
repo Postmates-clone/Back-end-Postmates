@@ -1,3 +1,4 @@
+import datetime
 import os
 import json
 
@@ -18,11 +19,25 @@ SECRET_KEY = SECRETS_BASE['DJANGO_SECRET']
 
 # Application definition
 REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
     'DEFAULT_FILTER_BACKENDS': (
         'django_filters.rest_framework.DjangoFilterBackend',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10,
+}
+
+JWT_AUTH = {
+    'JWT_SECRET_KEY': SECRETS_BASE['DJANGO_SECRET'],
+    'JWT_ALGORITHM': 'HS256',
+    'JWT_ALLOW_REFRESH': True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
 }
 
 DJANGO_APPS = [
@@ -93,7 +108,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Auth User model
 AUTH_USER_MODEL = 'members.User'
-
 
 # Internationalization
 

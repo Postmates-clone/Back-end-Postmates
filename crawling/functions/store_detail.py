@@ -2,12 +2,7 @@ import json
 
 import requests
 
-
-def get_data(data, fields):
-    if len(fields) == 1:
-        return data.get(fields[0], False)
-    if fields and data.get(fields[0], False):
-        return get_data(data[fields[0]], fields[1:])
+from .utils import get_data
 
 
 def get_store_detail(url):
@@ -15,7 +10,7 @@ def get_store_detail(url):
     data_place = res['data'].get('place', None)
 
     store = {
-        "url": url,
+        "url": url.split('/').pop(),
         "description": res['description'],
     }
 
@@ -24,12 +19,14 @@ def get_store_detail(url):
 
     store.update({
         "name": get_data(data_place, ['name']),
-        "store_img": get_data(data_place, ['header_img', 'original_url']),
+        "store_img":
+            f"https://raster-static.postmates.com/?url={get_data(data_place, ['header_img', 'original_url'])}"
+            if get_data(data_place, ['header_img', 'original_url']) else None,
         "delivery_message": get_data(data_place, ['hours', 'delivery_message']),
         "last_order_time": get_data(data_place, ['hours', 'last_order_time']),
         "open_hours": get_data(data_place, ['place_hours', 'hours']),
         "is_delivery": get_data(data_place, ['active']),
-        "is_pickup": get_data(data_place, ['is_pickup_enables']),
+        "is_pickup": get_data(data_place, ['is_pickup_enabled']),
         "delivery_fee":
             data_place['delivery_fee_badge'].split()[0][1:] if data_place.get('delivery_fee_badge', False) else None,
         "estimated_prep_time": get_data(data_place, ['estimated_prep_time']),
@@ -43,7 +40,7 @@ def get_store_detail(url):
         "all_menus": []
     })
 
-    if not data_place.get('catalog', None) or not data_place['catalog'].get('categories', None):
+    if not get_data(data_place, ['catalog', 'categories']):
         return json.dumps(store)
 
     all_menus = []
@@ -54,7 +51,7 @@ def get_store_detail(url):
             'menus': []
         }
 
-        if not menu_category.get('products', None):
+        if not menu_category.get('products', False):
             continue
 
         for menu in menu_category.get('products'):

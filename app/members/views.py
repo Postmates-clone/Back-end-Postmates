@@ -20,9 +20,7 @@ class UserInfo(ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def get_object(self):
-        queryset = self.get_queryset()
-        user = queryset.get(id=self.kwargs['id'])
-        return user
+        return self.request.user
 
 
 class GetJWT(JSONWebTokenAPIView):
@@ -45,4 +43,3 @@ class GetJWT(JSONWebTokenAPIView):
 class UserSignUp(CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-

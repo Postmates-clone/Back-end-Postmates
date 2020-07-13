@@ -1,3 +1,4 @@
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework import serializers
 from .models import Store, Hour, MenuCategory, Menu, Option, OptionCategory
 
@@ -77,7 +78,10 @@ class StoreDetailSerializer(serializers.ModelSerializer):
     all_menus = serializers.SerializerMethodField(method_name='get_all_menus')
 
     def get_hours(self, obj):
-        hours_queryset = obj.open_hour.hours
+        try:
+            hours_queryset = obj.open_hour.hours
+        except ObjectDoesNotExist:
+            return None
         return HoursSerializer(hours_queryset, many=True).data
 
     def get_all_menus(self, obj):

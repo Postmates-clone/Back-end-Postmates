@@ -151,7 +151,7 @@ CREATE TABLE public.django_admin_log (
     action_flag smallint NOT NULL,
     change_message text NOT NULL,
     content_type_id integer,
-    user_id integer NOT NULL,
+    user_id character varying(254) NOT NULL,
     CONSTRAINT django_admin_log_action_flag_check CHECK ((action_flag >= 0))
 );
 
@@ -272,7 +272,7 @@ CREATE TABLE public.members_favorite (
     id integer NOT NULL,
     created timestamp with time zone NOT NULL,
     store_id integer NOT NULL,
-    user_id integer NOT NULL
+    user_id character varying(254) NOT NULL
 );
 
 
@@ -305,16 +305,16 @@ ALTER SEQUENCE public.members_favorite_id_seq OWNED BY public.members_favorite.i
 --
 
 CREATE TABLE public.members_user (
-    id integer NOT NULL,
     password character varying(128) NOT NULL,
     last_login timestamp with time zone,
     is_superuser boolean NOT NULL,
     first_name character varying(30) NOT NULL,
     last_name character varying(150) NOT NULL,
-    email character varying(254) NOT NULL,
     is_staff boolean NOT NULL,
     is_active boolean NOT NULL,
     date_joined timestamp with time zone NOT NULL,
+    id uuid NOT NULL,
+    email character varying(254) NOT NULL,
     username character varying(30) NOT NULL,
     phone character varying(16) NOT NULL,
     address text NOT NULL
@@ -329,7 +329,7 @@ ALTER TABLE public.members_user OWNER TO dev_postmates;
 
 CREATE TABLE public.members_user_groups (
     id integer NOT NULL,
-    user_id integer NOT NULL,
+    user_id character varying(254) NOT NULL,
     group_id integer NOT NULL
 );
 
@@ -359,34 +359,12 @@ ALTER SEQUENCE public.members_user_groups_id_seq OWNED BY public.members_user_gr
 
 
 --
--- Name: members_user_id_seq; Type: SEQUENCE; Schema: public; Owner: dev_postmates
---
-
-CREATE SEQUENCE public.members_user_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.members_user_id_seq OWNER TO dev_postmates;
-
---
--- Name: members_user_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: dev_postmates
---
-
-ALTER SEQUENCE public.members_user_id_seq OWNED BY public.members_user.id;
-
-
---
 -- Name: members_user_user_permissions; Type: TABLE; Schema: public; Owner: dev_postmates
 --
 
 CREATE TABLE public.members_user_user_permissions (
     id integer NOT NULL,
-    user_id integer NOT NULL,
+    user_id character varying(254) NOT NULL,
     permission_id integer NOT NULL
 );
 
@@ -869,13 +847,6 @@ ALTER TABLE ONLY public.members_favorite ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- Name: members_user id; Type: DEFAULT; Schema: public; Owner: dev_postmates
---
-
-ALTER TABLE ONLY public.members_user ALTER COLUMN id SET DEFAULT nextval('public.members_user_id_seq'::regclass);
-
-
---
 -- Name: members_user_groups id; Type: DEFAULT; Schema: public; Owner: dev_postmates
 --
 
@@ -1086,25 +1057,25 @@ COPY public.django_content_type (id, app_label, model) FROM stdin;
 --
 
 COPY public.django_migrations (id, app, name, applied) FROM stdin;
-1	stores	0001_initial	2020-07-13 18:02:37.789286+09
-2	contenttypes	0001_initial	2020-07-13 18:02:37.880061+09
-3	contenttypes	0002_remove_content_type_name	2020-07-13 18:02:37.934842+09
-4	auth	0001_initial	2020-07-13 18:02:37.99222+09
-5	auth	0002_alter_permission_name_max_length	2020-07-13 18:02:38.02935+09
-6	auth	0003_alter_user_email_max_length	2020-07-13 18:02:38.051574+09
-7	auth	0004_alter_user_username_opts	2020-07-13 18:02:38.076789+09
-8	auth	0005_alter_user_last_login_null	2020-07-13 18:02:38.10143+09
-9	auth	0006_require_contenttypes_0002	2020-07-13 18:02:38.114118+09
-10	auth	0007_alter_validators_add_error_messages	2020-07-13 18:02:38.144121+09
-11	auth	0008_alter_user_username_max_length	2020-07-13 18:02:38.166615+09
-12	auth	0009_alter_user_last_name_max_length	2020-07-13 18:02:38.192005+09
-13	auth	0010_alter_group_name_max_length	2020-07-13 18:02:38.2144+09
-14	auth	0011_update_proxy_permissions	2020-07-13 18:02:38.254511+09
-15	members	0001_initial	2020-07-13 18:02:38.40923+09
-16	admin	0001_initial	2020-07-13 18:02:38.485927+09
-17	admin	0002_logentry_remove_auto_add	2020-07-13 18:02:38.525359+09
-18	admin	0003_logentry_add_action_flag_choices	2020-07-13 18:02:38.566758+09
-19	sessions	0001_initial	2020-07-13 18:02:38.585684+09
+1	stores	0001_initial	2020-07-13 21:53:28.807492+09
+2	contenttypes	0001_initial	2020-07-13 21:53:28.896446+09
+3	contenttypes	0002_remove_content_type_name	2020-07-13 21:53:28.946911+09
+4	auth	0001_initial	2020-07-13 21:53:28.991221+09
+5	auth	0002_alter_permission_name_max_length	2020-07-13 21:53:29.022314+09
+6	auth	0003_alter_user_email_max_length	2020-07-13 21:53:29.038799+09
+7	auth	0004_alter_user_username_opts	2020-07-13 21:53:29.052706+09
+8	auth	0005_alter_user_last_login_null	2020-07-13 21:53:29.069221+09
+9	auth	0006_require_contenttypes_0002	2020-07-13 21:53:29.073919+09
+10	auth	0007_alter_validators_add_error_messages	2020-07-13 21:53:29.092546+09
+11	auth	0008_alter_user_username_max_length	2020-07-13 21:53:29.110206+09
+12	auth	0009_alter_user_last_name_max_length	2020-07-13 21:53:29.128604+09
+13	auth	0010_alter_group_name_max_length	2020-07-13 21:53:29.148296+09
+14	auth	0011_update_proxy_permissions	2020-07-13 21:53:29.203905+09
+15	members	0001_initial	2020-07-13 21:53:29.411192+09
+16	admin	0001_initial	2020-07-13 21:53:29.508844+09
+17	admin	0002_logentry_remove_auto_add	2020-07-13 21:53:29.55639+09
+18	admin	0003_logentry_add_action_flag_choices	2020-07-13 21:53:29.586436+09
+19	sessions	0001_initial	2020-07-13 21:53:29.600701+09
 \.
 
 
@@ -1113,7 +1084,6 @@ COPY public.django_migrations (id, app, name, applied) FROM stdin;
 --
 
 COPY public.django_session (session_key, session_data, expire_date) FROM stdin;
-mdzx32laxw7gee5bxobbts1n90urigzv	YjA0MjgxZjRlMjFjNDEyYzQyZDIyZjNkN2U5NDIyYWI0ZGY1MGUwMDp7Il9hdXRoX3VzZXJfaWQiOiIxIiwiX2F1dGhfdXNlcl9iYWNrZW5kIjoiZGphbmdvLmNvbnRyaWIuYXV0aC5iYWNrZW5kcy5Nb2RlbEJhY2tlbmQiLCJfYXV0aF91c2VyX2hhc2giOiI2ZDRkNGQ2MGQyOGI4ZjhlM2I4MjZiMjI5ZjQ4NGU5MjllMGNhZGZmIn0=	2020-07-27 18:15:25.689907+09
 \.
 
 
@@ -1129,8 +1099,8 @@ COPY public.members_favorite (id, created, store_id, user_id) FROM stdin;
 -- Data for Name: members_user; Type: TABLE DATA; Schema: public; Owner: dev_postmates
 --
 
-COPY public.members_user (id, password, last_login, is_superuser, first_name, last_name, email, is_staff, is_active, date_joined, username, phone, address) FROM stdin;
-1	pbkdf2_sha256$180000$JZSKKMMsnbrF$Os2XOjcLz+PSNez6SxqLCukt2ZB+DTNIJNO2CfJrL4s=	2020-07-13 18:15:25.685311+09	t				t	t	2020-07-13 18:15:22.096812+09	admin		
+COPY public.members_user (password, last_login, is_superuser, first_name, last_name, is_staff, is_active, date_joined, id, email, username, phone, address) FROM stdin;
+pbkdf2_sha256$180000$3egSfIkBSOvK$DSCOr1cR0aUzw9OOkRo56eGn3FpldlX0/Ch3DAOTTFM=	\N	f			f	t	2020-07-13 21:56:56.559402+09	9d3eaa98-a1ba-4f6c-a212-659f5625771f	abc@gmail.com	Kelly	+82-10-4623-4682	aaabbbccccddd
 \.
 
 
@@ -21083,1936 +21053,1936 @@ COPY public.stores_menu_option_categories (id, menu_id, optioncategory_id) FROM 
 --
 
 COPY public.stores_menucategory (id, name, store_id) FROM stdin;
-1	False	1
-2	False	1
-3	False	1
-4	False	1
-5	False	1
-6	False	2
-7	False	2
-8	False	2
-9	False	2
-10	False	2
-11	False	2
-12	False	2
-13	False	2
-14	False	2
-15	False	2
-16	False	2
-17	False	2
-18	False	2
-19	False	2
-20	False	2
-21	False	2
-22	False	2
-23	False	3
-24	False	3
-25	False	4
-26	False	4
-27	False	4
-28	False	4
-29	False	4
-30	False	4
-31	False	4
-32	False	4
-33	False	4
-34	False	4
-35	False	4
-36	False	4
-37	False	4
-38	False	4
-39	False	4
-40	False	4
-41	False	4
-42	False	4
-43	False	5
-44	False	5
-45	False	5
-46	False	5
-47	False	5
-48	False	5
-49	False	6
-50	False	6
-51	False	6
-52	False	6
-53	False	7
-54	False	7
-55	False	7
-56	False	7
-57	False	7
-58	False	7
-59	False	8
-60	False	8
-61	False	8
-62	False	8
-63	False	8
-64	False	8
-65	False	8
-66	False	8
-67	False	8
-68	False	8
-69	False	8
-70	False	8
-71	False	8
-72	False	9
-73	False	9
-74	False	9
-75	False	9
-76	False	9
-77	False	9
-78	False	9
-79	False	10
-80	False	10
-81	False	10
-82	False	10
-83	False	10
-84	False	10
-85	False	10
-86	False	10
-87	False	10
-88	False	10
-89	False	10
-90	False	10
-91	False	10
-92	False	10
-93	False	11
-94	False	11
-95	False	12
-96	False	12
-97	False	12
-98	False	13
-99	False	13
-100	False	13
-101	False	13
-102	False	13
-103	False	14
-104	False	14
-105	False	14
-106	False	14
-107	False	14
-108	False	14
-109	False	14
-110	False	14
-111	False	14
-112	False	14
-113	False	14
-114	False	14
-115	False	14
-116	False	14
-117	False	14
-118	False	14
-119	False	14
-120	False	15
-121	False	15
-122	False	15
-123	False	15
-124	False	15
-125	False	15
-126	False	15
-127	False	16
-128	False	16
-129	False	16
-130	False	16
-131	False	16
-132	False	16
-133	False	16
-134	False	16
-135	False	16
-136	False	16
-137	False	16
-138	False	16
-139	False	16
-140	False	16
-141	False	16
-142	False	16
-143	False	17
-144	False	17
-145	False	17
-146	False	17
-147	False	17
-148	False	17
-149	False	17
-150	False	17
-151	False	17
-152	False	17
-153	False	17
-154	False	17
-155	False	17
-156	False	17
-157	False	17
-158	False	18
-159	False	18
-160	False	18
-161	False	18
-162	False	18
-163	False	18
-164	False	18
-165	False	18
-166	False	18
-167	False	18
-168	False	18
-169	False	19
-170	False	19
-171	False	19
-172	False	19
-173	False	19
-174	False	20
-175	False	20
-176	False	20
-177	False	20
-178	False	20
-179	False	20
-180	False	21
-181	False	21
-182	False	21
-183	False	21
-184	False	21
-185	False	21
-186	False	21
-187	False	22
-188	False	22
-189	False	22
-190	False	22
-191	False	22
-192	False	22
-193	False	23
-194	False	23
-195	False	23
-196	False	23
-197	False	23
-198	False	23
-199	False	23
-200	False	23
-201	False	23
-202	False	23
-203	False	23
-204	False	24
-205	False	24
-206	False	24
-207	False	24
-208	False	24
-209	False	24
-210	False	24
-211	False	25
-212	False	25
-213	False	25
-214	False	25
-215	False	25
-216	False	25
-217	False	25
-218	False	25
-219	False	25
-220	False	25
-221	False	25
-222	False	25
-223	False	25
-224	False	25
-225	False	26
-226	False	26
-227	False	26
-228	False	26
-229	False	26
-230	False	26
-231	False	26
-232	False	26
-233	False	26
-234	False	26
-235	False	26
-236	False	26
-237	False	26
-238	False	27
-239	False	27
-240	False	27
-241	False	27
-242	False	27
-243	False	27
-244	False	27
-245	False	27
-246	False	27
-247	False	28
-248	False	28
-249	False	28
-250	False	28
-251	False	28
-252	False	28
-253	False	28
-254	False	28
-255	False	28
-256	False	28
-257	False	28
-258	False	28
-259	False	28
-260	False	28
-261	False	28
-262	False	28
-263	False	28
-264	False	28
-265	False	28
-266	False	28
-267	False	29
-268	False	29
-269	False	29
-270	False	29
-271	False	29
-272	False	29
-273	False	30
-274	False	30
-275	False	30
-276	False	30
-277	False	30
-278	False	30
-279	False	30
-280	False	30
-281	False	30
-282	False	30
-283	False	30
-284	False	30
-285	False	30
-286	False	31
-287	False	31
-288	False	32
-289	False	32
-290	False	32
-291	False	32
-292	False	32
-293	False	32
-294	False	32
-295	False	32
-296	False	32
-297	False	32
-298	False	32
-299	False	32
-300	False	32
-301	False	32
-302	False	33
-303	False	33
-304	False	34
-305	False	34
-306	False	34
-307	False	34
-308	False	34
-309	False	34
-310	False	36
-311	False	36
-312	False	36
-313	False	36
-314	False	36
-315	False	36
-316	False	37
-317	False	37
-318	False	39
-319	False	39
-320	False	39
-321	False	39
-322	False	39
-323	False	39
-324	False	39
-325	False	39
-326	False	39
-327	False	40
-328	False	40
-329	False	40
-330	False	40
-331	False	40
-332	False	40
-333	False	40
-334	False	40
-335	False	40
-336	False	40
-337	False	40
-338	False	41
-339	False	41
-340	False	41
-341	False	41
-342	False	41
-343	False	41
-344	False	41
-345	False	41
-346	False	41
-347	False	41
-348	False	41
-349	False	41
-350	False	41
-351	False	41
-352	False	41
-353	False	42
-354	False	42
-355	False	42
-356	False	42
-357	False	42
-358	False	42
-359	False	42
-360	False	42
-361	False	42
-362	False	42
-363	False	42
-364	False	42
-365	False	42
-366	False	42
-367	False	42
-368	False	43
-369	False	43
-370	False	43
-371	False	43
-372	False	43
-373	False	43
-374	False	43
-375	False	43
-376	False	43
-377	False	43
-378	False	43
-379	False	43
-380	False	43
-381	False	44
-382	False	44
-383	False	44
-384	False	44
-385	False	44
-386	False	44
-387	False	44
-388	False	44
-389	False	45
-390	False	45
-391	False	45
-392	False	45
-393	False	45
-394	False	46
-395	False	46
-396	False	46
-397	False	46
-398	False	46
-399	False	46
-400	False	47
-401	False	47
-402	False	47
-403	False	47
-404	False	47
-405	False	47
-406	False	47
-407	False	47
-408	False	47
-409	False	47
-410	False	47
-411	False	47
-412	False	47
-413	False	47
-414	False	47
-415	False	47
-416	False	48
-417	False	48
-418	False	48
-419	False	48
-420	False	48
-421	False	48
-422	False	48
-423	False	48
-424	False	48
-425	False	48
-426	False	48
-427	False	48
-428	False	48
-429	False	48
-430	False	49
-431	False	49
-432	False	49
-433	False	49
-434	False	49
-435	False	49
-436	False	50
-437	False	50
-438	False	50
-439	False	50
-440	False	50
-441	False	51
-442	False	51
-443	False	51
-444	False	51
-445	False	51
-446	False	51
-447	False	52
-448	False	52
-449	False	52
-450	False	52
-451	False	52
-452	False	52
-453	False	52
-454	False	52
-455	False	54
-456	False	54
-457	False	54
-458	False	54
-459	False	54
-460	False	54
-461	False	54
-462	False	54
-463	False	54
-464	False	54
-465	False	55
-466	False	55
-467	False	55
-468	False	55
-469	False	55
-470	False	55
-471	False	55
-472	False	55
-473	False	55
-474	False	56
-475	False	56
-476	False	56
-477	False	56
-478	False	56
-479	False	56
-480	False	56
-481	False	57
-482	False	57
-483	False	57
-484	False	57
-485	False	57
-486	False	58
-487	False	58
-488	False	58
-489	False	58
-490	False	58
-491	False	58
-492	False	58
-493	False	58
-494	False	59
-495	False	59
-496	False	59
-497	False	59
-498	False	59
-499	False	59
-500	False	59
-501	False	59
-502	False	59
-503	False	59
-504	False	59
-505	False	59
-506	False	59
-507	False	59
-508	False	59
-509	False	59
-510	False	59
-511	False	59
-512	False	59
-513	False	60
-514	False	60
-515	False	60
-516	False	61
-517	False	61
-518	False	61
-519	False	61
-520	False	61
-521	False	61
-522	False	61
-523	False	62
-524	False	62
-525	False	62
-526	False	62
-527	False	62
-528	False	62
-529	False	62
-530	False	62
-531	False	62
-532	False	62
-533	False	62
-534	False	62
-535	False	62
-536	False	62
-537	False	62
-538	False	63
-539	False	63
-540	False	63
-541	False	63
-542	False	64
-543	False	64
-544	False	64
-545	False	64
-546	False	64
-547	False	64
-548	False	64
-549	False	64
-550	False	64
-551	False	64
-552	False	64
-553	False	64
-554	False	64
-555	False	64
-556	False	64
-557	False	64
-558	False	64
-559	False	64
-560	False	64
-561	False	64
-562	False	64
-563	False	64
-564	False	65
-565	False	65
-566	False	65
-567	False	65
-568	False	65
-569	False	66
-570	False	67
-571	False	67
-572	False	67
-573	False	67
-574	False	67
-575	False	67
-576	False	67
-577	False	68
-578	False	68
-579	False	68
-580	False	68
-581	False	68
-582	False	68
-583	False	68
-584	False	68
-585	False	68
-586	False	68
-587	False	68
-588	False	68
-589	False	68
-590	False	68
-591	False	68
-592	False	68
-593	False	69
-594	False	69
-595	False	69
-596	False	69
-597	False	69
-598	False	69
-599	False	69
-600	False	69
-601	False	69
-602	False	69
-603	False	69
-604	False	69
-605	False	69
-606	False	70
-607	False	70
-608	False	72
-609	False	72
-610	False	72
-611	False	72
-612	False	72
-613	False	72
-614	False	73
-615	False	73
-616	False	73
-617	False	73
-618	False	73
-619	False	73
-620	False	73
-621	False	73
-622	False	73
-623	False	73
-624	False	73
-625	False	74
-626	False	74
-627	False	74
-628	False	74
-629	False	74
-630	False	74
-631	False	74
-632	False	74
-633	False	74
-634	False	74
-635	False	74
-636	False	74
-637	False	74
-638	False	74
-639	False	74
-640	False	74
-641	False	74
-642	False	74
-643	False	74
-644	False	74
-645	False	74
-646	False	74
-647	False	74
-648	False	74
-649	False	74
-650	False	74
-651	False	74
-652	False	74
-653	False	74
-654	False	74
-655	False	75
-656	False	75
-657	False	75
-658	False	75
-659	False	75
-660	False	75
-661	False	75
-662	False	75
-663	False	75
-664	False	75
-665	False	75
-666	False	75
-667	False	76
-668	False	76
-669	False	76
-670	False	76
-671	False	76
-672	False	76
-673	False	76
-674	False	76
-675	False	76
-676	False	76
-677	False	76
-678	False	76
-679	False	76
-680	False	76
-681	False	77
-682	False	77
-683	False	78
-684	False	78
-685	False	78
-686	False	78
-687	False	78
-688	False	78
-689	False	78
-690	False	78
-691	False	78
-692	False	78
-693	False	78
-694	False	78
-695	False	78
-696	False	78
-697	False	78
-698	False	78
-699	False	78
-700	False	78
-701	False	79
-702	False	79
-703	False	79
-704	False	79
-705	False	79
-706	False	79
-707	False	79
-708	False	80
-709	False	80
-710	False	80
-711	False	80
-712	False	80
-713	False	80
-714	False	80
-715	False	80
-716	False	80
-717	False	81
-718	False	81
-719	False	81
-720	False	81
-721	False	81
-722	False	81
-723	False	81
-724	False	81
-725	False	81
-726	False	82
-727	False	82
-728	False	82
-729	False	82
-730	False	82
-731	False	82
-732	False	82
-733	False	82
-734	False	82
-735	False	82
-736	False	82
-737	False	82
-738	False	82
-739	False	82
-740	False	82
-741	False	82
-742	False	82
-743	False	82
-744	False	82
-745	False	84
-746	False	84
-747	False	84
-748	False	84
-749	False	84
-750	False	84
-751	False	84
-752	False	84
-753	False	84
-754	False	84
-755	False	84
-756	False	84
-757	False	84
-758	False	85
-759	False	85
-760	False	85
-761	False	85
-762	False	85
-763	False	85
-764	False	85
-765	False	85
-766	False	85
-767	False	85
-768	False	86
-769	False	86
-770	False	86
-771	False	86
-772	False	86
-773	False	86
-774	False	86
-775	False	86
-776	False	86
-777	False	86
-778	False	86
-779	False	86
-780	False	86
-781	False	86
-782	False	86
-783	False	86
-784	False	86
-785	False	86
-786	False	86
-787	False	86
-788	False	86
-789	False	86
-790	False	86
-791	False	86
-792	False	86
-793	False	86
-794	False	86
-795	False	86
-796	False	86
-797	False	87
-798	False	87
-799	False	87
-800	False	87
-801	False	87
-802	False	87
-803	False	87
-804	False	87
-805	False	87
-806	False	87
-807	False	87
-808	False	87
-809	False	87
-810	False	87
-811	False	87
-812	False	87
-813	False	87
-814	False	87
-815	False	87
-816	False	87
-817	False	88
-818	False	88
-819	False	88
-820	False	88
-821	False	88
-822	False	88
-823	False	88
-824	False	88
-825	False	88
-826	False	88
-827	False	88
-828	False	88
-829	False	88
-830	False	88
-831	False	88
-832	False	88
-833	False	88
-834	False	88
-835	False	88
-836	False	88
-837	False	88
-838	False	88
-839	False	88
-840	False	88
-841	False	88
-842	False	90
-843	False	91
-844	False	91
-845	False	91
-846	False	91
-847	False	91
-848	False	91
-849	False	91
-850	False	92
-851	False	92
-852	False	92
-853	False	92
-854	False	92
-855	False	92
-856	False	92
-857	False	92
-858	False	92
-859	False	92
-860	False	92
-861	False	92
-862	False	92
-863	False	92
-864	False	92
-865	False	92
-866	False	92
-867	False	93
-868	False	93
-869	False	93
-870	False	93
-871	False	93
-872	False	93
-873	False	93
-874	False	93
-875	False	93
-876	False	93
-877	False	93
-878	False	93
-879	False	93
-880	False	93
-881	False	93
-882	False	93
-883	False	93
-884	False	93
-885	False	93
-886	False	93
-887	False	93
-888	False	93
-889	False	93
-890	False	93
-891	False	93
-892	False	93
-893	False	93
-894	False	93
-895	False	94
-896	False	94
-897	False	94
-898	False	94
-899	False	94
-900	False	94
-901	False	94
-902	False	94
-903	False	94
-904	False	94
-905	False	94
-906	False	94
-907	False	94
-908	False	94
-909	False	94
-910	False	94
-911	False	94
-912	False	94
-913	False	94
-914	False	94
-915	False	94
-916	False	94
-917	False	94
-918	False	94
-919	False	94
-920	False	94
-921	False	96
-922	False	96
-923	False	96
-924	False	96
-925	False	96
-926	False	96
-927	False	96
-928	False	96
-929	False	97
-930	False	97
-931	False	97
-932	False	97
-933	False	98
-934	False	98
-935	False	98
-936	False	98
-937	False	101
-938	False	101
-939	False	101
-940	False	101
-941	False	101
-942	False	101
-943	False	101
-944	False	101
-945	False	101
-946	False	101
-947	False	101
-948	False	101
-949	False	101
-950	False	101
-951	False	101
-952	False	101
-953	False	101
-954	False	101
-955	False	101
-956	False	101
-957	False	101
-958	False	101
-959	False	101
-960	False	101
-961	False	101
-962	False	101
-963	False	101
-964	False	101
-965	False	101
-966	False	101
-967	False	102
-968	False	102
-969	False	102
-970	False	102
-971	False	103
-972	False	103
-973	False	103
-974	False	103
-975	False	103
-976	False	103
-977	False	103
-978	False	103
-979	False	103
-980	False	103
-981	False	103
-982	False	104
-983	False	104
-984	False	104
-985	False	104
-986	False	104
-987	False	104
-988	False	104
-989	False	104
-990	False	105
-991	False	105
-992	False	105
-993	False	105
-994	False	105
-995	False	105
-996	False	105
-997	False	105
-998	False	105
-999	False	105
-1000	False	105
-1001	False	105
-1002	False	105
-1003	False	105
-1004	False	105
-1005	False	105
-1006	False	105
-1007	False	105
-1008	False	105
-1009	False	105
-1010	False	105
-1011	False	105
-1012	False	105
-1013	False	105
-1014	False	105
-1015	False	105
-1016	False	105
-1017	False	105
-1018	False	105
-1019	False	105
-1020	False	105
-1021	False	106
-1022	False	106
-1023	False	106
-1024	False	106
-1025	False	106
-1026	False	106
-1027	False	106
-1028	False	107
-1029	False	107
-1030	False	107
-1031	False	107
-1032	False	107
-1033	False	107
-1034	False	107
-1035	False	107
-1036	False	107
-1037	False	107
-1038	False	107
-1039	False	107
-1040	False	107
-1041	False	107
-1042	False	107
-1043	False	107
-1044	False	107
-1045	False	107
-1046	False	107
-1047	False	107
-1048	False	107
-1049	False	107
-1050	False	107
-1051	False	107
-1052	False	107
-1053	False	107
-1054	False	107
-1055	False	107
-1056	False	107
-1057	False	107
-1058	False	107
-1059	False	107
-1060	False	107
-1061	False	107
-1062	False	109
-1063	False	109
-1064	False	109
-1065	False	109
-1066	False	109
-1067	False	109
-1068	False	110
-1069	False	110
-1070	False	110
-1071	False	110
-1072	False	110
-1073	False	110
-1074	False	111
-1075	False	111
-1076	False	111
-1077	False	111
-1078	False	111
-1079	False	111
-1080	False	112
-1081	False	112
-1082	False	112
-1083	False	112
-1084	False	112
-1085	False	112
-1086	False	112
-1087	False	112
-1088	False	113
-1089	False	113
-1090	False	113
-1091	False	113
-1092	False	113
-1093	False	113
-1094	False	113
-1095	False	113
-1096	False	113
-1097	False	113
-1098	False	113
-1099	False	113
-1100	False	113
-1101	False	113
-1102	False	113
-1103	False	113
-1104	False	113
-1105	False	113
-1106	False	113
-1107	False	113
-1108	False	114
-1109	False	114
-1110	False	114
-1111	False	114
-1112	False	114
-1113	False	114
-1114	False	114
-1115	False	114
-1116	False	114
-1117	False	114
-1118	False	114
-1119	False	114
-1120	False	114
-1121	False	116
-1122	False	116
-1123	False	116
-1124	False	116
-1125	False	116
-1126	False	116
-1127	False	116
-1128	False	116
-1129	False	116
-1130	False	116
-1131	False	117
-1132	False	117
-1133	False	117
-1134	False	117
-1135	False	117
-1136	False	117
-1137	False	117
-1138	False	117
-1139	False	118
-1140	False	118
-1141	False	118
-1142	False	118
-1143	False	119
-1144	False	119
-1145	False	119
-1146	False	119
-1147	False	119
-1148	False	119
-1149	False	119
-1150	False	119
-1151	False	120
-1152	False	120
-1153	False	120
-1154	False	120
-1155	False	120
-1156	False	120
-1157	False	120
-1158	False	120
-1159	False	120
-1160	False	120
-1161	False	120
-1162	False	120
-1163	False	120
-1164	False	120
-1165	False	120
-1166	False	120
-1167	False	120
-1168	False	120
-1169	False	120
-1170	False	120
-1171	False	120
-1172	False	120
-1173	False	121
-1174	False	121
-1175	False	121
-1176	False	121
-1177	False	121
-1178	False	121
-1179	False	121
-1180	False	121
-1181	False	121
-1182	False	121
-1183	False	121
-1184	False	121
-1185	False	121
-1186	False	121
-1187	False	123
-1188	False	123
-1189	False	123
-1190	False	123
-1191	False	123
-1192	False	123
-1193	False	123
-1194	False	123
-1195	False	123
-1196	False	123
-1197	False	123
-1198	False	123
-1199	False	123
-1200	False	123
-1201	False	123
-1202	False	123
-1203	False	123
-1204	False	123
-1205	False	123
-1206	False	123
-1207	False	123
-1208	False	123
-1209	False	123
-1210	False	123
-1211	False	124
-1212	False	124
-1213	False	124
-1214	False	124
-1215	False	124
-1216	False	124
-1217	False	124
-1218	False	124
-1219	False	124
-1220	False	124
-1221	False	124
-1222	False	124
-1223	False	124
-1224	False	124
-1225	False	124
-1226	False	124
-1227	False	124
-1228	False	124
-1229	False	124
-1230	False	124
-1231	False	124
-1232	False	124
-1233	False	124
-1234	False	124
-1235	False	124
-1236	False	124
-1237	False	124
-1238	False	124
-1239	False	124
-1240	False	124
-1241	False	124
-1242	False	124
-1243	False	124
-1244	False	126
-1245	False	126
-1246	False	126
-1247	False	126
-1248	False	126
-1249	False	126
-1250	False	126
-1251	False	126
-1252	False	126
-1253	False	126
-1254	False	126
-1255	False	126
-1256	False	126
-1257	False	126
-1258	False	126
-1259	False	126
-1260	False	126
-1261	False	126
-1262	False	126
-1263	False	126
-1264	False	126
-1265	False	126
-1266	False	126
-1267	False	126
-1268	False	126
-1269	False	126
-1270	False	126
-1271	False	127
-1272	False	127
-1273	False	127
-1274	False	127
-1275	False	127
-1276	False	127
-1277	False	127
-1278	False	127
-1279	False	127
-1280	False	127
-1281	False	127
-1282	False	127
-1283	False	127
-1284	False	127
-1285	False	127
-1286	False	127
-1287	False	127
-1288	False	127
-1289	False	127
-1290	False	127
-1291	False	128
-1292	False	128
-1293	False	128
-1294	False	128
-1295	False	128
-1296	False	128
-1297	False	128
-1298	False	128
-1299	False	128
-1300	False	128
-1301	False	128
-1302	False	128
-1303	False	128
-1304	False	128
-1305	False	128
-1306	False	128
-1307	False	128
-1308	False	128
-1309	False	128
-1310	False	128
-1311	False	128
-1312	False	128
-1313	False	128
-1314	False	128
-1315	False	128
-1316	False	128
-1317	False	129
-1318	False	129
-1319	False	131
-1320	False	131
-1321	False	131
-1322	False	131
-1323	False	131
-1324	False	131
-1325	False	131
-1326	False	131
-1327	False	131
-1328	False	131
-1329	False	131
-1330	False	131
-1331	False	131
-1332	False	131
-1333	False	131
-1334	False	131
-1335	False	131
-1336	False	131
-1337	False	131
-1338	False	131
-1339	False	131
-1340	False	132
-1341	False	132
-1342	False	132
-1343	False	132
-1344	False	132
-1345	False	132
-1346	False	133
-1347	False	133
-1348	False	133
-1349	False	133
-1350	False	133
-1351	False	133
-1352	False	133
-1353	False	133
-1354	False	133
-1355	False	133
-1356	False	133
-1357	False	133
-1358	False	133
-1359	False	133
-1360	False	133
-1361	False	133
-1362	False	133
-1363	False	133
-1364	False	133
-1365	False	133
-1366	False	133
-1367	False	133
-1368	False	133
-1369	False	133
-1370	False	134
-1371	False	134
-1372	False	134
-1373	False	134
-1374	False	134
-1375	False	134
-1376	False	134
-1377	False	134
-1378	False	134
-1379	False	134
-1380	False	134
-1381	False	134
-1382	False	134
-1383	False	134
-1384	False	134
-1385	False	134
-1386	False	134
-1387	False	134
-1388	False	134
-1389	False	134
-1390	False	134
-1391	False	134
-1392	False	134
-1393	False	134
-1394	False	134
-1395	False	135
-1396	False	135
-1397	False	135
-1398	False	135
-1399	False	135
-1400	False	135
-1401	False	135
-1402	False	135
-1403	False	135
-1404	False	135
-1405	False	135
-1406	False	136
-1407	False	136
-1408	False	136
-1409	False	136
-1410	False	136
-1411	False	136
-1412	False	136
-1413	False	136
-1414	False	136
-1415	False	136
-1416	False	136
-1417	False	136
-1418	False	136
-1419	False	136
-1420	False	136
-1421	False	136
-1422	False	136
-1423	False	136
-1424	False	136
-1425	False	136
-1426	False	136
-1427	False	136
-1428	False	136
-1429	False	136
-1430	False	137
-1431	False	137
-1432	False	137
-1433	False	137
-1434	False	137
-1435	False	137
-1436	False	137
-1437	False	137
-1438	False	137
-1439	False	137
-1440	False	137
-1441	False	137
-1442	False	137
-1443	False	137
-1444	False	137
-1445	False	137
-1446	False	137
-1447	False	137
-1448	False	137
-1449	False	137
-1450	False	137
-1451	False	139
-1452	False	139
-1453	False	139
-1454	False	139
-1455	False	139
-1456	False	139
-1457	False	139
-1458	False	142
-1459	False	142
-1460	False	142
-1461	False	142
-1462	False	142
-1463	False	142
-1464	False	142
-1465	False	142
-1466	False	143
-1467	False	143
-1468	False	143
-1469	False	143
-1470	False	143
-1471	False	143
-1472	False	143
-1473	False	143
-1474	False	143
-1475	False	144
-1476	False	144
-1477	False	145
-1478	False	145
-1479	False	145
-1480	False	145
-1481	False	145
-1482	False	145
-1483	False	145
-1484	False	145
-1485	False	145
-1486	False	145
-1487	False	145
-1488	False	145
-1489	False	146
-1490	False	146
-1491	False	146
-1492	False	146
-1493	False	146
-1494	False	146
-1495	False	146
-1496	False	146
-1497	False	146
-1498	False	146
-1499	False	146
-1500	False	146
-1501	False	146
-1502	False	146
-1503	False	146
-1504	False	146
-1505	False	146
-1506	False	146
-1507	False	148
-1508	False	148
-1509	False	148
-1510	False	148
-1511	False	148
-1512	False	148
-1513	False	148
-1514	False	148
-1515	False	148
-1516	False	148
-1517	False	148
-1518	False	148
-1519	False	148
-1520	False	148
-1521	False	148
-1522	False	148
-1523	False	148
-1524	False	148
-1525	False	148
-1526	False	148
-1527	False	148
-1528	False	148
-1529	False	148
-1530	False	148
-1531	False	148
-1532	False	148
-1533	False	148
-1534	False	148
-1535	False	148
-1536	False	148
-1537	False	148
-1538	False	148
-1539	False	148
-1540	False	148
-1541	False	148
-1542	False	148
-1543	False	148
-1544	False	148
-1545	False	148
-1546	False	148
-1547	False	148
-1548	False	148
-1549	False	148
-1550	False	148
-1551	False	148
-1552	False	148
-1553	False	148
-1554	False	148
-1555	False	148
-1556	False	150
-1557	False	150
-1558	False	150
-1559	False	150
-1560	False	150
-1561	False	150
-1562	False	150
-1563	False	150
-1564	False	150
-1565	False	150
-1566	False	150
-1567	False	150
-1568	False	150
-1569	False	150
-1570	False	150
-1571	False	150
-1572	False	150
-1573	False	150
-1574	False	150
-1575	False	150
-1576	False	150
-1577	False	150
-1578	False	150
-1579	False	150
-1580	False	150
-1581	False	150
-1582	False	150
-1583	False	150
-1584	False	150
-1585	False	152
-1586	False	152
-1587	False	152
-1588	False	152
-1589	False	153
-1590	False	153
-1591	False	153
-1592	False	153
-1593	False	153
-1594	False	154
-1595	False	154
-1596	False	154
-1597	False	154
-1598	False	155
-1599	False	155
-1600	False	155
-1601	False	155
-1602	False	155
-1603	False	155
-1604	False	155
-1605	False	156
-1606	False	156
-1607	False	156
-1608	False	156
-1609	False	156
-1610	False	156
-1611	False	156
-1612	False	157
-1613	False	157
-1614	False	157
-1615	False	157
-1616	False	157
-1617	False	157
-1618	False	157
-1619	False	157
-1620	False	157
-1621	False	158
-1622	False	158
-1623	False	158
-1624	False	158
-1625	False	158
-1626	False	158
-1627	False	158
-1628	False	158
-1629	False	158
-1630	False	159
-1631	False	159
-1632	False	159
-1633	False	159
-1634	False	160
-1635	False	160
-1636	False	160
-1637	False	160
-1638	False	160
-1639	False	161
-1640	False	161
-1641	False	161
-1642	False	161
-1643	False	161
-1644	False	161
-1645	False	161
-1646	False	161
-1647	False	162
-1648	False	162
-1649	False	162
-1650	False	162
-1651	False	162
-1652	False	162
-1653	False	163
-1654	False	163
-1655	False	163
-1656	False	163
-1657	False	163
-1658	False	164
-1659	False	164
-1660	False	164
-1661	False	164
-1662	False	164
-1663	False	164
-1664	False	164
-1665	False	164
-1666	False	164
-1667	False	164
-1668	False	164
-1669	False	164
-1670	False	164
-1671	False	164
-1672	False	165
-1673	False	165
-1674	False	165
-1675	False	165
-1676	False	165
-1677	False	165
-1678	False	168
-1679	False	168
-1680	False	170
-1681	False	170
-1682	False	170
-1683	False	170
-1684	False	170
-1685	False	170
-1686	False	170
-1687	False	170
-1688	False	170
-1689	False	170
-1690	False	170
-1691	False	171
-1692	False	171
-1693	False	171
-1694	False	171
-1695	False	171
-1696	False	171
-1697	False	171
-1698	False	172
-1699	False	172
-1700	False	172
-1701	False	172
-1702	False	172
-1703	False	172
-1704	False	172
-1705	False	172
-1706	False	172
-1707	False	172
-1708	False	172
-1709	False	172
-1710	False	172
-1711	False	172
-1712	False	173
-1713	False	173
-1714	False	173
-1715	False	173
-1716	False	173
-1717	False	173
-1718	False	173
-1719	False	173
-1720	False	174
-1721	False	174
-1722	False	174
-1723	False	174
-1724	False	174
-1725	False	174
-1726	False	174
-1727	False	174
-1728	False	174
-1729	False	175
-1730	False	175
-1731	False	175
-1732	False	175
-1733	False	175
-1734	False	175
-1735	False	175
-1736	False	176
-1737	False	176
-1738	False	176
-1739	False	177
-1740	False	177
-1741	False	177
-1742	False	177
-1743	False	177
-1744	False	177
-1745	False	178
-1746	False	178
-1747	False	178
-1748	False	178
-1749	False	178
-1750	False	178
-1751	False	179
-1752	False	179
-1753	False	179
-1754	False	179
-1755	False	179
-1756	False	179
-1757	False	179
-1758	False	179
-1759	False	179
-1760	False	179
-1761	False	179
-1762	False	179
-1763	False	179
-1764	False	180
-1765	False	180
-1766	False	180
-1767	False	180
-1768	False	180
-1769	False	181
-1770	False	181
-1771	False	181
-1772	False	181
-1773	False	181
-1774	False	182
-1775	False	182
-1776	False	182
-1777	False	182
-1778	False	183
-1779	False	183
-1780	False	184
-1781	False	184
-1782	False	184
-1783	False	184
-1784	False	185
-1785	False	185
-1786	False	185
-1787	False	185
-1788	False	185
-1789	False	185
-1790	False	185
-1791	False	185
-1792	False	185
-1793	False	185
-1794	False	185
-1795	False	186
-1796	False	186
-1797	False	186
-1798	False	186
-1799	False	186
-1800	False	186
-1801	False	186
-1802	False	187
-1803	False	187
-1804	False	187
-1805	False	187
-1806	False	187
-1807	False	187
-1808	False	187
-1809	False	187
-1810	False	187
-1811	False	187
-1812	False	187
-1813	False	187
-1814	False	187
-1815	False	187
-1816	False	187
-1817	False	187
-1818	False	188
-1819	False	188
-1820	False	188
-1821	False	188
-1822	False	188
-1823	False	188
-1824	False	188
-1825	False	188
-1826	False	188
-1827	False	188
-1828	False	188
-1829	False	189
-1830	False	189
-1831	False	189
-1832	False	189
-1833	False	189
-1834	False	189
-1835	False	189
-1836	False	189
-1837	False	189
-1838	False	189
-1839	False	191
-1840	False	191
-1841	False	191
-1842	False	191
-1843	False	191
-1844	False	191
-1845	False	191
-1846	False	191
-1847	False	191
-1848	False	193
-1849	False	193
-1850	False	193
-1851	False	193
-1852	False	193
-1853	False	194
-1854	False	194
-1855	False	194
-1856	False	194
-1857	False	194
-1858	False	194
-1859	False	194
-1860	False	194
-1861	False	194
-1862	False	196
-1863	False	196
-1864	False	196
-1865	False	196
-1866	False	196
-1867	False	196
-1868	False	196
-1869	False	196
-1870	False	196
-1871	False	197
-1872	False	197
-1873	False	197
-1874	False	197
-1875	False	197
-1876	False	197
-1877	False	197
-1878	False	198
-1879	False	198
-1880	False	198
-1881	False	198
-1882	False	198
-1883	False	198
-1884	False	198
-1885	False	199
-1886	False	199
-1887	False	199
-1888	False	199
-1889	False	199
-1890	False	199
-1891	False	199
-1892	False	199
-1893	False	199
-1894	False	199
-1895	False	200
-1896	False	200
-1897	False	200
-1898	False	200
-1899	False	200
-1900	False	201
-1901	False	201
-1902	False	201
-1903	False	201
-1904	False	201
-1905	False	201
-1906	False	202
-1907	False	202
-1908	False	202
-1909	False	202
-1910	False	202
-1911	False	202
-1912	False	203
-1913	False	203
-1914	False	203
-1915	False	203
-1916	False	203
-1917	False	203
-1918	False	203
-1919	False	203
-1920	False	203
-1921	False	204
-1922	False	204
-1923	False	204
-1924	False	204
-1925	False	204
-1926	False	205
-1927	False	205
-1928	False	205
-1929	False	205
-1930	False	205
+1	STARTER	1
+2	DIVE INTO THE SEA	1
+3	FIND THE OCEAN	1
+4	DESSERT	1
+5	DRINK	1
+6	Limited Time Offers	2
+7	Family Feasts	2
+8	Gluten-Friendly	2
+9	Pancakes	2
+10	Combos	2
+11	French Toast	2
+12	Omelettes	2
+13	Waffles	2
+14	Sides	2
+15	Hand-Crafted Sandwiches	2
+16	Steakburgers & Chicken Sandwiches	2
+17	Apps & Salad	2
+18	Entrées	2
+19	55+ Menu	2
+20	Kids Menu (12 & Under)	2
+21	Beverages	2
+22	Milkshakes	2
+23	Beverages	3
+24	Desserts	3
+25	Epic Beyond Burritos	4
+26	Epic Burritos	4
+27	Fresh Guac	4
+28	Del's Dollar Deals	4
+29	Beyond Meat	4
+30	Hot Sauce & Ketchup	4
+31	Quick Combos	4
+32	Platos	4
+33	Burritos	4
+34	Tacos	4
+35	Quesadillas & Nachos	4
+36	Burgers & Fries	4
+37	2for Items	4
+38	Handcrafted Ensaladas	4
+39	Fresca Bowls	4
+40	Drinks	4
+41	Sides	4
+42	Desserts	4
+43	Limited Time Offers	5
+44	The Fatburger	5
+45	Signature Sandwiches	5
+46	Meals	5
+47	Drinks	5
+48	Hand-Scooped Milkshakes	5
+49	Night And Day Breakfast Burritos	6
+50	Late Night Burrito	6
+51	Specialty Burritos	6
+52	Nocturnal Specials	6
+53	Bundles	7
+54	Ben & Jerry's	7
+55	Breyers	7
+56	Magnum	7
+57	Talenti	7
+58	Good Humor	7
+59	Soup & Salad	8
+60	Appetizers	8
+61	Tandoori - Clay Oven.COME WITH RICE.	8
+62	Chicken. COME WITH RICE.	8
+63	Lamb, COME WITH RICE.	8
+64	Seafood. COME WITH RICE.	8
+65	Vegetables, COME WITH RICE.	8
+66	Rice & Biryani	8
+67	Masala Specials	8
+68	Breads - Naan from Clayoven	8
+69	Condiments	8
+70	Beverages	8
+71	Desserts	8
+72	Value Meals	9
+73	Burgers	9
+74	Snacks & Sweets	9
+75	Sides	9
+76	Tenders	9
+77	Utensils	9
+78	Drinks	9
+79	Kai Ramen #1 Pork Broth	10
+80	Kai Ramen #2 Chicken Broth	10
+81	Kai Ramen #3 Vegan Broth	10
+82	Kai Ramen  #4 Chef Specialty Ramen	10
+83	Special combo & Box	10
+84	Rice Bowl	10
+85	Appetizer	10
+86	Salad	10
+87	Sushi Roll	10
+88	Sashimi	10
+89	Special Rolls	10
+90	Sushi	10
+91	Beverage	10
+92	Dessert	10
+93	Sexual Health	11
+94	Vitamins	11
+95	Mains	12
+96	Photo Menu 18	12
+97	Extras	12
+98	Hand Tossed Thin Crust NY Style Pizza	13
+99	Wings	13
+100	Desserts	13
+101	Ice Cream	13
+102	Drinks	13
+103	White Wine - 25% off	14
+104	Red Wine - 25% off	14
+105	Cider, Sparkling Wine ande Rosè - 25% off	14
+106	Beer - 25% off	14
+107	Appetizers	14
+108	Salad	14
+109	Sandwiches	14
+110	Signature Burgers	14
+111	Pasta	14
+112	Pizza	14
+113	A La Carte	14
+114	Hot From Bossa Nova Grill	14
+115	Bossa Nova - Super Bowls	14
+116	Sides	14
+117	Dessert	14
+118	Drinks	14
+119	Coffee	14
+120	Mains	15
+121	Combos	15
+122	Sides	15
+123	Sauces	15
+124	Desserts	15
+125	Ice Cream	15
+126	Drinks	15
+127	Appetizers	16
+128	Chifa Cuisine	16
+129	Soup	16
+130	House Specials	16
+131	Chicken	16
+132	Beef	16
+133	Pork	16
+134	Seafood	16
+135	Vegetable & Tofu	16
+136	Rice	16
+137	Noodles	16
+138	LA Handmade Dim Sum	16
+139	Dessert	16
+140	Shake	16
+141	Beverages	16
+142	Don't know what to order ?	16
+143	Featured	17
+144	Combos	17
+145	Party Packs	17
+146	Sauce Packets	17
+147	Specialties	17
+148	Tacos	17
+149	Burritos	17
+150	Quesadillas	17
+151	Nachos	17
+152	Value Menu	17
+153	Sweets	17
+154	Sides	17
+155	Drinks	17
+156	Power Menu	17
+157	Vegetarian	17
+158	Today’s  Special	18
+159	Classic Pizza	18
+160	Specialty Pizza	18
+161	Organic Salads	18
+162	Pastas	18
+163	Sandwiches	18
+164	Side Dishes	18
+165	Bagels	18
+166	La Colombe Coffee Roasters	18
+167	Beverages	18
+168	Desserts	18
+169	Pupusas	19
+170	Seafood	19
+171	Tostadas	19
+172	Caldos	19
+173	Drinks	19
+174	Deli Sandwiches	20
+175	X-Treme Melt	20
+176	Croissants	20
+177	Muffin	20
+178	Donuts	20
+179	And More	20
+180	Large Pizza	21
+181	Medium Pizza	21
+182	Wings	21
+183	Appetizers	21
+184	Ice Cream	21
+185	Desserts	21
+186	Drinks	21
+187	Desayunos	22
+188	Burger	22
+189	#1Combinaciones	22
+190	#2Combinaciones	22
+191	#3Combinaciones	22
+192	Bebidas	22
+193	Breakfast	23
+194	Mexican food	23
+195	Burritos	23
+196	Combo	23
+197	Hamburger	23
+198	Hot Dogs	23
+199	Super Special	23
+200	Sandwiches	23
+201	Soups	23
+202	Side Orders	23
+203	Beverages	23
+204	Value Meals	24
+205	Hot Dogs	24
+206	Drinks	24
+207	Utensils	24
+208	Burgers	24
+209	Sides	24
+210	Snacks & Sweets	24
+211	Must Haves	25
+212	Tobacco	25
+213	E Cigs	25
+214	Beverages	25
+215	Cigarettes	25
+216	Chips	25
+217	Candy	25
+218	Gum	25
+219	Medicine	25
+220	Snacks	25
+221	Food	25
+222	Misc	25
+223	Household Items	25
+224	Drinks	25
+225	PHO (Vietnamese Noodle)	26
+226	THAI NOODLE SOUP	26
+227	APPERTIZER	26
+228	SOUP / PORRIDGE	26
+229	STIR FRIED NOODLE	26
+230	OVER RICE	26
+231	FRIED RICE	26
+232	CURRY	26
+233	THAI E-SARN FOOD (BBQ & Yum)	26
+234	A LA CARTE	26
+235	SIDE OF RICE	26
+236	DESSERT	26
+237	DRINK	26
+238	Postmates Favorites	27
+239	Manager Picks (NEW)	27
+240	Rosé & Blush	27
+241	Mixers & Bitters	27
+242	Sake	27
+243	Gum, Mints & Cough Drops	27
+244	Sangria	27
+245	Personal and HBA	27
+246	Misc.	27
+247	Appetizer	28
+248	Soup	28
+249	Bird's Nest Soup	28
+250	Wonton Soup	28
+251	Vegetable & Bean Curd	28
+252	Chicken	28
+253	Squab	28
+254	Shrimps	28
+255	Beef	28
+256	Pork	28
+257	Fish	28
+258	Duck	28
+259	Squid	28
+260	Scallop	28
+261	Clam	28
+262	Abalone	28
+263	Oyster	28
+264	Hot Pot	28
+265	Sizzling Plates	28
+266	Lunch Special	28
+267	Appetizers	29
+268	Ramen	29
+269	Rice	29
+270	Combination	29
+271	Teas	29
+272	Drink	29
+273	Cold Pressed Juices	30
+274	Combos	30
+275	Premium Juices	30
+276	Smoothies	30
+277	Coffee	30
+278	Tonic Shots	30
+279	Wraps	30
+280	Salads	30
+281	Tapas	30
+282	Yogi	30
+283	Superfood Energy Bars	30
+284	Kleanses	30
+285	Bakery	30
+286	Pasta	31
+287	Salads	31
+288	Treats	32
+289	Pizza  $11-(12”6slices) $13 (15”8slices)$15(17”10slices) UNLIMITED TOPPINGS FREE	32
+290	CAKES, CHEESECAKE AND NEW ICE CREAM CAKES $4.99 a slice	32
+291	CANDY CANDY CANDY CHOCOLATE CHOCOLATE CHOCOLATE * Sweets & Treats* NEW CANDY JUST ADDED	32
+292	FAYGO SODA POP, WATER AND OTHER DRINKS	32
+293	Hamemade  ICE CREAM Truffles, Treats, Ice Cream THEY ARE FINALLY BACK, WE HAVE NEW ICE CREAM CAKE CHECK OUT THE CAKE SECTION	32
+294	Hot Fresh Crepes	32
+295	Hot Fresh Homemade Cookies	32
+296	Milk Tea & Boba Drinks NEW UPDATED SECTION	32
+297	Combo	32
+298	Hot Food & Finger Snacks	32
+299	Toppings CHECK OUT CANDY AND SWEET SECTION FOR TONS OF NEW OPTIONS	32
+300	ANYTIME BREAKFAST	32
+301	PASTA PLUS	32
+302	Oscar's Pancakes	33
+303	All Day Breakfast	33
+304	Pizza	34
+305	Wings	34
+306	Appetizers	34
+307	Desserts	34
+308	Ice Cream	34
+309	Drinks	34
+310	Large Pizza	36
+311	Medium Pizza	36
+312	Wings	36
+313	Drinks	36
+314	Desserts	36
+315	Ice Cream	36
+316	New Vegan Options!	37
+317	Burgers	37
+318	Appetizers	39
+319	Salads	39
+320	Pastas	39
+321	Lasana	39
+322	Pizzas	39
+323	Calzones	39
+324	Dressing Side	39
+325	Beverages	39
+326	Desserts	39
+327	Breakfast Burritos	40
+328	Breakfast Plates	40
+329	Burritos	40
+330	Vegetarian Burgers & Fries	40
+331	Vegetarian Favorites	40
+332	Nachos	40
+333	Tacos	40
+334	Combo Plates	40
+335	A la Americana	40
+336	A la Mexicana	40
+337	Beverages	40
+338	Appetizers	41
+339	Soups & Noodle Soup	41
+340	Ramen Noodle Soup	41
+341	Vegetables & Salads	41
+342	Chow Mein & Noodles	41
+343	Rice	41
+344	Teriyaki	41
+345	Hawaiian BBQ Dinner	41
+346	Sushi Roll	41
+347	Chicken	41
+348	Beef	41
+349	Pork	41
+350	Seafood	41
+351	Beverages	41
+352	Desserts	41
+353	Appetizer	42
+354	Ramen, Udon & Soup	42
+355	Salad	42
+356	Fresh Roll	42
+357	No Rice Roll	42
+358	Baked Roll	42
+359	Tempura Roll	42
+360	Classic Roll	42
+361	Sushi	42
+362	Sashimi	42
+363	Sushi & Sashimi Combinations	42
+364	Fried Rice & Bowl	42
+365	Korean Cuisine	42
+366	Sides	42
+367	Beverage	42
+368	Hot Coffees	43
+369	Hot Teas	43
+370	Hot Drinks	43
+371	Frappuccino® Blended Beverages	43
+372	Cold Coffees	43
+373	Iced Teas	43
+374	Cold Drinks	43
+375	Hot Breakfast	43
+376	Bakery	43
+377	Lunch	43
+378	Snacks & Sweets	43
+379	Yogurt & Custard	43
+380	Whole Bean	43
+381	Candy	44
+382	Dairy	44
+383	Frozen Groceries	44
+384	General Merch	44
+385	Health & Beauty	44
+386	Beverages	44
+387	Shelf Stable Groceries	44
+388	Snacks	44
+389	Entrée	45
+390	Sides	45
+391	Sweets and Treats	45
+392	Drinks	45
+393	Utensils	45
+394	Large Pizza	46
+395	Medium Pizza	46
+396	Desserts	46
+397	Ice Cream	46
+398	Drinks	46
+399	Wings	46
+400	NEW! To Shareable Family packs	47
+401	Omelettes	47
+402	Slams	47
+403	Pancakes	47
+404	Authentic French Crepes	47
+405	Breakfast Faves	47
+406	APPETIZERS & SOUPS	47
+407	100% Beef Burgers	47
+408	Salad and Sandwiches	47
+409	Dinner Classics	47
+410	Steak and Seafood	47
+411	SIDES	47
+412	DESSERTS & SHAKES	47
+413	Coffee & Hot Beverages	47
+414	Soft Drinks	47
+415	Juice, Iced Tea, & More	47
+416	Featured Items	48
+417	Breakfast a la Carte	48
+418	Breakfast Combos	48
+419	Burgers a la Carte	48
+420	Burger Combos	48
+421	Chicken a la Carte	48
+422	Chicken Combos	48
+423	Premium Salads	48
+424	Snacks & Sides	48
+425	Jack's Deals	48
+426	Desserts	48
+427	Old-Fashioned Thick Shakes	48
+428	Beverages	48
+429	Jack’s Meal Deals	48
+430	Man I Love Cheesecakes	49
+431	Man I Love Cakes	49
+432	Bagels	49
+433	Man I Love Coffee	49
+434	Tea (Organic "Kilogram Tea")	49
+435	Beverages	49
+436	Bao	50
+437	Bowls	50
+438	Pan-Seared Potstickers	50
+439	Combo	50
+440	Drinks	50
+441	Build Your Own	51
+442	Chips and Dips	51
+443	Sides	51
+444	Drinks	51
+445	Snacks & Sweets	51
+446	Utensils	51
+447	Appetizers	52
+448	Ramen	52
+449	Rice Bowl	52
+450	Desserts	52
+451	Fresh Tea	52
+452	Milk Tea	52
+453	Smoothie	52
+454	Soda	52
+455	$13.00 ANY LARGE NO NEED TO SHARE AT THIS PRICE EVERYONE CAN HAVE THEIR OWN	54
+456	Salads	54
+457	Appetizers	54
+458	Pizza	54
+459	New York Style Gourmet Pizzas	54
+460	FAYGO SODA POP & DRINKS	54
+461	Pasta	54
+462	Gourmet Sandwiches	54
+463	Family Style Meals	54
+464	Desserts	54
+465	Appetizers	55
+466	Salad	55
+467	Fried Rice	55
+468	Noodles	55
+469	Curry	55
+470	Special Menu	55
+471	Side Orders	55
+472	Desserts	55
+473	Drink	55
+474	Farm Fresh Breakfast	56
+475	Award-Winning Burgers	56
+476	Salads & Wraps	56
+477	Sandwiches & More	56
+478	Sides	56
+479	Drinks	56
+480	Kid's Meals	56
+481	Appetizers	57
+482	Ramen	57
+483	Donburi	57
+484	Side	57
+485	Drinks	57
+486	New Vegan Items	58
+487	Soup	58
+488	Appetizers	58
+489	Salads	58
+490	Pastas	58
+491	Entrees	58
+492	Burgers & Sandwiches Served With Fries	58
+493	All Day Breakfast	58
+494	Breakfast Specials	59
+495	Egg Breakfast	59
+496	Incredible Omelettes	59
+497	Appetizers	59
+498	Homemade Soups	59
+499	Mouthwatering Salads	59
+500	Traditional Sandwiches	59
+501	Our Select Sandwiches	59
+502	Fantastic Burgers	59
+503	South of The Border	59
+504	Chicken Coop	59
+505	Delightful Seafood	59
+506	Favorite Entrees	59
+507	A Taste of Italy	59
+508	Diet Dishes	59
+509	Hot Cakes & Waffles	59
+510	Fruit, Juices & Side Orders	59
+511	Beverages	59
+512	Sweet Temptations	59
+513	Bundles	60
+514	Ice Cream	60
+515	Snacks	60
+516	Chicken	61
+517	Create Your Own Pizza	61
+518	Gourmet Pizza	61
+519	Calzones	61
+520	Sides	61
+521	Beverages	61
+522	Desserts	61
+523	Small Plates	62
+524	12" Pizzas Small	62
+525	20" Pizzas Large	62
+526	Pasta	62
+527	Salads	62
+528	Sandwiches	62
+529	Flatbread	62
+530	Dessert	62
+531	Beverages	62
+532	Entrees	62
+533	Fresh Antipasti	62
+534	Zuppa Della Casa	62
+535	Insalata	62
+536	Sides	62
+537	Desserts	62
+538	Sides	63
+539	Drinks	63
+540	Snacks & Sweets	63
+541	Mains	63
+542	Appetizers	64
+543	Spicy Kitchen	64
+544	Salads	64
+545	Regular & Hand Rolls	64
+546	Baked Rolls	64
+547	Fresh Rolls	64
+548	Tempura Rolls	64
+549	Sushi	64
+550	Sashimi	64
+551	Bowls & Bentos	64
+552	Rice & Noodle	64
+553	Rice & Fried Rice	64
+554	Chicken & Seafood Entrees	64
+555	Chef's Choice Cater	64
+556	Beef & Pork Entrees	64
+557	Deep Fried	64
+558	Sauce	64
+559	Extras	64
+560	Beverages	64
+561	Poke	64
+562	Sushi Combinations	64
+563	Asian Kitchen	64
+564	Dairy Free Pints	65
+565	Dairy Free Sandwiches	65
+566	Ice Cream Pints	65
+567	Ice Cream Sandwiches	65
+568	Mini Sammies	65
+569	Taco Tuesday	66
+570	Combo-Entree & Soon Tofu	67
+571	Entree	67
+572	Soon Tofu	67
+573	Appetizer	67
+574	Packaged To Go	67
+575	Extras	67
+576	Drinks	67
+577	Appetizers	68
+578	Soup	68
+579	Rice & Noodle	68
+580	Beef	68
+581	Shrimp	68
+582	Oyster	68
+583	Clam	68
+584	Squid	68
+585	Fish	68
+586	Cook to Order	68
+587	Braised Noodles	68
+588	Rice	68
+589	Bean Curd & Veggies	68
+590	Duck	68
+591	Chicken	68
+592	Pork	68
+593	Originals	69
+594	Combo Plates	69
+595	Soups	69
+596	Favorites	69
+597	Seafood	69
+598	Vegetarian	69
+599	Salads	69
+600	Sides & More	69
+601	Authentic Mexican Breakfast	69
+602	Smaller Portions	69
+603	Kids Menu	69
+604	Desserts	69
+605	Beverages	69
+606	Angel's All Natural Wings	70
+607	Angel's Sandwiches + Salads	70
+608	Original Taste Menu	72
+609	House Specials	72
+610	Dishes with Rice	72
+611	Chow Mein / Fried Rice	72
+612	Noodle Soup	72
+613	Drinks	72
+614	Sopes	73
+615	Tacos	73
+616	Burritos	73
+617	Tortas	73
+618	Tamales	73
+619	Tostadas	73
+620	Nachos	73
+621	Quesadillas	73
+622	Costillas Rancheras	73
+623	Special Orders	73
+624	Beverages	73
+625	*** FEATURED ***	74
+626	Health Crisis Essentials	74
+627	Pizzaoki x Pink Dot	74
+628	Water & Sparkling	74
+629	Energy Drinks	74
+630	Soda	74
+631	Coffee & Cold Brew	74
+632	Protein Bars & Shakes	74
+633	Chips & Dips	74
+634	Ice Cream	74
+635	Glonuts - Healthy mini donuts	74
+636	Chocolate & Cookies	74
+637	Candy & Gummies	74
+638	Snacks & Nuts	74
+639	BTL-SVC Craft Cocktails	74
+640	Juice & Mixers	74
+641	Pharmacy	74
+642	Tea, Coconut Water, Kombucha	74
+643	Beer	74
+644	Sake	74
+645	Gin	74
+646	Rosé	74
+647	Vodka	74
+648	Rum	74
+649	Cognac	74
+650	Tequila & Mezcal	74
+651	Scotch & Whiskey	74
+652	Champagne & Sparkling	74
+653	Red Wine	74
+654	White Wine	74
+655	Donuts	75
+656	Bagels	75
+657	Bakery	75
+658	Spreads	75
+659	Breakfast	75
+660	Cold Sandwiches	75
+661	Wraps	75
+662	Hot Sandwiches	75
+663	Melts	75
+664	Salads	75
+665	Beverages	75
+666	Chips	75
+667	Your Choice of 3 Tacos	76
+668	Ala Carte Tacos	76
+669	Burritos	76
+670	Tortas	76
+671	Tostadas	76
+672	Quesadillas	76
+673	Burgers	76
+674	Hot Dogs, Sandwiches & Menudo	76
+675	Plates	76
+676	Specials	76
+677	Family Special	76
+678	Antojitoas	76
+679	Beverages	76
+680	Sides	76
+681	Doughnuts	77
+682	Beverages	77
+683	Ramen, Udon & Soup	78
+684	Bento Box	78
+685	Appetizer	78
+686	Salad	78
+687	Fried Rice & Bowl	78
+688	Korean Cuisine	78
+689	Sushi (2 pcs)	78
+690	Sashimi (6 or 4 pcs)	78
+691	Sushi Combination	78
+692	Sashimi Combination	78
+693	Regular Roll	78
+694	Fresh Roll	78
+695	No Rice Roll	78
+696	Tempura Roll	78
+697	Baked Roll	78
+698	Beverage	78
+699	Alcohol (Must be 21 to purchase)	78
+700	Sides	78
+701	Soups	79
+702	Salads	79
+703	Tartines	79
+704	Hot Dishes	79
+705	Beverages	79
+706	Bakery	79
+707	Desserts	79
+708	Value Meal	80
+709	Wings	80
+710	Sides	80
+711	Burgers	80
+712	Drinks	80
+713	Tenders	80
+714	Snacks & Sweets	80
+715	Breakfast All Day	80
+716	Utensils	80
+717	Appetizers	81
+718	Panini's	81
+719	Create Your Own Pizza	81
+720	Sides	81
+721	Beverages	81
+722	Desserts	81
+723	Pastas	81
+724	Speciality Pizza	81
+725	wings	81
+726	Hot Grilled Sandwiches	82
+727	Gourmet Salad Sandwiches	82
+728	Gourmet Grilled Chicken Sandwiches	82
+729	Combination Sandwiches	82
+730	Paninis	82
+731	Hot Heros	82
+732	Grilled Burger Special	82
+733	Bagels Breakfast Special	82
+734	Egg Sandwiches Breakfast Special	82
+735	Egg Platter Breakfast Special	82
+736	Omelette Breakfast Special	82
+737	Low Fat Omelette Breakfast Special	82
+738	Fried Chicken	82
+739	Pancakes and French Toast Breakfast Special	82
+740	Chips and Snacks	82
+741	Sides	82
+742	Dairy and Fresh Fruit	82
+743	Freshly Extracted Juice & Smoothies	82
+744	Beverages	82
+745	Brunch Appetizers	84
+746	Brunch	84
+747	Brunch/Lunch & Dinner Salad	84
+748	Brunch Burgers	84
+749	Brunch Sweet Stuff	84
+750	Brunch Sides	84
+751	Lunch & Dinner Appetizers	84
+752	Lunch & Dinner Sliders	84
+753	Lunch & Dinner Burgers	84
+754	Lunch & Dinner Mains	84
+755	Lunch & Dinner Sandwiches	84
+756	Lunch & Dinner Sides	84
+757	Coffee & Dessert	84
+758	Ice Cream	85
+759	Warm Cookie Ice Cream Sandwich	85
+760	Cookies	85
+761	Cones & Waffle Cones	85
+762	Ice Cream To Share	85
+763	Classic Sundaes - 2.5 oz	85
+764	Premium Sundaes - 2.5 oz	85
+765	Frozen Beverages	85
+766	Ice Cream Cakes & Desserts	85
+767	Bottled Water	85
+768	Breakfast	86
+769	Salad Sandwiches	86
+770	Cheese Sandwiches	86
+771	Market Sandwiches	86
+772	Gourmet Sandwiches	86
+773	Panini Sandwiches	86
+774	Market Burgers	86
+775	Space Market Wraps	86
+776	From the Grill	86
+777	Small Chips	86
+778	Snacks	86
+779	Bazzini Nuts	86
+780	Fruits & Vegetables	86
+781	Bars	86
+782	Haribo Jelly	86
+783	Side Orders	86
+784	Coffee & Tea	86
+785	Honest Organic Tea	86
+786	Starbucks Coffee	86
+787	Gt Kombucha	86
+788	Water	86
+789	Soda	86
+790	Energy Drink	86
+791	Naked Juice	86
+792	Coconut Drink	86
+793	Vitamin Water	86
+794	Snapple	86
+795	Tropicana Juice	86
+796	Pastry	86
+797	Green Salads	87
+798	Andy's Fresh Salad	87
+799	Health Salad	87
+800	Breakfast Egg Sandwiches	87
+801	Andy's Sandwiches	87
+802	Andy's 6 oz. Burgers	87
+803	Paninis	87
+804	Andy's Triple Deckers	87
+805	Andy's Famous Combo Hero	87
+806	Omelette Platter	87
+807	Andy's Wraps	87
+808	Grilled Cheese	87
+809	Boneless Chicken Breast Dishes	87
+810	Italian Specialties	87
+811	Andy's Mexican Specialties	87
+812	Entrees	87
+813	Sides	87
+814	Beverages	87
+815	Fresh Bakery	87
+816	Desserts	87
+817	Korean Appetizers	88
+818	Breakfast Sandwiches	88
+819	Korean Soups	88
+820	Create Your Own Salad	88
+821	Eggs & Omelettes	88
+822	Smoothies	88
+823	Bagels, Muffins &  Danishes	88
+824	De Novo's Sandwiches	88
+825	Panini	88
+826	Pancakes & French Toast	88
+827	Cereal	88
+828	Wrap	88
+829	Burger	88
+830	Korean Stir Fry &  Rice	88
+831	Noodles	88
+832	Teriyaki	88
+833	Calzones	88
+834	Pizza By The Slice	88
+835	Pizza Pies	88
+836	Steak	88
+837	De Novo Specialty Pizza	88
+838	Classic Sandwiches & Cold Cuts	88
+839	Side Orders	88
+840	Juices	88
+841	Beverages	88
+842	Italian Heros	90
+843	Soups	91
+844	Salads	91
+845	Bakery	91
+846	Tartines	91
+847	Hot Dishes	91
+848	Beverages	91
+849	Desserts	91
+850	Drinks	92
+851	Bagel & Roll	92
+852	Omelet with Home Fries & Toast	92
+853	Eggcellent Morning	92
+854	Salads	92
+855	Create Your Own Salad	92
+856	Stir Fry	92
+857	Signature Sandwiches	92
+858	Cold Sandwiches	92
+859	Vegetarian Sandwiches	92
+860	Grilled Chicken Sandwiches	92
+861	Merci Burger	92
+862	Breaded Chicken Cutlet	92
+863	Create Your Own Sandwich	92
+864	Panini	92
+865	Create Your Own Pasta	92
+866	Snacks	92
+867	Breakfast Omelettes	93
+868	Create Your Own Breakfast Omelette	93
+869	Breakfast Sandwiches & Platters	93
+870	Square Deli Salads	93
+871	Create Your Own Salad	93
+872	Square Deli Sandwiches	93
+873	Create Your Own Sandwich	93
+874	Square Deli Paninis	93
+875	Burgers	93
+876	Philly Steaks	93
+877	Square Deli Grilled Wraps	93
+878	10" Personal Thin Crust Pizza	93
+879	Quesadillas	93
+880	Square Deli Hot Pasta	93
+881	Create Your Own Hot Pasta	93
+882	Sliced Meats & Cheeses by The Pound	93
+883	Bakery	93
+884	Fresh Sliced Fruits in Cup	93
+885	Acai Bowls	93
+886	Cold Beverages	93
+887	Coffee Espresso Bar	93
+888	Fresh Fruits Smoothies	93
+889	Fresh Vegetables & Fruits Smoothies	93
+890	Protein & Meal Replacement Smoothies	93
+891	Acai Smoothies	93
+892	Premium Ice Cream & Milk Shakes	93
+893	Create Your Own Yogurt Parfait	93
+894	Sweet Ice Cream Desserts	93
+895	Eggs & Omelettes	94
+896	Specialty Omelettes	94
+897	Appetizers	94
+898	Soup	94
+899	Salads	94
+900	Salad Platters	94
+901	Sandwiches	94
+902	Hot Open Sandwiches	94
+903	Burgers	94
+904	Wraps	94
+905	Triple Deckers	94
+906	Diet Delights	94
+907	Griddle	94
+908	Greek Specialties	94
+909	Italian Specialties	94
+910	Steak & Chops	94
+911	Chicken	94
+912	Seafood	94
+913	Entrees	94
+914	Toast & Muffins	94
+915	Cereal	94
+916	Snacks	94
+917	Sides	94
+918	Juices & Fruits	94
+919	Beverages	94
+920	Desserts	94
+921	Breakfast Starter	96
+922	Breakfast Bagels	96
+923	Breakfast Wraps	96
+924	French Toast Bar	96
+925	Pancake Bar	96
+926	Sides	96
+927	Desserts	96
+928	Beverages	96
+929	Pu-Erh Tea	97
+930	Tea Gift Set	97
+931	Tea Snack	97
+932	White Tea	97
+933	Food	98
+934	Wings	98
+935	Specials	98
+936	Drinks	98
+937	Appetizers	101
+938	Soups	101
+939	Salad Platters	101
+940	Club Sandwiches	101
+941	Hero Sandwiches	101
+942	Specialty Sandwiches	101
+943	Hot Sandwiches	101
+944	Hot & Cold Sandwiches	101
+945	Wrap Sandwich	101
+946	Burger Wraps	101
+947	Burgers Corner	101
+948	Pasta	101
+949	Breakfast Eggs & Omelettes	101
+950	Breakfast Fresh Fruit	101
+951	Breakfast Wraps	101
+952	Breakfast Cereals	101
+953	Breakfast Muffins & Rolls	101
+954	Breakfast Jumbo Bagels & Pastries	101
+955	Paninis	101
+956	Diet Delight	101
+957	Entrees	101
+958	Potatomania	101
+959	Seafood	101
+960	Chicken & Fish Entree	101
+961	Broiled Steak & Chops	101
+962	Side Dishes	101
+963	Hector's Iced Beverage	101
+964	Beverages	101
+965	Ice Cream	101
+966	Desserts	101
+967	Pizza by the Slice	102
+968	Pizza Pies	102
+969	Italian Specialties	102
+970	Beverages	102
+971	Bucket Meal	103
+972	Combos	103
+973	Big Box Meals	103
+974	Signature Sandwiches	103
+975	Fill Ups	103
+976	Sides	103
+977	A La Carte	103
+978	Dessert	103
+979	Beverage	103
+980	Condiments	103
+981	Dipping Sauces	103
+982	All Day Breakfast	104
+983	Signature Sandwiches	104
+984	Oven-Hot Sandwiches	104
+985	Cafe Sandwiches	104
+986	Wraps	104
+987	Select 2 & Save	104
+988	Espresso - Double Shot	104
+989	Espresso & Specialty Drinks	104
+990	Coffee, Tea Bar & Soda	105
+991	Smoothies & Juice Bar	105
+992	Breakfast Sandwiches & Wraps	105
+993	Breakfast Sandwiches & Wraps Special	105
+994	Breakfast French Toast & Pancakes	105
+995	Breakfast Omelettes	105
+996	Bagels, Muffins, Pastries & Desserts	105
+997	Breakfast Parfaits, Yogurts, Oatmeal & More	105
+998	Homemade Soup	105
+999	Create Your Own Salad	105
+1000	Sandwiches	105
+1001	Signature Sandwiches	105
+1002	Hot Combination Sandwiches	105
+1003	Wraps	105
+1004	Pressed Panini	105
+1005	Taqueria	105
+1006	Natural Burgers	105
+1007	Teriyaki	105
+1008	Sushi Rolls & Combo Rolls	105
+1009	Udon & Soba	105
+1010	Snacks	105
+1011	Energy Bars	105
+1012	Candy	105
+1013	Gum	105
+1014	Chips & Pretzels	105
+1015	Cereal Boxes	105
+1016	Healthy Natural Nuts in Container	105
+1017	Fruits	105
+1018	Sides Orders	105
+1019	Ice Cream	105
+1020	Desserts	105
+1021	Omelette Bar	106
+1022	Famous Breakfast Burritos	106
+1023	For the Sweet Tooth	106
+1024	Bagel Bar	106
+1025	Sexy Sides	106
+1026	Beverages	106
+1027	Desserts	106
+1028	Fruits and Juices	107
+1029	Eggs and Omelettes	107
+1030	Combination Omelettes	107
+1031	Breakfast Sandwiches	107
+1032	Pancakes	107
+1033	French Toast	107
+1034	Belgian Waffles	107
+1035	Breakfast Specialties	107
+1036	Odds and Ends	107
+1037	Breakfast Sides	107
+1038	Appetizers & Finger Foods	107
+1039	Cold Salad Platters	107
+1040	Tasty Sandwiches - Meat Sandwiches	107
+1041	Tasty Sandwiches - Fish Sandwich	107
+1042	Tasty Sandwiches - Cheese Sandwich	107
+1043	Club Sandwiches	107
+1044	Grilled Chicken Breast Sandwiches	107
+1045	Hot Open Sandwiches	107
+1046	Unbeatable Burgers	107
+1047	Wraps	107
+1048	Entrees and Roast	107
+1049	Steaks and Chops	107
+1050	Seafood	107
+1051	Saute Specials	107
+1052	Italian Specialties	107
+1053	Pasta Favorites	107
+1054	Specials	107
+1055	Pirogies	107
+1056	Blintzes	107
+1057	Sides	107
+1058	Desserts	107
+1059	Waffle Desserts	107
+1060	From the Fountain	107
+1061	Beverages	107
+1062	Starters	109
+1063	Bacon Lovers	109
+1064	Bacon Grilled Cheese	109
+1065	Sides	109
+1066	Drinks	109
+1067	Desserts	109
+1068	Snacks	110
+1069	Classic Cold Cub Sandwiches	110
+1070	Combination Sandwiches	110
+1071	Queen Burger Special	110
+1072	From Our Grill	110
+1073	Dessert	110
+1074	Deep Dish	111
+1075	Thin Crust	111
+1076	Build Your Own Pie	111
+1077	Sandwiches	111
+1078	Starter	111
+1079	Salads	111
+1080	Beverages	112
+1081	Coffee & Tea	112
+1082	Essen Sushi	112
+1083	Noodle Bar	112
+1084	Essen Rice Bowls	112
+1085	Essen Soon Doo Bu	112
+1086	Smoothie Bar	112
+1087	Fresh Juice Bar	112
+1088	Rice & Salad Platters	113
+1089	Burritos, Quesadilla & Tacos	113
+1090	Mixed Chicken	113
+1091	Fresh Whiting Fish	113
+1092	Chicken Wings	113
+1093	Chicken Tenders	113
+1094	Chicken Nuggets	113
+1095	Chicken by the Piece	113
+1096	Shrimp Lovers	113
+1097	Combos	113
+1098	Crown Tasty Combos	113
+1099	Chicken Boxes	113
+1100	Mixed Chicken Only	113
+1101	Family Packs	113
+1102	Hot Heroes & Pastas	113
+1103	Wings	113
+1104	Milk Shakes	113
+1105	Hot Drinks	113
+1106	Side Orders	113
+1107	Desserts	113
+1108	Daily Soup	114
+1109	Salad	114
+1110	Club Sandwiches	114
+1111	Classic Sandwiches	114
+1112	Cold Cut Sandwiches	114
+1113	From the Grill Sandwich	114
+1114	Paninis	114
+1115	Omelette Platter	114
+1116	Eggs on Roll	114
+1117	Asian Food	114
+1118	Beverages	114
+1119	Bagel	114
+1120	Dessert	114
+1121	Fries	116
+1122	Home Fries	116
+1123	Onion Rings	116
+1124	Sweet Potato Fries	116
+1125	Baked Potato	116
+1126	Small Bites	116
+1127	Chicken Wings	116
+1128	Sides	116
+1129	Beverages	116
+1130	The Sweet Stuff	116
+1131	Stuffed Hippie Rolls	117
+1132	Stromboli	117
+1133	Calzones	117
+1134	New York Style Classic Pizza Pies	117
+1135	Square Pies	117
+1136	Stage Door's Specialty Pizza Pies	117
+1137	Beverages	117
+1138	Desserts	117
+1139	Starters	118
+1140	The Panini's	118
+1141	Beverages	118
+1142	Desserts	118
+1143	Extra Value Meals®	119
+1144	Salads	119
+1145	Individual Items	119
+1146	Fries & Sides	119
+1147	Happy Meal®	119
+1148	Sweets & Treats	119
+1149	McCafé®	119
+1150	Beverages	119
+1151	Refreshing Beverage	120
+1152	Freshly Squeezed Juice Bar	120
+1153	Suggestion Smoothies	120
+1154	Breakfast Express	120
+1155	Breakfast from The Griddle	120
+1156	Suggested Omelets	120
+1157	Create Your Own Omelet	120
+1158	Deli Cold Cut & Cheese Sandwiches	120
+1159	Gourmet Sandwiches	120
+1160	Gourmet Wraps	120
+1161	Hot Sandwiches from the Griddle	120
+1162	Hot Sandwiches from the Griddle Deluxe Platter	120
+1163	Side Orders	120
+1164	International Philly Steak	120
+1165	Panini	120
+1166	Hot & Melts	120
+1167	Personal Brick Oven Pizza 10''	120
+1168	Classic Steamed Table Sandwiches	120
+1169	Tex Mex Cuisine	120
+1170	House Salad Platter	120
+1171	Custom Chopped Salad	120
+1172	Sushi Sashimi & Rolls	120
+1173	Breakfast	121
+1174	Breakfast - From the Grill - Platter	121
+1175	Low Cholesterol Breakfast - Sandwich	121
+1176	Low Cholesterol Breakfast - Platter	121
+1177	Hot Sandwiches	121
+1178	Deli Sandwiches	121
+1179	Breakfast - From the Grill - Sandwich	121
+1180	Gourmet Sandwiches	121
+1181	Cheese Sandwiches	121
+1182	Hot From the Grill	121
+1183	Hot Wraps	121
+1184	Panini Special	121
+1185	Soups of the Day	121
+1186	Create Your Own Salad	121
+1187	Soup	123
+1188	Chef Designed Salad	123
+1189	Create Your Own Salad	123
+1190	Yogurt Parfait & Fruit Salad	123
+1191	From The Griddle	123
+1192	Egg Sandwiches	123
+1193	Burgers	123
+1194	Quesadillas	123
+1195	NY Deli Style Classics	123
+1196	Wraps	123
+1197	Philly Steaks	123
+1198	Omelettes	123
+1199	Panini Grilled Heros	123
+1200	Burritos	123
+1201	Quinoa Bowls	123
+1202	Pasta Suggestions	123
+1203	Sides	123
+1204	Hot Coffee Bar	123
+1205	Cold Coffee Bar	123
+1206	Smoothies	123
+1207	Blended Iced Drinks	123
+1208	Beverages	123
+1209	Bakery	123
+1210	Dessert	123
+1211	New Products	124
+1212	Specials	124
+1213	Halal Food	124
+1214	All Kinds of Drinks	124
+1215	Beverages	124
+1216	Milk	124
+1217	Juice Bar & Smoothies	124
+1218	Coffee Bar	124
+1219	Fresh Muffins & Danishes	124
+1220	Bagels & Croissants	124
+1221	Breakfast Platter	124
+1222	Breakfast Sandwiches	124
+1223	Tossed Salad	124
+1224	Salad Per Pound	124
+1225	Salad Sandwiches	124
+1226	Wraps	124
+1227	Paninis	124
+1228	Cold Cut & Hot Sandwiches	124
+1229	Cold Cuts by the Pound	124
+1230	Burgers & Steak	124
+1231	Food U Desire Sandwiches	124
+1232	Tompkins Specials Sandwiches	124
+1233	All Types of Grocery	124
+1234	All Kinds of Chips	124
+1235	Sides	124
+1236	All Kinds of Candy & Energy Bars	124
+1237	Ice Cream	124
+1238	Fresh Fruit	124
+1239	Cookies & Desserts	124
+1240	Convenience Store	124
+1241	Cereals	124
+1242	Dr. Snack	124
+1243	Over the Counter Medicine	124
+1244	Breakfast	126
+1245	Breakfast - After 11 AM	126
+1246	Breakfast Omelettes	126
+1247	Breakfast Burritos	126
+1248	Breakfast Entrees	126
+1249	Breakfast Sides	126
+1250	Soup	126
+1251	Amazing Salads	126
+1252	Create Your Own Salad	126
+1253	Gourmet Salad Sandwiches	126
+1254	NY Fresh Signature steak Sandwiches	126
+1255	Hot Sandwiches	126
+1256	Cold Sandwiches	126
+1257	Burgers	126
+1258	Healthy Omelettes	126
+1259	Create Your Own Omelette	126
+1260	Paninis & Wraps	126
+1261	Bagels	126
+1262	Hot Foods	126
+1263	Quesadillas	126
+1264	Halal Food & Gyros	126
+1265	Side Orders	126
+1266	Fresh Squeezed Juices	126
+1267	Smoothies	126
+1268	Beverages	126
+1269	Bakery	126
+1270	Soda	126
+1271	Good Morning Breakfast	127
+1272	Fresh Salad - Made Daily	127
+1273	Canned Soup	127
+1274	JN Sandwich Specials	127
+1275	Sandwiches	127
+1276	Cheese Sandwiches	127
+1277	Paninis	127
+1278	Pasta	127
+1279	Condiments	127
+1280	JN Packaged Nuts	127
+1281	Dressing	127
+1282	Snacks	127
+1283	Chips	127
+1284	Fruit	127
+1285	Fresh Daily Cut Fruits	127
+1286	Greek Yogurt	127
+1287	Ice Cream	127
+1288	Cereal	127
+1289	Tea Box	127
+1290	Beverages	127
+1291	Breakfast Sandwiches	128
+1292	Salad Sandwiches	128
+1293	Cheese Sandwiches	128
+1294	Deli Sandwiches	128
+1295	Sandwiches	128
+1296	Combination Sandwiches	128
+1297	Panini	128
+1298	Wraps	128
+1299	Flame Burgers	128
+1300	Bowls	128
+1301	Side Orders	128
+1302	Beverages	128
+1303	Natural Juices	128
+1304	Smoothies	128
+1305	Bagels	128
+1306	Salads	128
+1307	Cold Cuts by The Lb	128
+1308	Cookies	128
+1309	Chips	128
+1310	Cereal	128
+1311	Muffins & Danishes	128
+1312	Protein Bars	128
+1313	Create Your Own Salad	128
+1314	Candy & Gum	128
+1315	Necessities	128
+1316	Breakfast Platters	128
+1317	Sexual Health	129
+1318	Vitamins	129
+1319	Egg Sandwiches - Eggs	131
+1320	Eggs and Omelettes - Eggs	131
+1321	Griddle Specialties	131
+1322	Breakfast Side	131
+1323	Bagels	131
+1324	Bakery	131
+1325	Soups	131
+1326	Salads	131
+1327	Sandwiches	131
+1328	Wraps	131
+1329	Panini	131
+1330	Benvenuto 8oz Burgers	131
+1331	Side Orders	131
+1332	Hot Entrees	131
+1333	Pasta	131
+1334	South of the Border	131
+1335	Hot Beverages	131
+1336	Cold Beverages	131
+1337	Juices	131
+1338	Smoothies	131
+1339	Fruits & Desserts	131
+1340	Bundles	132
+1341	Ben & Jerry's	132
+1342	Breyers	132
+1343	Magnum	132
+1344	Talenti	132
+1345	Good Humor	132
+1346	South of the Border Appetizers	133
+1347	Speciality Soup	133
+1348	Create Your Own Salad	133
+1349	Daily Soups	133
+1350	Specialty Salads	133
+1351	All Day Egg Sandwiches	133
+1352	Fresh Pasta	133
+1353	All Day Pancakes & French Toast	133
+1354	All Day Eggs & Omelettes	133
+1355	All Day Breakfast Side Orders	133
+1356	Bagel	133
+1357	Low Fat Treats	133
+1358	Sandwiches from the Grill	133
+1359	Paninis & Wraps	133
+1360	Benvenuto Burgers	133
+1361	New Items	133
+1362	Hot Entrees	133
+1363	Seafood Entrees	133
+1364	Daily Specials	133
+1365	Side Orders	133
+1366	Hot Beverages	133
+1367	Cold Beverages	133
+1368	Special Juice & Smoothies	133
+1369	Dessert	133
+1370	Breakfast	134
+1371	Healthy Breakfast Wraps	134
+1372	Traditional Sandwiches Lunch Special	134
+1373	Specialty Sandwiches Lunch Special	134
+1374	Omelettes	134
+1375	Platters and Omelets	134
+1376	Healthy Soups	134
+1377	Sandwiches	134
+1378	Chicken Sandwich	134
+1379	Old Sandwiches	134
+1380	Old Sandwich-Per Pound	134
+1381	Deli Sandwiches	134
+1382	Burgers	134
+1383	Gourmet Wraps	134
+1384	Wraps	134
+1385	Quesadillas and Burritos	134
+1386	Paninis	134
+1387	Philly Steaks	134
+1388	Deli Meat-Per Pound	134
+1389	Middle Eastern Favorites	134
+1390	Side Order	134
+1391	Snacks and Chip's	134
+1392	Drink	134
+1393	Drinks	134
+1394	Refreshing Fruit Smoothies	134
+1395	Grab & Go Special Roll	135
+1396	Vegetarian Friendly Regular Rolls	135
+1397	Vegetarian Friend Inside Out Rolls	135
+1398	Vegetarian Friendly Naruto Roll	135
+1399	Cooked & Raw Regular Roll	135
+1400	Cooked & Raw Inside Out Roll	135
+1401	Cooked & Raw Roll	135
+1402	Nigiri & Roll Combo	135
+1403	Nigiri Naruto	135
+1404	Nigiri Sashimi	135
+1405	Beverages	135
+1406	Breakfast Sandwiches	136
+1407	Breakfast Specials	136
+1408	Soups	136
+1409	Salads	136
+1410	Salad Sandwiches	136
+1411	Specialty Sandwiches	136
+1412	Vegetarian Sandwiches	136
+1413	Wraps	136
+1414	Paninis	136
+1415	Burgers	136
+1416	Griddle Specialties	136
+1417	Hot Entrees	136
+1418	Smoothies	136
+1419	Eggs & Omelettes	136
+1420	Pizza	136
+1421	Pizza by the Slice	136
+1422	Appetizers & Side Orders	136
+1423	Croissants	136
+1424	Jumbo Bagels	136
+1425	Calzones, Strombolis & Rolls	136
+1426	Italian Subs	136
+1427	Quesadillas	136
+1428	Beverages	136
+1429	Desserts	136
+1430	Salads	137
+1431	Salad By The Lb	137
+1432	Salad Sandwiches	137
+1433	NY Best Philly Style Sandwich	137
+1434	Grilled Cheese Sandwiches	137
+1435	Heavenly Classic Combination Sandwiches	137
+1436	Wrap Sandwiches	137
+1437	Deli Sandwiches	137
+1438	Our Famous 1/2 Lb Burgers	137
+1439	Hot Grilled Chicken Heroes	137
+1440	Gourmet Famous Triple Deckers	137
+1441	Panini	137
+1442	Deli Cold Cuts By The Lb	137
+1443	Deli Cold Cut Cheese By The Lb	137
+1444	Omelette with Home Fries	137
+1445	Breakfast Special	137
+1446	Pancakes & French Toast	137
+1447	Organic Smoothies	137
+1448	Hot Drinks	137
+1449	Iced Coffee & Tea	137
+1450	Natural Juices	137
+1451	Soup & Appetizers	139
+1452	Sandwiches	139
+1453	Tandoori Specialty	139
+1454	Breakfast	139
+1455	Lunch Special	139
+1456	Drinks	139
+1457	Sweet Specials	139
+1458	All Day Breakfast	142
+1459	Appetizers	142
+1460	Salads	142
+1461	Burgers	142
+1462	Sandwiches	142
+1463	Entrees	142
+1464	Sides	142
+1465	Beverage	142
+1466	Espresso Drinks	143
+1467	Iced Drinks	143
+1468	Hot Drinks	143
+1469	Frozen Drinks	143
+1470	Sandwiches & Wraps	143
+1471	Donuts & Bagels	143
+1472	Bakery & Snacks	143
+1473	Bottled Drinks	143
+1474	Brew at Home	143
+1475	Sexual Health	144
+1476	Vitamins	144
+1477	Breakfast Menu - 6 Inch	145
+1478	Breakfast Menu - Footlong	145
+1479	Main Menu - 6 Inch	145
+1480	Main Menu - Footlong	145
+1481	Signature Wraps	145
+1482	Chopped Salads	145
+1483	Pizza	145
+1484	Subway Fresh Fit for Kids®	145
+1485	Chips	145
+1486	Cookies	145
+1487	Other Sides	145
+1488	Bottled Beverages	145
+1489	Eggs & Omelette	146
+1490	Pancakes, Waffles & French Toast	146
+1491	Bakery	146
+1492	Yogurt & Cereal	146
+1493	Fruit & Juice	146
+1494	Small Plates & Starters	146
+1495	Quesadillas	146
+1496	Burgers	146
+1497	Salads	146
+1498	Signataure Sandwiches	146
+1499	Pasta	146
+1500	Entrees	146
+1501	Steaks	146
+1502	Sides	146
+1503	Desserts	146
+1504	Beverages	146
+1505	Smooth Remedies	146
+1506	Espresso	146
+1507	Appetizers	148
+1508	Home Made Soups	148
+1509	Canned Goods & Canned Soups	148
+1510	Fresh Tossed Salad Bar	148
+1511	Fruit Salads Bowls	148
+1512	Salad by the Lb	148
+1513	Breakfast Sandwich	148
+1514	Breakfast Wrap	148
+1515	Breakfast Platter	148
+1516	Griddle Originals	148
+1517	Combination Sandwiches	148
+1518	Classic Deli Sandwiches	148
+1519	Avocado Sandwiches	148
+1520	Burgers	148
+1521	Salad Sandwiches	148
+1522	Panini	148
+1523	Philly Steak	148
+1524	Wraps	148
+1525	Quesadilla	148
+1526	Bagels	148
+1527	Fresh Natural Juice	148
+1528	Acai & Protein Smoothie	148
+1529	Smoothies	148
+1530	Dairy Products, Yogurt & Cheese	148
+1531	Cold Beverages	148
+1532	Pastries & Desserts	148
+1533	Cheese & Meats by the Lb	148
+1534	Nutritional Healty Protein & Organic Bars	148
+1535	Cookies & Crackers	148
+1536	Chips, Popcorn & Pretzel	148
+1537	Cereal, Granola & Oatmeal	148
+1538	Ice Cream	148
+1539	Coffee Bar	148
+1540	Coffee, Tea, K-Cup & Cocoa	148
+1541	Jams, Spreads & Condiments	148
+1542	Chocolate Bar & Import Chocolate	148
+1543	Condiments & Sauce	148
+1544	Oil, Vinegar & Salad Dressing	148
+1545	Pasta, Tomato Sauce & Tomato Products	148
+1546	Nuts & Died Fruit	148
+1547	Hummus, Salsa & Spreads	148
+1548	Healthy Snacks & Beef Jerky	148
+1549	Fruits & Vegetables	148
+1550	Paper Products & Household Items	148
+1551	Pharmacy	148
+1552	Pet Food & Pet Care	148
+1553	Paper Products & Toilet Paper	148
+1554	Ice	148
+1555	beer	148
+1556	Appetizers	150
+1557	Soups	150
+1558	Salads	150
+1559	Specialty Salads	150
+1560	Cold Salad Platters	150
+1561	Hot Open Sandwiches	150
+1562	Tasty Sandwiches	150
+1563	Specialty Sandwiches	150
+1564	Sandwiches Deli Style	150
+1565	Burgers & Grilled Chicken	150
+1566	Pasta	150
+1567	Heros	150
+1568	It's a Wrap	150
+1569	Paninis	150
+1570	Triple Deckers	150
+1571	Diet Delights	150
+1572	Entrees	150
+1573	Specialty Entrees	150
+1574	Saute Specialties	150
+1575	Cereals	150
+1576	Frittatas	150
+1577	Greek Specials	150
+1578	Toaster Treats	150
+1579	Side Orders	150
+1580	Smoothies & Healthy Shakes	150
+1581	Coffee Shop Special Desserts	150
+1582	Fountain Delights	150
+1583	Juices & Fruits	150
+1584	Beverages	150
+1585	Let's Get Started	152
+1586	Let's Get Our Greens	152
+1587	Let's Get Grubbin	152
+1588	Let's Get A Drink	152
+1589	Just Greens-Salad	153
+1590	Celebrity Vegan Burgers	153
+1591	Vegan Munchies	153
+1592	Sides	153
+1593	Drinks	153
+1594	Side Orders & Appetizers	154
+1595	Gourmet Burgers	154
+1596	Beverages	154
+1597	Desserts	154
+1598	Salads	155
+1599	Hot Dogs	155
+1600	Burritos	155
+1601	Tacos	155
+1602	Specials	155
+1603	Sides	155
+1604	Healthy snacks	155
+1605	Appetizer	156
+1606	Soup	156
+1607	Vegetarian	156
+1608	Rice & Noodles	156
+1609	Chef’s Specials	156
+1610	Entrees	156
+1611	Beverages	156
+1612	Pasta	157
+1613	Pizza Specials	157
+1614	Basic Pizza	157
+1615	Appetizers	157
+1616	Sandwiches	157
+1617	Salads	157
+1618	Calzone	157
+1619	Dessert	157
+1620	Beverages	157
+1621	Tandoori	158
+1622	Vegetarian	158
+1623	Chicken Curries	158
+1624	Lamb Curries	158
+1625	Rice & Biryani	158
+1626	Daily Specials	158
+1627	Breads	158
+1628	Yogurt & Samosas	158
+1629	Desserts	158
+1630	Eat with Your Hands	159
+1631	Fire Up Your Morning	159
+1632	Sides	159
+1633	Drinks	159
+1634	Snacks & Starters	160
+1635	Philly Favorites	160
+1636	Burgers	160
+1637	Drinks & Shakes	160
+1638	Sweets	160
+1639	Candy	161
+1640	Dairy	161
+1641	Frozen Groceries	161
+1642	General Merch	161
+1643	Health & Beauty	161
+1644	Beverages	161
+1645	Shelf Stable Groceries	161
+1646	Snacks	161
+1647	Small Bites	162
+1648	Garden Greens	162
+1649	The Philly's	162
+1650	Sides	162
+1651	Drinks	162
+1652	Desserts	162
+1653	SMACK SNACKS	163
+1654	BURGERS & SANDWICHES	163
+1655	PHILLY CHEESE STEAKS	163
+1656	SWEET SMACKS	163
+1657	DRINKS	163
+1658	Hearty Fare	164
+1659	Steak & Chops	164
+1660	French Toast, Hotcakes & Cereal	164
+1661	Specials	164
+1662	3 Egg Omelettes	164
+1663	Sandwiches	164
+1664	Soups	164
+1665	Salads	164
+1666	Dinners	164
+1667	Diet Plates	164
+1668	Side Orders	164
+1669	Desserts	164
+1670	Beverages	164
+1671	Malts & Shakes	164
+1672	July Special	165
+1673	Impossible	165
+1674	Mains	165
+1675	Small Bites	165
+1676	Soft Drinks	165
+1677	Alcohol (Available until 1:30 AM)	165
+1678	Calzones	168
+1679	Drinks	168
+1680	Appetizers & Side Orders	170
+1681	Salads	170
+1682	Pitas	170
+1683	Burgers	170
+1684	Hot Sandwiches	170
+1685	Shawarma Sandwich	170
+1686	Pasta	170
+1687	Mediterranean Food	170
+1688	Desserts	170
+1689	Ice Cream	170
+1690	Beverages	170
+1691	Breakfast Special	171
+1692	Soup of The Day	171
+1693	Salad & Teriyaki Plates	171
+1694	Cold Sandwiches	171
+1695	Hot Food	171
+1696	Pastries	171
+1697	Beverages	171
+1698	Featured Items	172
+1699	Breakfast a la Carte	172
+1700	Breakfast Combos	172
+1701	Burgers a la Carte	172
+1702	Burger Combos	172
+1703	Chicken a la Carte	172
+1704	Chicken Combos	172
+1705	Premium Salads	172
+1706	Snacks & Sides	172
+1707	Jack's Deals	172
+1708	Desserts	172
+1709	Old-Fashioned Thick Shakes	172
+1710	Beverages	172
+1711	Jack’s Meal Deals	172
+1712	Garden Greens	173
+1713	Pastas	173
+1714	Small Bites	173
+1715	X-Large Pizza by The Slice	173
+1716	Pizza	173
+1717	Sides	173
+1718	Drinks	173
+1719	Desserts	173
+1720	Hot Sandwiches	174
+1721	Cold Sandwiches	174
+1722	Teriyaki	174
+1723	Sides	174
+1724	Pastries	174
+1725	Drinks	174
+1726	Dessert	174
+1727	Fruits - Salads	174
+1728	Cold Drink	174
+1729	Appetizers	175
+1730	Salads	175
+1731	Hot Sandwiches	175
+1732	Pizza	175
+1733	House Specials Classics Pizza	175
+1734	Drinks	175
+1735	Dessert	175
+1736	Out of This World Pizza	176
+1737	Sides	176
+1738	Drinks	176
+1739	SF Starters	177
+1740	SF Salads	177
+1741	New York Style Pizza by Slice	177
+1742	Panini House	177
+1743	Beverages	177
+1744	Desserts	177
+1745	Starters	178
+1746	Fresh-Made Salads	178
+1747	Sam's Shawerma Wraps	178
+1748	Sam's Hot Plates	178
+1749	Beverages	178
+1750	Desserts	178
+1751	Appetizers	179
+1752	Salads	179
+1753	Pizza By The Pie	179
+1754	XLARGE "Pizza By The Slice"	179
+1755	Platters	179
+1756	Shawerma	179
+1757	Panini	179
+1758	Dessert	179
+1759	Ice Cream	179
+1760	Energy Drink	179
+1761	Bottled Water	179
+1762	Carbonated Drink	179
+1763	Chips	179
+1764	Appetizers	180
+1765	Italian Sandwiches	180
+1766	Farmer Market Salad	180
+1767	Desserts	180
+1768	Drinks	180
+1769	Appetizers	181
+1770	Salads	181
+1771	Sandwich	181
+1772	Burgers	181
+1773	Desserts	181
+1774	Appetizers	182
+1775	Classic Pastas	182
+1776	Italian Favorites	182
+1777	Drinks	182
+1778	TEST Appetizers	183
+1779	TEST SALADS	183
+1780	Phat Philly Cheesesteaks	184
+1781	Phat Chicken Cheesesteaks	184
+1782	Phat Sides	184
+1783	Phat Drinks	184
+1784	Krispy Chicken	185
+1785	Krispy Chicken Only	185
+1786	Krispy Tenders	185
+1787	Krispy Tenders Only	185
+1788	Wings	185
+1789	Krispy Chicken Sandwich	185
+1790	Shrimp	185
+1791	Fish	185
+1792	Family Packs	185
+1793	Biscuits	185
+1794	Sides	185
+1795	Gyro Bar	186
+1796	Plates	186
+1797	Appetizers	186
+1798	Sides	186
+1799	Salads	186
+1800	Desserts	186
+1801	Drinks	186
+1802	NEW! To Shareable Family packs	187
+1803	Omelettes	187
+1804	Slams	187
+1805	Pancakes	187
+1806	Authentic French Crepes	187
+1807	Breakfast Faves	187
+1808	APPETIZERS & SOUPS	187
+1809	100% Beef Burgers	187
+1810	Salad and Sandwiches	187
+1811	Dinner Classics	187
+1812	Steak and Seafood	187
+1813	SIDES	187
+1814	DESSERTS & SHAKES	187
+1815	Coffee & Hot Beverages	187
+1816	Soft Drinks	187
+1817	Juice, Iced Tea, & More	187
+1818	Salads	188
+1819	Sandwiches	188
+1820	Pasta	188
+1821	Create Your Own Pizza	188
+1822	Pizza Slices	188
+1823	Specialty Pizzas	188
+1824	Specialty Calzones	188
+1825	Seafood	188
+1826	Side Orders	188
+1827	Beverages	188
+1828	Desserts	188
+1829	Featured Products	189
+1830	All Sandwiches	189
+1831	Signature Wraps	189
+1832	Fresh Fit Choices™	189
+1833	Breakfast	189
+1834	Salads	189
+1835	Fresh Fit for Kids™	189
+1836	Sides	189
+1837	Drinks	189
+1838	$5 and Under	189
+1839	Appetizers	191
+1840	Salads	191
+1841	Pizza	191
+1842	Calzones	191
+1843	House Specialty Pizzas	191
+1844	Burgers & Sandwiches	191
+1845	Pasta	191
+1846	Desserts	191
+1847	Beverages	191
+1848	Zesty Wings Bar	193
+1849	Meal Starters	193
+1850	Salad Bar	193
+1851	Drinks	193
+1852	Desserts	193
+1853	Appetizers	194
+1854	Fresh Salads	194
+1855	Pastas	194
+1856	Sandwiches & Burgers	194
+1857	Volare Pizza Menu	194
+1858	House Special Classics Pizza	194
+1859	Pizzas Recent Specials	194
+1860	Desserts	194
+1861	Beverages	194
+1862	Salads	196
+1863	Sandwiches	196
+1864	Speciality Pizza	196
+1865	Hamburger	196
+1866	Pastas	196
+1867	Speciality Calzones	196
+1868	Side Orders	196
+1869	Beverages	196
+1870	Desserts	196
+1871	Big Daddy's Wings	197
+1872	Big Daddy's Starters	197
+1873	Big Daddy's Pizza Slices	197
+1874	Sides	197
+1875	Ice Cream	197
+1876	Desserts	197
+1877	Beverages	197
+1878	Sandwiches	198
+1879	Chips	198
+1880	Popular Items	198
+1881	Drinks	198
+1882	King Size Candy Bar	198
+1883	Desserts	198
+1884	Cigarattes	198
+1885	Limited Time Offers (LTOs)	199
+1886	Impossible™ Whopper	199
+1887	Burgers	199
+1888	Meals	199
+1889	Chicken	199
+1890	Other Entrees	199
+1891	Beverages	199
+1892	Sides	199
+1893	Desserts	199
+1894	King Jr. Meals	199
+1895	Pardon My Panini	200
+1896	Pardon My Salads	200
+1897	Pardon My Sides	200
+1898	Beverages	200
+1899	Desserts	200
+1900	Appetizers	201
+1901	Salads	201
+1902	Sandwich	201
+1903	Pizza	201
+1904	Pizza Bites	201
+1905	Drinks	201
+1906	Chucks Cheesesteaks Bar	202
+1907	Chucks Sandwiches	202
+1908	Hors D'oevures	202
+1909	Sides	202
+1910	Desserts	202
+1911	Drinks	202
+1912	cheese pizza	203
+1913	Salads	203
+1914	Napoli Specials Pizza	203
+1915	Calzones	203
+1916	A La Carte Pasta	203
+1917	Complete Dinner Pasta	203
+1918	Side Orders	203
+1919	Pizza by slice	203
+1920	soft drinks	203
+1921	Chefs Burgers	204
+1922	Sides	204
+1923	Ice Cream	204
+1924	Beverages	204
+1925	Desserts	204
+1926	Perry's Pizza Slices	205
+1927	Perry's NY Style Pie's	205
+1928	Perry's Appetizers	205
+1929	Beverage Station	205
+1930	Dessert Bar	205
 \.
 
 
@@ -40499,109 +40469,109 @@ COPY public.stores_menucategory_menu (id, menucategory_id, menu_id) FROM stdin;
 
 COPY public.stores_openhour (id, store_id) FROM stdin;
 1	1
-246	41
-515	141
-8	2
 253	42
-522	149
-15	3
-529	152
-22	4
-265	45
-29	5
-536	153
-272	46
-36	6
-543	154
-279	47
-43	7
-286	49
-550	155
-50	8
-293	50
-57	9
-556	156
-64	10
-300	51
-563	157
-71	12
-307	52
-570	158
-78	13
-313	54
-85	14
-577	159
-320	55
-92	15
-583	160
-327	56
-99	16
-589	162
-334	57
-106	17
-596	163
-341	58
-602	165
-348	59
-120	18
-127	21
-355	60
-609	166
-134	24
-362	61
-616	167
-141	25
-368	62
-622	168
-148	26
-375	63
-155	27
-629	169
-382	64
-162	28
-388	65
-169	29
-395	66
-176	30
-399	67
-648	170
-183	31
-406	68
-190	32
-655	172
-197	33
-661	173
-418	69
-204	34
-668	174
-425	70
-211	36
-432	71
-218	37
-675	175
-225	38
-439	72
-682	176
-232	39
-446	73
-689	177
-239	40
-453	74
-696	178
-460	78
-703	179
-466	80
-473	81
-710	180
-480	83
-717	181
-487	97
-724	182
-494	101
-731	183
-501	111
-738	184
 508	125
+8	2
+515	141
+15	3
+265	45
+522	149
+22	4
+272	46
+29	5
+529	152
+279	47
+36	6
+536	153
+286	49
+43	7
+293	50
+543	154
+50	8
+300	51
+57	9
+550	155
+64	10
+307	52
+556	156
+71	12
+313	54
+563	157
+78	13
+320	55
+85	14
+570	158
+327	56
+92	15
+577	159
+334	57
+99	16
+583	160
+341	58
+106	17
+589	162
+348	59
+355	60
+120	18
+596	163
+127	21
+362	61
+602	165
+134	24
+368	62
+609	166
+141	25
+375	63
+616	167
+148	26
+382	64
+155	27
+622	168
+388	65
+162	28
+629	169
+395	66
+169	29
+399	67
+176	30
+406	68
+183	31
+190	32
+648	170
+418	69
+197	33
+655	172
+425	70
+204	34
+661	173
+432	71
+211	36
+439	72
+218	37
+668	174
+225	38
+446	73
+675	175
+232	39
+453	74
+682	176
+239	40
+460	78
+246	41
+689	177
+466	80
+696	178
+473	81
+480	83
+703	179
+487	97
+710	180
+494	101
+717	181
+501	111
+724	182
+731	183
+738	184
 745	186
 752	187
 759	188
@@ -48271,19 +48241,11 @@ COPY public.stores_option (id, name, price, category_id) FROM stdin;
 COPY public.stores_optioncategory (id, name, is_required, option_category_id) FROM stdin;
 1	Wings	t	\N
 2	Spicy Level	f	\N
-14295	Add Hot Oatmeal Extra	f	\N
-6878	Chicken Option for Salad	f	\N
 7	Sauce	t	\N
-6879	Add Extra Sauce	f	\N
 10	Oyster	t	\N
 13	Add Item	f	\N
-6888	Would you like to add extra?	f	\N
-6889	Would you like to add boiled egg?	f	\N
-6890	Add EXtras	f	\N
-6891	Add Rice	f	\N
-6898	Add Tofu	f	\N
-6909	Add Extra Tofu or Ramen Noodles	f	\N
-6941	Add Extra Chicken	f	\N
+3784	Add Pineapple Chunks	f	\N
+3799	Substitute for White Meat	f	\N
 90	Soda	t	\N
 91	TT / TC	t	\N
 93	Ramune	t	\N
@@ -48301,7 +48263,6 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 110	Please Select Your Side Choice (Choose 1)	t	\N
 111	Please Select Your Dipping Sauce (Choose 1)	t	\N
 113	Please Select Your Pancake Toppings (Choose 2):	f	\N
-6966	Add Sauce	f	\N
 117	Please select your bundle (Choose 1)	t	\N
 118	Bacon option for Steakburgers/Chicken Sandwiches (Choose 1)	t	\N
 119	Cheese option for Steakburgers/Chicken Sandwiches (Optional)	f	\N
@@ -48312,30 +48273,33 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 130	Customize your Crepe Toppings:  (Optional)	f	\N
 131	Choose Your Pancake Flavor:  (Choose 1)	t	\N
 135	Crepe Choice:  (Choose 1)	t	\N
+3868	Choose Shell	t	\N
 139	Customize your Pancake Topping:  (Optional)	f	\N
 140	Customize your Pancake Topping - (Optional)	f	\N
 141	Customize Your Crepe Toppings: (Optional)	f	\N
 143	Customize your Steak:  (Optional)	f	\N
-14299	Choose Bagel Preparation	t	\N
-14302	Add Bagel Toppings	f	\N
+3877	Add Boba	f	\N
+3880	Choose Noodle Protein	t	\N
+3882	Choose Spicy Level	t	\N
+12513	Choose Tea Flavor	t	\N
+12515	Choose Soft Drink Flavor	t	\N
 152	Choose your steak temperature:	t	\N
 153	Customize your Sirloin Steak Tips: (Optional)	f	\N
-3703	Add Drink	f	\N
-3709	Choose Taco Style	t	\N
+12522	Choose Tropicana Flavor	t	\N
 162	Choose your Pancakes:  (Choose 1)	t	\N
-14312	Substitute Bread	f	\N
-3714	Choose Combo	f	\N
-3716	Add Chili	f	\N
+12527	Choose Yogurt Flavor	t	\N
+12529	Choose Milk Size	t	\N
+3901	Add Extra Egg	f	\N
 172	Toast Choice:	t	\N
 173	Select your Dipping Sauce:	t	\N
 174	Customize your Scramble: (Optional)	f	\N
 176	Choice of Side:	t	\N
 177	Select your French Toast Choice:	t	\N
+3907	Choose Roll	t	\N
 181	Customize your Toppings:	f	\N
 182	Choose your Flavor:	t	\N
 183	Select your Omelette Egg Choice:	t	\N
 184	Customize your Omelette (Optional)	f	\N
-3734	Choose Chips or Fries	t	\N
 199	Choose your Cheese	t	\N
 200	Choose your add-ins	f	\N
 201	Additions?	f	\N
@@ -48348,25 +48312,43 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 228	Choose a Protein	t	\N
 238	Customize your Sandwich:  (Optional)	f	\N
 240	Choose a Protein: (Choose 1)	t	\N
-14365	Choose Panini or Wrap	t	\N
+3954	Add Extra Unagi	f	\N
 243	Choose Your Protein	t	\N
 244	Customize Your Salad	f	\N
 246	Add gravy to your Buttermilk Crispy Chicken?	t	\N
 247	Choose your 1st dinner side:	t	\N
 248	Choose your 2nd dinner side:	t	\N
 249	Add Side Salad or 2 Buttermilk Pancakes?	f	\N
-14369	Add Filling	f	\N
+3958	Add Extra Side	f	\N
+3959	a. Choose Size	t	\N
+3960	b. Add Creamer	f	\N
 255	Customize your Steak Tips? (Optional)	f	\N
+3961	d. Leave Room	f	\N
+3962	e. Add Sweetener	f	\N
+3963	g. Add Espresso	f	\N
+3964	h. Choose Shot Options	f	\N
 260	Customize your Roasted Turkey Breast? (Optional)	f	\N
+3965	i. Add Long Shot	f	\N
+3966	j. Add Ristretto Shot	f	\N
+3967	K. Add Syrups & Sauces	f	\N
+3968	l. Add Tea	f	\N
 265	Customize your BLT	f	\N
-3784	Add Pineapple Chunks	f	\N
-3799	Substitute for White Meat	f	\N
+3969	m. Add Cold Foam	f	\N
+3970	o. Add Drizzle	f	\N
+3971	p. Add Powder	f	\N
+3972	q. Add Toppings	f	\N
+3973	r. Add Whipped Cream	f	\N
+3976	c. Add Powder	f	\N
 266	Choose your Side	t	\N
 268	Choose you 2nd dinner side:	t	\N
 277	Customize Your Egg Choice	t	\N
 278	Customize Meat Choice	t	\N
+4006	h. Add Shots	f	\N
 282	Customize your Sandwich	f	\N
+4013	s. Customize Foam	f	\N
+4014	t. Substitute Milk	f	\N
 291	Add Cheese ? (Optional)	f	\N
+4015	u. Choose Milk Temp	f	\N
 293	Customize Your Jr. Cheeseburger	f	\N
 296	Diet Pepsi	t	\N
 297	Mountain Dew	t	\N
@@ -48380,8 +48362,12 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 305	Choose Flavor	t	\N
 306	Choose Size	t	\N
 307	Customize	f	\N
+12617	Choose Smoothie Sttyle	f	\N
 309	Uncheck to Add Bacon	f	\N
 310	Choose Meal Size	t	\N
+12620	Choose Regular Tea Flavor	t	\N
+12621	Choose Chocolate Size	t	\N
+12625	Add Extra Bagels & Croissants	f	\N
 324	Choose Size (Handcrafted Guac)	t	\N
 325	Choose Size (Chips & Handcrafted Guac)	t	\N
 326	Choose Chicken Roller	t	\N
@@ -48391,72 +48377,45 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 332	Soft or Crunchy?	t	\N
 333	Grilled Chicken or Carne Asada?	t	\N
 337	Crunchy or Soft?	t	\N
-3868	Choose Shell	t	\N
 352	Choose Bean & Cheese Burrito	t	\N
 353	Choose Grilled Chicken Taco:	t	\N
 354	Choose Snacker:	t	\N
 355	Choose Side:	t	\N
 356	Choose Beverage:	t	\N
-3877	Add Boba	f	\N
 367	Choose 1st Taco:	t	\N
 368	Choose 2nd Taco:	t	\N
-3880	Choose Noodle Protein	t	\N
-3882	Choose Spicy Level	t	\N
 372	Chicken Verde Wet Burrito	t	\N
 373	Carne Asada Wet Burrito	t	\N
-14472	Choose First Protein	t	\N
-14473	Choose Second Protein	t	\N
-14483	Add Extra Shot Espresso	f	\N
 387	Del Beef Burrito Meal	t	\N
 388	Spicy Grilled Chicken Burrito Meal	t	\N
 391	Beer Battered Fish Tacos	t	\N
-3901	Add Extra Egg	f	\N
 401	Choose Size:	t	\N
-3907	Choose Roll	t	\N
 404	Choose Cheese	t	\N
+4090	e. Customize Water	f	\N
 418	Choose 1st Item	t	\N
 419	Choose 2nd Item	t	\N
+12692	Choose Platter Side	t	\N
 430	Choose Drink Flavor	t	\N
+12710	Choose Omelette Style	t	\N
 445	Choose Bun	t	\N
-3954	Add Extra Unagi	f	\N
 447	Choose Style	t	\N
 448	Add Extra	f	\N
 449	Add Toppings	f	\N
 450	Cut In Half?	f	\N
-3958	Add Extra Side	f	\N
-3959	a. Choose Size	t	\N
-3960	b. Add Creamer	f	\N
-3961	d. Leave Room	f	\N
-3962	e. Add Sweetener	f	\N
-3963	g. Add Espresso	f	\N
-3964	h. Choose Shot Options	f	\N
-3965	i. Add Long Shot	f	\N
-3966	j. Add Ristretto Shot	f	\N
-3967	K. Add Syrups & Sauces	f	\N
-3968	l. Add Tea	f	\N
-3969	m. Add Cold Foam	f	\N
-3970	o. Add Drizzle	f	\N
-3971	p. Add Powder	f	\N
-3972	q. Add Toppings	f	\N
-3973	r. Add Whipped Cream	f	\N
 472	Remove Toppings	f	\N
-3976	c. Add Powder	f	\N
-14549	Add Extra Juice	f	\N
+12738	Greek Omelette Sandwich	t	\N
+12744	Add Salad Ingredients	f	\N
+12747	Make it with Wrap or Hero	f	\N
+12748	Add Extra Salad Sandwich	f	\N
 486	Choose Drink	t	\N
 487	Choose Fry	t	\N
-14566	Add Smoothie Extra	f	\N
-4006	h. Add Shots	f	\N
-4013	s. Customize Foam	f	\N
-4014	t. Substitute Milk	f	\N
-4015	u. Choose Milk Temp	f	\N
-14580	Choose Smoothie Base	t	\N
-14586	Choose Cookies	t	\N
+4174	K. Add Additional Syrups & Sauces	f	\N
+12782	Make it Style	f	\N
 547	Customize Toppings	f	\N
 553	Sides	f	\N
 554	Beverage	f	\N
 555	Dessert	f	\N
 556	Choose Burrito Sauce	t	\N
-14617	Add Egg Whites	f	\N
 595	Substitute Coconut Milk	f	\N
 596	Choose Preparation	t	\N
 605	Choose Rice	t	\N
@@ -48479,7 +48438,7 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 625	Complete your meal	f	\N
 626	Bun Upgrade Option	f	\N
 628	Choice of Cheese	t	\N
-4090	e. Customize Water	f	\N
+12845	Add Extras Sandwich	f	\N
 648	Salad Protein Options	f	\N
 649	Salad Dressing Options	f	\N
 651	Dipping Sauce Options (Select up to 1)	f	\N
@@ -48488,15 +48447,41 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 659	Add Extra Broth	f	\N
 660	Substitute Noodles	f	\N
 661	Choose Spicy level	f	\N
+12871	Choose Special Sandwich Bread	t	\N
+12872	Add Extras Special Sandwich	f	\N
+4308	o. Remove Drizzle	f	\N
+12891	Choose Tea Bags Size	t	\N
+12892	Choose Cafe Bustelo Size	t	\N
+12893	Choose Toilet Paper Style	t	\N
+12894	Choose Fruit Snacks Flavor	t	\N
+12895	Choose Listerine Mouthwash Size	t	\N
+12896	Choose Listerine Mouthwash Flavor	t	\N
+12897	Choose Skippy Peanut Butter Style	t	\N
+12898	Choose Mayonnaise Size	t	\N
+12900	Choose Deodorant Style	t	\N
+12901	Choose Vaseline Lotion Style	t	\N
+12902	Choose Salsa Style	t	\N
+12903	Choose Clorox Bleach Size	t	\N
+12904	Choose Plastic Cutlery Style	t	\N
+12905	Choose Light Bulb Style	t	\N
+12906	Choose Gillette Shave Gel Size	t	\N
+12907	Choose Head & Shoulders Style	t	\N
+12908	Choose Duracell Batteries Size	t	\N
+12909	Choose Sabra Hummus Flavor	t	\N
+12910	Choose Noodles Style	t	\N
+12911	Choose Cat Food Flavor	t	\N
 714	Add Miso Soup	f	\N
 717	Choose Meat	t	\N
 722	Choose Kai Gook Soo Preparation	t	\N
 724	Choose Canned Soda Flavor	t	\N
 725	Add Straw	t	\N
 726	Toppings	f	\N
-4174	K. Add Additional Syrups & Sauces	f	\N
 732	Size	t	\N
 733	Choose Dipping Sauce (Copy)	f	\N
+12912	Choose Cat Food - 9 Lives Flavor	t	\N
+12913	Choose Cat Food - Friskies Flavor	t	\N
+12914	Choose Domino Sugar Size	t	\N
+12915	Choose Emergen-C Flavor	t	\N
 739	Choose Meat Preparation	t	\N
 740	How many?	t	\N
 741	Choose Sauce	f	\N
@@ -48504,22 +48489,58 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 743	Add Small Soup	f	\N
 744	Choose Dressing	t	\N
 745	Choose Topping	f	\N
+12916	Choose 5-Hour Energy Flavor	t	\N
+12917	Choose Detergent Style	t	\N
+12918	Choose Cottage Cheese Style	t	\N
+12919	Choose Lipton Coffee Size	t	\N
+12920	Choose Lipton Tea Flavor	t	\N
+12921	Choose Lipton Tea Size	t	\N
+12922	Choose Haribo Flavor	t	\N
+12923	Choose Bounty White Size	t	\N
+12924	Choose Bag	t	\N
 756	Customize Your Dish	f	\N
+12926	Choose Dip Salsa Flavor	t	\N
+12927	Choose Cat Food - Fancy Feast Style	t	\N
+12928	Choose Easy Off Style	t	\N
+12929	Choose Toothbrush Style	t	\N
+12930	Choose Bazzini Style	t	\N
+12933	Choose Puffs Size	t	\N
+12945	Choose Pringles Size	t	\N
+12946	Choose Pringles Flavor	t	\N
+12962	Choose Gum Flavor	t	\N
 794	Add Chicken	f	\N
+12964	Choose Candy	t	\N
+12966	Choose Ice Cream Size	t	\N
+4406	K. Add Additional Syrups & Sauce	f	\N
+12971	Choose Cookie Flavor	t	\N
+12972	Choose Brownie Flavor	t	\N
+12975	Choose Cookie Size	t	\N
 809	Add Side	f	\N
 810	Choose Bread	t	\N
-14838	Which rice would you like?	t	\N
+12976	Choose Condom Style	t	\N
+12977	Choose Tampax Style	t	\N
+12984	Choose Cereal Size	t	\N
+12985	Choose Cereal Flavor	t	\N
+12989	Choose Halls Flavor	t	\N
+12990	Choose Ricola Flavor	t	\N
+12991	Choose Green & Blacks Organic Bar Flavor	t	\N
+12992	Choose Medicine	t	\N
+12995	Make It Platter	f	\N
+4436	g. Add Flavor Syrup	f	\N
+4441	s. Add Extra Tea Bags	f	\N
 854	Add Soup & Salad	f	\N
 855	Choose Pasta	t	\N
 856	Add Basil & Tomatoes	f	\N
 869	Add Chicken Breast	f	\N
+13029	Choose Meat Temperature	t	\N
+4470	p. Add Extra Liquid Cane Sugar	f	\N
 885	Add Gourmet Toppings	f	\N
 889	Choose Vegetables	t	\N
 890	Choose First Side	t	\N
 891	Choose Second Side	t	\N
 893	Choose 3 sides	f	\N
 894	Add Salad & Soup	f	\N
-4308	o. Remove Drizzle	f	\N
+13033	Choose Substitution for Sandwich Bread	f	\N
 903	Add Mushrooms	f	\N
 906	Add A La Mode	f	\N
 909	Sugar, Sweetner or Creamer?	f	\N
@@ -48527,47 +48548,71 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 923	Optional - Make Mine Mild	f	\N
 925	Optional - Extra Dipping Sauce	f	\N
 927	Choose Extra Dipping Sauce	f	\N
-14904	Make It with	t	\N
 936	Thirsty ? Dehydrated ? You need to drink !	f	\N
 937	More Sauce ??	f	\N
 938	Need to eat with Rice or Noodle ?	f	\N
+4515	n. Add Extra Matcha Scoops	f	\N
 945	How many pieces would you like?	t	\N
-14939	Choose Burger	t	\N
+4532	t. Change Lemonade	f	\N
+13097	Add Omelette Side	f	\N
+13103	Choose Pancake Size	t	\N
 979	Meat	t	\N
 980	Not Enough ?! You need an appetizer !	f	\N
+13104	Add Pancake Toppings	f	\N
+13105	Choose French Toast Size	t	\N
+13106	Add French Toast Toppings	f	\N
 984	Meat Three monster	t	\N
 992	What soup size would you like?	t	\N
-14967	Choose Fruits	f	\N
-4406	K. Add Additional Syrups & Sauce	f	\N
-4436	g. Add Flavor Syrup	f	\N
-4441	s. Add Extra Tea Bags	f	\N
-4470	p. Add Extra Liquid Cane Sugar	f	\N
+13118	Choose Salad First Vegetable	t	\N
+13119	Choose Salad Second Vegetable	t	\N
+13120	Choose Salad Third Vegetable	t	\N
+13121	Make It Chopped	f	\N
+13122	Add Extra Salad Protein	f	\N
+13123	Add Extra Salad Vegetables	f	\N
+13128	Choose Salad First Protein	t	\N
+13129	Choose Salad Second Protein	t	\N
+13133	Choose Salad Fourth Vegetable	t	\N
+13139	Make it With	t	\N
 1058	Which protein would you like?	t	\N
-4515	n. Add Extra Matcha Scoops	f	\N
-4532	t. Change Lemonade	f	\N
-1142	Add Beef	f	\N
-1207	Add Pork	f	\N
-1218	Add BBQ Pork	f	\N
+13197	Add Burger Extra	f	\N
 4663	B. Choose Ice Level	f	\N
 4665	d. Blend Options	f	\N
 4666	e. Add Extra Shots	f	\N
+13216	Choose Burger Cheese	t	\N
+13229	Choose Omelette First Vegetable	t	\N
+13230	Choose Omelette Second Vegetable	t	\N
+13231	Choose Omelette Third Vegetable	t	\N
+13232	Choose Omelette Protein	t	\N
+13233	Add Extra Omelette Vegetables	f	\N
+13237	Make it with all Egg Whites	f	\N
+13241	Add Lox Spread	f	\N
+13266	Add Espresso Shot	f	\N
+13269	Choose Espresso Size	t	\N
+1142	Add Beef	f	\N
+13291	Which bagel would you like?	t	\N
+13294	Which dressing would you like?	t	\N
+13295	Would you like to add boiled egg peeled?	f	\N
+13309	How would you like your dish?	t	\N
+13310	Which wrap would you like?	t	\N
+13311	Which would you like to add?	f	\N
+13328	How would you like your sandwich?	t	\N
+13343	Which bread would you like?	t	\N
+13349	How would you like your sandwich roll or platter?	t	\N
+1207	Add Pork	f	\N
+13358	Which extra would you like to add?	f	\N
+1218	Add BBQ Pork	f	\N
 1242	Add Shrimp	f	\N
-15345	Chose Size	t	\N
-15386	Choose Omelettes	t	\N
-15391	Choose Caffeine	t	\N
-15393	Add Flavor Swirl	f	\N
-15394	Sweetener Option	t	\N
-15395	Americano Size	t	\N
-15397	Add Milk	f	\N
-15404	Add Flavor Shot	f	\N
+13411	Would you like to make it crunch time or smoothy?	t	\N
+13412	Which size would you like?	t	\N
+13416	Which fruit would you like?	t	\N
+13417	How would you like your yogurt fage?	t	\N
+13424	Which kashi would you like?	t	\N
+13452	Make It a Wrap	f	\N
+4963	c. Add Sriracha	f	\N
+4966	e. Customize Juice	f	\N
 1341	What size would you like?	t	\N
-15418	Choose Sweetener	t	\N
-15457	Choose Blend	t	\N
-15490	Hot Chocolate Choice	t	\N
-15501	Frozen Coffee Dairy Choice	t	\N
-15504	Frozen Coffee Flavor Shot	f	\N
-15506	Coolatta Flavor	t	\N
-15527	Choose Eggs	t	\N
+4968	g. Add Extra Fruit Add-Ins	f	\N
+4982	u. Add Tea	f	\N
 1436	Which soda would you like?	t	\N
 1437	What tea size would you like?	t	\N
 1438	Which smoothie flavor would you like?	t	\N
@@ -48593,6 +48638,7 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 1461	Lettuce - Would you like to change this?	f	\N
 1466	Group 1: Choose your 6 items	t	\N
 1467	Group 2: Choose your 6 items	t	\N
+13595	Add Bowls Extra	f	\N
 1478	Group 1 of 3: Choose your 3 items	t	\N
 1479	Group 2 of 3: Choose your 3 items	t	\N
 1480	Group 3 of 3: Choose your 4 items	t	\N
@@ -48609,87 +48655,64 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 1499	Item 3:  Soft Taco	t	\N
 1500	Item 4:  Soft Taco	t	\N
 1502	Item 2:  Burrito Supreme® - Seasoned Beef	t	\N
-15573	Choose 1st Donut	t	\N
 1505	Item 2:  Crunchwrap Supreme®	t	\N
-15574	Choose 2nd Donut	t	\N
-15575	Choose 3rd Donut	t	\N
 1508	Item 2:  Nachos BellGrande®	t	\N
-15576	Choose 4th Donut	t	\N
-15577	Choose 5th Donut	t	\N
 1511	Item 2:  Chalupa Supreme - Chicken	t	\N
 1512	Item 3:  Chalupa Supreme - Chicken	t	\N
-15578	Choose 6th Donut	t	\N
-15579	Choose 7th Donut	t	\N
 1515	Item 2:  Chicken Quesadilla	t	\N
-15580	Choose 8th Donut	t	\N
-15581	Choose 9th Donut	t	\N
 1518	Item 2:  Mexican Pizza	t	\N
-15582	Choose 10th Donut	t	\N
-15583	Choose 11th Donut	t	\N
-15584	Choose Donut 12	t	\N
-15592	Munchkins® Count	t	\N
-4963	c. Add Sriracha	f	\N
-15593	Munchkins® Flavors	t	\N
-15594	Choose 1st Bagel	t	\N
-4966	e. Customize Juice	f	\N
-15595	Choose Prep	t	\N
-4968	g. Add Extra Fruit Add-Ins	f	\N
-15598	Choose 2nd Bagel	t	\N
-15599	Choose 3rd Bagel	t	\N
-15600	Choose 4th Bagel	t	\N
-15601	Choose 5th Bagel	t	\N
-15602	Choose 6th Bagel	t	\N
-15609	Choose 7th Bagel	t	\N
-15610	Choose 8th Bagel	t	\N
-15611	Choose 9th Bagel	t	\N
-15612	Choose 10th Bagel	t	\N
-15613	Choose 11th Bagel	t	\N
-15614	Choose 12th Bagel	t	\N
-4982	u. Add Tea	f	\N
+13653	Choose Chip Flavor	t	\N
 1542	Tomatoes - Would you like to change this?	f	\N
 1545	Choose an item:	t	\N
-15626	B.Choose Blend	t	\N
 1550	Spicy Ranch - Would you like to change this?	f	\N
-15629	Choose Bread Style	t	\N
+13672	Choose Donut Flavor	t	\N
+13673	Choose Green	t	\N
 1555	Beans - Would you like to change this?	f	\N
 1556	Mexican Pizza Sauce - Would you like to change this?	f	\N
-15632	Choose Sauces	f	\N
-15633	Choose Seasonings	f	\N
-15635	Choose Veggies	f	\N
-15636	Extras	f	\N
+13678	Add Extra Salad Toppings	f	\N
+13683	Choose Candy Flavor	t	\N
+13686	Choose Chocolate Flavor	t	\N
+13692	Which bread would you prefer?	t	\N
+13694	Which extras would you like?	f	\N
+13698	How would you like your eggs to be cooked?	t	\N
+13700	Would you like a side salad?	t	\N
+13701	Would you like fruit?	t	\N
+13702	Which breakfast meat would you prefer?	f	\N
 1614	Steak - Would you like to change this?	f	\N
 1615	Avocado Ranch Sauce - Would you like to change this?	f	\N
 1621	Shredded Chicken - Would you like to change this?	f	\N
+13744	Would you like 2 eggs?	t	\N
 1637	Fritos® - Would you like to change this?	f	\N
+13759	How would you like your bagel?	t	\N
+13760	Which bagel would you prefer?	t	\N
+13764	Which flavor would you prefer?	t	\N
 1644	Onions - Would you like to change this?	f	\N
 1645	Red Sauce - Would you like to change this?	f	\N
+5285	h. Add Sweetener	f	\N
+13771	Which croissant would you like?	t	\N
+13772	Which type of danish would you prefer?	t	\N
 1656	Creamy Jalapeño Sauce - Would you like to change this?	f	\N
+13777	Which dressing style would you like?	t	\N
+13779	Which salad greens would you like?	t	\N
+5295	Customize Milk	f	\N
+13782	Which toppings would you like to add?	f	\N
+13784	Would you like your salad chopped?	f	\N
 1669	Potatoes - Would you like to change this?	f	\N
 1680	Guacamole - Would you like to change this?	f	\N
 1687	Chicken - Would you like to change this?	f	\N
-15890	Choose Sub to become Wrap	t	\N
+13805	Would you like air fries?	t	\N
+5355	s. Add Extras	f	\N
+13859	How would you like your panini?	t	\N
+13861	Which fillings would you like?	t	\N
+13862	Which panini bread would you prefer?	t	\N
+13868	Which add ons would you like to add?	f	\N
+5424	a. Sandwich Options	f	\N
 1777	Black Beans - Would you like to change this?	f	\N
 1784	Choose Drink Size	t	\N
-5285	h. Add Sweetener	f	\N
-1799	Would you like to add creamer and/or sweeteners?	f	\N
-1808	Pico De Gallo - Would you like to change this?	f	\N
-5295	Customize Milk	f	\N
-1857	1st pizza toppings	f	\N
-1858	2nd pizza toppings	f	\N
-1859	Side Dishes specials	f	\N
-1860	Beverages	f	\N
-1862	Choose Crust	t	\N
-1863	Substitute Red Sauce	f	\N
-1866	Market	f	\N
-1867	Cheese	f	\N
-1868	Choose Herbs & Seasoning	f	\N
-1869	Add Dressing	f	\N
-5355	s. Add Extras	f	\N
-5424	a. Sandwich Options	f	\N
-1944	Substitute Sauce	f	\N
 5441	a. Choose Spread	f	\N
 5442	c. Choose Warming	f	\N
-16109	Choose Wrap Flavor	t	\N
+1799	Would you like to add creamer and/or sweeteners?	f	\N
+1808	Pico De Gallo - Would you like to change this?	f	\N
 5462	Choose	f	\N
 5478	Egg Choice Required	t	\N
 5479	Choose your hash browns (required)	t	\N
@@ -48701,7 +48724,12 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 5485	Choose Your Side Required	t	\N
 5486	Add Additional Side (optional)	f	\N
 5487	Add Dessert Optional	f	\N
+13935	How would you like your potatoes?	t	\N
+13936	How would you like your veggies?	t	\N
 5492	Chicken Tender Family Pack Sides	f	\N
+13937	Would you like cup of soup?	t	\N
+13938	Would you like side house salad?	t	\N
+13939	Which type of fajita would you like?	t	\N
 5496	choose Your Side	t	\N
 5500	(8) Bacon	t	\N
 5501	(8) Sausage	t	\N
@@ -48709,24 +48737,24 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 5504	Choose Your Toast (Required)	t	\N
 5506	Half Slams	t	\N
 5507	Choose Your Egg Required	t	\N
-2018	Choose how you want your dressing	t	\N
 5508	pancake	t	\N
-2021	Add Salad Toppings	f	\N
+1857	1st pizza toppings	f	\N
+1858	2nd pizza toppings	f	\N
+1859	Side Dishes specials	f	\N
+1860	Beverages	f	\N
+1862	Choose Crust	t	\N
+1863	Substitute Red Sauce	f	\N
 5511	Choose Your Hash Browns (required)	t	\N
 5512	Choose Your Side (required)	t	\N
+1866	Market	f	\N
+1867	Cheese	f	\N
+1868	Choose Herbs & Seasoning	f	\N
+1869	Add Dressing	f	\N
 5516	Pack Slam Links	t	\N
 5517	Pack Slam Bacon	t	\N
 5519	2 Cheeseburgers	t	\N
-2042	Choose base	t	\N
-2043	Choose veggies	f	\N
-2044	Choose more ingredients	f	\N
-2045	Choose protein	f	\N
-2046	Choose cheese	f	\N
-2047	Choose dressing	f	\N
 5523	Pack Slam Pancakes	t	\N
-2049	Choose herbs and seasoning	t	\N
 5527	Half Tender Bundle	t	\N
-2054	Add Bread	f	\N
 5529	(8) Chicken Tender	t	\N
 5530	2oz BBQ	t	\N
 5531	2 oz Honey Mustard	t	\N
@@ -48741,6 +48769,7 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 5545	Breakfast Beverage Add-on Optional	f	\N
 5546	Philly Cheesesteak Omelette Egg Choice (Required)	t	\N
 5551	Wild West Omelette Egg Choice (Required)	t	\N
+13948	Which entree side you would like?	t	\N
 5554	Premium Toppings	f	\N
 5556	Ultimate Omelette Egg Choice (Required)	t	\N
 5561	Choose Your Pancakes (Required)	t	\N
@@ -48748,25 +48777,91 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 5563	Choose your bacon & sausage (Required)	t	\N
 5570	Choose Your 4 Items	f	\N
 5571	Slam It Up?	f	\N
-2106	Choice of Bread	t	\N
-2109	Add Cheese	f	\N
+13971	Which pasta would you prefer?	t	\N
 5583	Choose your bacon or sausage (Required)	t	\N
 5584	Add additional meat (optional)	f	\N
-2122	Customize Drink	f	\N
-2127	Shots	f	\N
 5600	Choose How Many Crepes	t	\N
-2134	Tea Flavor	t	\N
-2136	Add-ons. Market	f	\N
-2137	Add-ons. Dairy	f	\N
-2138	Add-ons. Sauces	f	\N
+1944	Substitute Sauce	f	\N
 5605	Premium Toppings (optional)	f	\N
+13993	Which pasta sauce would you like?	t	\N
+13995	Which quesadilla would you like?	t	\N
+13996	Which tortilla chips would you like?	t	\N
 5612	How would you like your steak cooked?	t	\N
 5613	Steak Toppings	f	\N
 5614	Choose your eggs	t	\N
+13998	Which coffee style would you like	t	\N
+13999	Which sweetner type would you like?	t	\N
 5622	Add toast or tortillas (optional)	f	\N
 5625	Choose your dipping sauce	t	\N
 5626	Choose Your Boneless Wings	t	\N
 5627	Choose Your Dipping Sauce	t	\N
+5628	Pick three items or Pick four items	t	\N
+5631	Sub Beyond Burger Patty Optional	f	\N
+5632	Choose your egg (Required)	t	\N
+5634	Choose one side	t	\N
+5635	Lunch/Dinner Beverage Add-on Optional	f	\N
+14010	Which milk would you like?	t	\N
+14012	Would you like to add extra shot espresso?	t	\N
+5641	Pick your patty	t	\N
+5642	Add an extra patty	f	\N
+5643	Choose your bun	t	\N
+5646	Add your toppings	f	\N
+5647	Add Premium Toppings (optional)	f	\N
+5650	Choose your cheese Required	t	\N
+5658	Choose your Burger (Required)	t	\N
+2018	Choose how you want your dressing	t	\N
+2021	Add Salad Toppings	f	\N
+2042	Choose base	t	\N
+2043	Choose veggies	f	\N
+2044	Choose more ingredients	f	\N
+2045	Choose protein	f	\N
+2046	Choose cheese	f	\N
+2047	Choose dressing	f	\N
+2049	Choose herbs and seasoning	t	\N
+5666	Add Protein Choice	f	\N
+2054	Add Bread	f	\N
+5667	Choose your dressing (Required)	t	\N
+5670	Choose your Flavor (Required)	t	\N
+5677	Philly Cheese Melt Choice	t	\N
+5683	Additional Toppings (optional bacon)	f	\N
+14045	Which tea would you like?	t	\N
+14046	Would you like to add lemon?	f	\N
+5689	Choose your sauce (Required)	t	\N
+5690	Choose two sides (Required)	f	\N
+5693	Additional Toppings	f	\N
+5697	Add 2 Eggs (optional)	f	\N
+5713	Stack of Pancakes choice	t	\N
+5714	Customize your pancakes (optional)	f	\N
+5715	Hash Browns	t	\N
+5716	Egg	t	\N
+5717	Choose Toast	t	\N
+2106	Choice of Bread	t	\N
+5718	Sausage	t	\N
+5719	Extra Sauces and Dressings	t	\N
+2109	Add Cheese	f	\N
+5720	Customize Garden Salad	t	\N
+5721	Bacon	t	\N
+5722	Choose Your Crepe	t	\N
+5723	English Muffins choices	t	\N
+5724	Pick Your Milk Shake Flavor	t	\N
+5725	* Choose Size	t	\N
+5728	Choose Ice Level	f	\N
+5729	Customize Your Item	f	\N
+5730	Extra Add-Ons	f	\N
+5731	Extra Sauce	f	\N
+2122	Customize Drink	f	\N
+2127	Shots	f	\N
+14079	Which snapple would you like?	t	\N
+2134	Tea Flavor	t	\N
+2136	Add-ons. Market	f	\N
+2137	Add-ons. Dairy	f	\N
+2138	Add-ons. Sauces	f	\N
+14082	Which water would you like?	t	\N
+14083	Which soda flavor would  you like?	t	\N
+14085	Which tropicana would you like?	t	\N
+14094	Which base would you like?	t	\N
+14095	Would you like to add banana?	t	\N
+14097	Would you like to add extras ?	f	\N
 2166	Add Egg	f	\N
 2167	Choose Pupusa	t	\N
 2168	Choose Protein	t	\N
@@ -48777,69 +48872,52 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 2199	Egg style	t	\N
 2202	Avocado	f	\N
 2203	Toast	t	\N
-5628	Pick three items or Pick four items	t	\N
-5631	Sub Beyond Burger Patty Optional	f	\N
-5632	Choose your egg (Required)	t	\N
-5634	Choose one side	t	\N
-5635	Lunch/Dinner Beverage Add-on Optional	f	\N
+14115	Which ice cream flavor would you like?	t	\N
+14120	Add Melted Cheese	f	\N
 2221	Extra Patty	f	\N
-5641	Pick your patty	t	\N
 2226	Salsa	t	\N
-5642	Add an extra patty	f	\N
-5643	Choose your bun	t	\N
-5646	Add your toppings	f	\N
-5647	Add Premium Toppings (optional)	f	\N
-5650	Choose your cheese Required	t	\N
-5658	Choose your Burger (Required)	t	\N
-5666	Add Protein Choice	f	\N
-5667	Choose your dressing (Required)	t	\N
+14126	Add Large Shrimp	f	\N
 2255	Sour Cream	f	\N
-5670	Choose your Flavor (Required)	t	\N
-5677	Philly Cheese Melt Choice	t	\N
-5683	Additional Toppings (optional bacon)	f	\N
-5689	Choose your sauce (Required)	t	\N
-5690	Choose two sides (Required)	f	\N
-5693	Additional Toppings	f	\N
-16306	Which potato would you like?	t	\N
-16307	Would you like to add breakfast add ons?	f	\N
-5697	Add 2 Eggs (optional)	f	\N
-16309	Would you like to add extra eggs?	f	\N
-16321	Would you like to add egg whites?	f	\N
-5713	Stack of Pancakes choice	t	\N
-5714	Customize your pancakes (optional)	f	\N
-5715	Hash Browns	t	\N
-5716	Egg	t	\N
-5717	Choose Toast	t	\N
-5718	Sausage	t	\N
-5719	Extra Sauces and Dressings	t	\N
-5720	Customize Garden Salad	t	\N
-5721	Bacon	t	\N
-5722	Choose Your Crepe	t	\N
-5723	English Muffins choices	t	\N
-5724	Pick Your Milk Shake Flavor	t	\N
-5725	* Choose Size	t	\N
+14168	Add Egg White	f	\N
+14187	Add Wrap Extra	f	\N
 2314	Choose Fries Size	t	\N
-5728	Choose Ice Level	f	\N
-5729	Customize Your Item	f	\N
-5730	Extra Add-Ons	f	\N
-5731	Extra Sauce	f	\N
-16344	Would you like to add additional fillings?	f	\N
-16390	Would you like to add buckwheat or buttermilk?	t	\N
-16391	Would you like to add avocado?	f	\N
+5899	Choose Chicken	t	\N
+5905	Add Ranch	f	\N
+5912	Add Taco Sauce	f	\N
+5917	Choose Quantity	t	\N
+5945	Dairy	f	\N
+5946	Sweets	f	\N
+5959	Select Quantity	t	\N
+14288	Add Omelette Toppings	f	\N
+14289	Choose Omelette Toppings	f	\N
+5963	choice of bagel	t	\N
+5964	Add-ons. Protein	f	\N
+5965	Add-ons. Veggies and herbs	f	\N
+14291	Add Omelette Extra	f	\N
 2428	Dressing	f	\N
-16392	Which breakfast meat would you like?	t	\N
-16406	Which topping would you like?	t	\N
-16422	How would you like your bagel cooked?	t	\N
-16427	Which danish would you like?	t	\N
-16429	Would you like to add extras?	f	\N
-16430	Would you like to substitute with toasted english muffin?	f	\N
-16431	Would you like to upgrade your burger?	f	\N
+14295	Add Hot Oatmeal Extra	f	\N
+14299	Choose Bagel Preparation	t	\N
+14302	Add Bagel Toppings	f	\N
+5979	Choose Juice Flavor	t	\N
+5982	Pick Two	f	\N
+5983	Pick Four	f	\N
+5984	Pick Six	f	\N
+5985	Pick your Base	f	\N
+5987	Pick your Potstickers	f	\N
+5990	Pick your Bowl	t	\N
+5994	Pick your base	t	\N
+5995	Protein Options	t	\N
+5996	Choose your toppings (Up to 4)	f	\N
+14312	Substitute Bread	f	\N
+6009	Ramen Add-ons	f	\N
+6010	Remove	f	\N
 2471	Burger Options	t	\N
 2472	Burger Toppings	f	\N
 2473	Side Option	t	\N
 2474	Drink Option	t	\N
+6011	Sub Noodle	f	\N
+6012	Choice of Protein	t	\N
 2477	Salad Option	t	\N
-16438	Would you like to add buffalo or BBQ sauce?	t	\N
 2482	Second Burger Toppings	f	\N
 2483	3rd Burger Option	t	\N
 2484	3rd Burger Toppings	f	\N
@@ -48851,42 +48929,16 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 2493	3rd Drink Option	t	\N
 2494	4th Drink Option	t	\N
 2495	Hot-Dog Toppings	f	\N
-2526	Choose One	t	\N
-5899	Choose Chicken	t	\N
-5905	Add Ranch	f	\N
-5912	Add Taco Sauce	f	\N
-5917	Choose Quantity	t	\N
-16486	Which protein would you like to add?	f	\N
-5945	Dairy	f	\N
-5946	Sweets	f	\N
-5959	Select Quantity	t	\N
-5963	choice of bagel	t	\N
-5964	Add-ons. Protein	f	\N
-5965	Add-ons. Veggies and herbs	f	\N
-2631	CRV	f	\N
-16526	Would you like to add crispy or grilled chicken?	t	\N
-5979	Choose Juice Flavor	t	\N
-5982	Pick Two	f	\N
-5983	Pick Four	f	\N
-5984	Pick Six	f	\N
-5985	Pick your Base	f	\N
-5987	Pick your Potstickers	f	\N
-5990	Pick your Bowl	t	\N
-5994	Pick your base	t	\N
-5995	Protein Options	t	\N
-5996	Choose your toppings (Up to 4)	f	\N
-6009	Ramen Add-ons	f	\N
-6010	Remove	f	\N
-6011	Sub Noodle	f	\N
-6012	Choice of Protein	t	\N
 6026	Rice Bowl Add-Ons	f	\N
 6027	Choice of Flavor	t	\N
 6030	Choice of Tea	t	\N
 6045	Sub Milk	f	\N
+2526	Choose One	t	\N
+14365	Choose Panini or Wrap	t	\N
+14369	Add Filling	f	\N
 6082	What salad size would you like?	t	\N
 6089	Would you like to add cheese?	f	\N
 6090	Choose Pieces	t	\N
-16579	Would you like to add salad or soup?	t	\N
 6096	Add Toppings Side 1	f	\N
 6097	Add Toppings Side 2	f	\N
 6147	Add Fat Knots	f	\N
@@ -48894,6 +48946,7 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 6149	Substitute Pasta	f	\N
 6152	Choose First Topping	t	\N
 6153	Choose Second Topping	t	\N
+2631	CRV	f	\N
 6156	Choose Salad	t	\N
 6157	Choose Salad Dressing	t	\N
 6159	Add Extra Toppings Pizza #1	f	\N
@@ -48907,46 +48960,37 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 6184	Add Extra Meat	f	\N
 6185	Make It Combo	f	\N
 6186	Choose Egg Style	t	\N
-16623	Which vegetable would you like?	t	\N
+14472	Choose First Protein	t	\N
+14473	Choose Second Protein	t	\N
 6204	Add Extras	f	\N
+14483	Add Extra Shot Espresso	f	\N
 6228	Add Dipping Sauce	f	\N
 6234	Kid's Side	t	\N
 6235	Kid's Drink	t	\N
 6245	Add Spicy Sauce?	f	\N
-16674	Which 2nd flavor would you like?	t	\N
-16678	Which 3rd flavor would you like?	t	\N
-16680	How would you like your beverage prepared?	t	\N
-16681	How sweetener would you like?	t	\N
 6259	Modify Your Tonkotsu Ramen	f	\N
 6260	Extra Broth	f	\N
-16684	Would you like to add leaded or unleaded?	t	\N
 6263	Modify Your Miso Ramen	f	\N
 6268	Modify Your Vegetable Ramen	f	\N
+14549	Add Extra Juice	f	\N
 6271	Modify Your Cream Ramen	f	\N
-16693	Would you like to add yogurt or soy milk?	t	\N
 6274	How spicy would you like it?	t	\N
-16702	Would you like hot or steamed?	t	\N
-16708	Choose Soup Style	t	\N
+14566	Add Smoothie Extra	f	\N
 6290	Modify Your Naked Noodle Ramen	f	\N
-16709	Customize Your Soup	f	\N
-16713	Choose Salad Fruit	t	\N
 6298	Modify Your Rib and Chashu Don	f	\N
 6301	Modify Unagi Don	f	\N
 6304	Modify Your Bulgogi Bowl	f	\N
 6307	Modify Your Chicken Cutlet Don	f	\N
+14580	Choose Smoothie Base	t	\N
 6310	Modify Your Pork Cutlet Don	f	\N
 6313	Side Add-ons	f	\N
 6316	Sourdough Toast	f	\N
-3123	Boat Noodle	t	\N
-3132	Fresh Roll	t	\N
-3135	Protein	t	\N
-3140	Porridge	t	\N
-3151	Add	f	\N
+14586	Choose Cookies	t	\N
+14617	Add Egg Whites	f	\N
 6400	Substitute Turkey Patty	f	\N
 6401	Choose Your Side	t	\N
 6417	Eggs Cooked	t	\N
 6427	Fancy Toast Add-Ons	f	\N
-16825	Add Extra Burger Patty	f	\N
 6481	Choose  Meat	t	\N
 6486	Choose Breakfast Special Style	t	\N
 6489	Choose Breakfast Quesadilla Protein	t	\N
@@ -48954,11 +48998,40 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 6491	Choose Six Shooter Breakfast Potato	t	\N
 6492	Add Egg Breakfast Extras	f	\N
 6494	Choose Breakfast Side	t	\N
-3274	Choose Type	t	\N
 6495	Choose Cooking Style	t	\N
+6508	Substitute Egg Whites	f	\N
+3123	Boat Noodle	t	\N
+6538	Add Omelettes Extras	f	\N
+3132	Fresh Roll	t	\N
+3135	Protein	t	\N
+3140	Porridge	t	\N
+3151	Add	f	\N
+6581	Add Nachos Chili	f	\N
+6582	Choose Soup Size	t	\N
+6584	Choose Fish Soup Size	t	\N
+14838	Which rice would you like?	t	\N
+6598	Choose Salmon Caesar Salad Style	t	\N
+6602	Choose Chef Salad Size	t	\N
+6608	Choose Salad Size	t	\N
+6615	Choose Fruit Salad Side	t	\N
+6621	Choose Cobb Salad Size	t	\N
+6625	Choose Sandwich Side	t	\N
+6637	Add Clubhouse Sandwich Avocado	f	\N
+6639	Choose The Old Fashion Sandwich Dressing	t	\N
+6642	Choose Frankfurter Sandwich Side	t	\N
+6643	Add Frankfurter Sandwich Chili	f	\N
+6644	Choose Salad with Half Sandwich	t	\N
+6645	Choose Melt Sandwich Protein	t	\N
+6647	Choose Soup with Half Sandwich	t	\N
+6649	Choose Santa Fe Sandwich Protein	t	\N
+6650	Choose Sandwich Dressing	t	\N
+3274	Choose Type	t	\N
+6652	Choose Burger Side	t	\N
 3280	Choose Size & Type	t	\N
 3281	Choose Size & Flavor	t	\N
-6508	Substitute Egg Whites	f	\N
+6654	Choose Burger Customization	t	\N
+6655	Add Burger Extras	f	\N
+14904	Make It with	t	\N
 3305	Add Extra Topping	f	\N
 3306	Choose Substitution for Tonkotsu Ramen ￼	f	\N
 3316	Choose Ramen	t	\N
@@ -48968,122 +49041,89 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 3326	Choose Soda Flavor	f	\N
 3328	Change Pasta	f	\N
 3330	Homemade Desserts	f	\N
-6538	Add Omelettes Extras	f	\N
-16886	Add Extra Juice Toppings	f	\N
+6695	Choose Chili Burger Cheese	t	\N
+14939	Choose Burger	t	\N
 3351	Salad Add Ons	f	\N
+6721	Choose Soft Taco Protein	t	\N
 3363	Jumbo 24oz size	f	\N
 3365	CREAMY PEANUT BUTTER	t	\N
+6726	Add Chicken Quesadilla Bacon	f	\N
 3368	Choose First Cookie	t	\N
 3370	Choose Second Cookie	t	\N
+14967	Choose Fruits	f	\N
 3374	Choose Soft or Crunchy Shell	t	\N
 3376	Choose Jalapenos	t	\N
+6734	Choose Malibu Chicken Side	t	\N
+6735	Choose Potatoes	t	\N
 3380	Choose Milk	t	\N
 3383	Choose Flavors	f	\N
-6581	Add Nachos Chili	f	\N
-6582	Choose Soup Size	t	\N
-6584	Choose Fish Soup Size	t	\N
-16925	Choose Smoothie Milk	t	\N
 3394	Choose Strawberries or Blueberries	t	\N
-6598	Choose Salmon Caesar Salad Style	t	\N
+6755	Choose Tender Beef Liver Side	t	\N
 3404	Choose Soda	t	\N
-6602	Choose Chef Salad Size	t	\N
-6608	Choose Salad Size	t	\N
 3431	Make it a slushie	f	\N
-16952	Choose Milk Flavor	t	\N
-6615	Choose Fruit Salad Side	t	\N
-6621	Choose Cobb Salad Size	t	\N
-6625	Choose Sandwich Side	t	\N
+6773	Add Pasta Primavera Chicken Breast	f	\N
 3451	Choose Ice Cream	t	\N
+6786	Choose Cheese Blintzes Side	t	\N
 3454	Choose Second Soda	t	\N
+6787	Choose Hot Cake Flavor	t	\N
 3457	Choose Topppings	f	\N
+6790	Choose Fruit	t	\N
 3461	side of Homemade Hollandaise	f	\N
-6637	Add Clubhouse Sandwich Avocado	f	\N
+6795	Choose Side Order Egg Style	t	\N
+6797	Choose Scoop	t	\N
 3468	Preserve Choice	t	\N
 3469	Fruit Add On	f	\N
 3470	Breakfast A La Carte	f	\N
-6639	Choose The Old Fashion Sandwich Dressing	t	\N
-6642	Choose Frankfurter Sandwich Side	t	\N
-6643	Add Frankfurter Sandwich Chili	f	\N
-6644	Choose Salad with Half Sandwich	t	\N
-6645	Choose Melt Sandwich Protein	t	\N
-6647	Choose Soup with Half Sandwich	t	\N
-6649	Choose Santa Fe Sandwich Protein	t	\N
-6650	Choose Sandwich Dressing	t	\N
-3483	Cook My Eggs	t	\N
-3484	Toast Or Tortilla	t	\N
-6652	Choose Burger Side	t	\N
-6654	Choose Burger Customization	t	\N
-6655	Add Burger Extras	f	\N
-3493	Avocado Toast Additions	f	\N
-16986	Choose Bar Flavor	t	\N
-3507	Burrito Or Bowl	t	\N
-17010	Choose Popcorn Flavor	t	\N
-6695	Choose Chili Burger Cheese	t	\N
-17020	Choose Granola Flavor	t	\N
-17029	Choose Coffee Milk	t	\N
-17030	Choose Sweeteners	t	\N
-3548	Toppings Pizzaoki (large)	f	\N
-6721	Choose Soft Taco Protein	t	\N
-3559	Toppings Pizzaoki (medium)	f	\N
-6726	Add Chicken Quesadilla Bacon	f	\N
-6734	Choose Malibu Chicken Side	t	\N
-17056	Choose Tea Size	t	\N
-3576	Choose Base Nachos	t	\N
-3577	Nachos Add on	f	\N
-3578	Burger Add Ons	f	\N
-6735	Choose Potatoes	t	\N
-3610	Choose Wings Flavor	t	\N
-3613	Add Pastas Extras	f	\N
-3615	Add Pizza Topping	f	\N
-6755	Choose Tender Beef Liver Side	t	\N
-3618	Add Pizza Toppings	f	\N
-3623	Choose Pizza Size	t	\N
-3635	Add Bowl	f	\N
-6773	Add Pasta Primavera Chicken Breast	f	\N
-3641	Choose Potato	f	\N
-3642	Add Grilled Steak	f	\N
-3643	Not Available after 11 A.M.	f	\N
-17102	Choose Windex Size	t	\N
-17104	Choose Feast	t	\N
-3647	Choose Filling	f	\N
-17106	Choose Toilet Paper	t	\N
-17107	Choose Ice Size	t	\N
-17108	Would you like hot or mild?	t	\N
-17111	Which salad dressing  would you like?	t	\N
-6786	Choose Cheese Blintzes Side	t	\N
-6787	Choose Hot Cake Flavor	t	\N
-6790	Choose Fruit	t	\N
-17114	Would you like to add extra protein?	t	\N
-6795	Choose Side Order Egg Style	t	\N
-6797	Choose Scoop	t	\N
 6798	Add Dinner Salad Side	f	\N
-17119	Would you like to add grilled chicken?	t	\N
 6800	Choose Tea Style	t	\N
 6801	Choose Coffee Style	t	\N
 6803	Ch - Milkshake Flavor	t	\N
 6804	Choose Cake Slice	t	\N
 6805	Choose Fruit Pie	t	\N
-17123	Would you like to add roumanian steak?	t	\N
-17129	Would you like chicken or tuna?	t	\N
-17131	Would you like tuna or salmon?	t	\N
+3483	Cook My Eggs	t	\N
+3484	Toast Or Tortilla	t	\N
+3493	Avocado Toast Additions	f	\N
+3507	Burrito Or Bowl	t	\N
 6841	Beef or Turkey	f	\N
 6842	ADD TOPPINGS	f	\N
 6843	Dietary Substitution	f	\N
 6860	Flavor	f	\N
 6868	Choice of Preparation	f	\N
 6870	Substitution	f	\N
+3548	Toppings Pizzaoki (large)	f	\N
 6873	Chicken Option	t	\N
 6874	Seasoning Option	f	\N
-17184	Which sandwich would you like?	t	\N
-17185	Which burger would you like?	t	\N
-17186	Would you like to add bacon?	t	\N
-17233	Would you like to make it deluxe?	t	\N
-17237	Would you like vegetarian or meat?	t	\N
-17239	Would you like your dish prepared?	t	\N
+6878	Chicken Option for Salad	f	\N
+6879	Add Extra Sauce	f	\N
+3559	Toppings Pizzaoki (medium)	f	\N
+6888	Would you like to add extra?	f	\N
+6889	Would you like to add boiled egg?	f	\N
+6890	Add EXtras	f	\N
+6891	Add Rice	f	\N
+3576	Choose Base Nachos	t	\N
+3577	Nachos Add on	f	\N
+3578	Burger Add Ons	f	\N
+6898	Add Tofu	f	\N
+6909	Add Extra Tofu or Ramen Noodles	f	\N
+3610	Choose Wings Flavor	t	\N
+3613	Add Pastas Extras	f	\N
+3615	Add Pizza Topping	f	\N
+3618	Add Pizza Toppings	f	\N
+3623	Choose Pizza Size	t	\N
+6941	Add Extra Chicken	f	\N
+3635	Add Bowl	f	\N
+3641	Choose Potato	f	\N
+3642	Add Grilled Steak	f	\N
+3643	Not Available after 11 A.M.	f	\N
+3647	Choose Filling	f	\N
+6966	Add Sauce	f	\N
+3703	Add Drink	f	\N
+3709	Choose Taco Style	t	\N
+3714	Choose Combo	f	\N
+3716	Add Chili	f	\N
+3734	Choose Chips or Fries	t	\N
 7068	Add Extra Rice	f	\N
-17241	Would you like vegetable or chicken?	t	\N
 7070	Add Extra Beef	f	\N
-17244	Would you like cheese or spinach?	t	\N
 7077	Add Extra Baked Salmon	f	\N
 7086	Choose Third Scoop Fish & Protein	t	\N
 7087	Choose Second Scoop Fish & Protein	f	\N
@@ -49093,25 +49133,24 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 7091	Choose Base	t	\N
 7092	Choose Fourth Scoop Fish & Protein	t	\N
 7093	Choose 3 Scoops of Basic Topping	f	\N
-17258	Would you like vegetable or cheese?	t	\N
-17273	How would you like your dish cooked?	t	\N
+15345	Chose Size	t	\N
+15386	Choose Omelettes	t	\N
+15391	Choose Caffeine	t	\N
+15393	Add Flavor Swirl	f	\N
+15394	Sweetener Option	t	\N
+15395	Americano Size	t	\N
+15397	Add Milk	f	\N
 7169	Choose 5th Scoop Fish & Protein	t	\N
+15404	Add Flavor Shot	f	\N
 7175	Make It Rice	t	\N
 7177	Add Fried Egg	f	\N
-17298	Would you like potato or pasta?	t	\N
 7184	Choose Soup	t	\N
 7185	Add Noodles	f	\N
 7187	Add Teriyaki Sauce	f	\N
+15418	Choose Sweetener	t	\N
 7197	Add Saefood	f	\N
 7198	Would you like to add sriracha sauce?	f	\N
 7199	Would you like to add fried egg?	f	\N
-17311	Would you like to add extra topping?	t	\N
-17312	Would you like granola or hot oatmeal?	t	\N
-17317	Would you like to add greek salad?	f	\N
-17318	Would you like jelly or marmalade?	t	\N
-17320	Which fries would you like?	t	\N
-17321	Would you like potato or cole?	t	\N
-17328	Would you like to make it a la mode?	t	\N
 7218	How spicy would you like?	t	\N
 7219	Would you like to add mozzarella cheese ?	f	\N
 7222	Would you like sriracha sauce?	f	\N
@@ -49119,49 +49158,66 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 7224	Would you like extra sauce?	t	\N
 7225	Would you like extra rice?	t	\N
 7226	What kind of rice would you like?	t	\N
-17333	Would you like cranberry or grapefruit?	t	\N
-17336	Would you like carrot or celery?	t	\N
+15457	Choose Blend	t	\N
 7242	Would you like to add seasoned green onions?	f	\N
-17355	Add Extra Drink	f	\N
-17368	Add Extra Bacon	f	\N
+15490	Hot Chocolate Choice	t	\N
 7270	Choose base.	t	\N
 7271	Choose protein.	t	\N
 7272	Choose basic toppings (up to two).	f	\N
 7273	Choose premium topping.	f	\N
 7274	Add extra toppings.	f	\N
 7275	Choose sauce.	t	\N
-17393	Add Extra Burger Side	f	\N
+15501	Frozen Coffee Dairy Choice	t	\N
+15504	Frozen Coffee Flavor Shot	f	\N
+15506	Coolatta Flavor	t	\N
 7304	Add Sriracha Sauce	f	\N
-17403	Add Extra Sandwich Filling	f	\N
-17405	Add Pita Bread	f	\N
-17411	Choose Wings Spicy Level	t	\N
-17421	Add Extra Double Cheese	f	\N
-17432	Choose Hot Dog	t	\N
-17433	Choose Substitute For Protein	f	\N
+15527	Choose Eggs	t	\N
 7344	Choose Chicken or Beef	t	\N
 7353	Choose Soup & Stew	t	\N
 7356	Add Spicy Rice Cake	f	\N
-17445	Make it a deep dish?	f	\N
-17446	Add - Toppings	f	\N
+15573	Choose 1st Donut	t	\N
+15574	Choose 2nd Donut	t	\N
+15575	Choose 3rd Donut	t	\N
 7360	Add Beverages	f	\N
-17452	Would you like to add garlic?	f	\N
-17462	Would you like to add  toppings?	f	\N
+15576	Choose 4th Donut	t	\N
+15577	Choose 5th Donut	t	\N
+15578	Choose 6th Donut	t	\N
+15579	Choose 7th Donut	t	\N
+15580	Choose 8th Donut	t	\N
+15581	Choose 9th Donut	t	\N
+15582	Choose 10th Donut	t	\N
+15583	Choose 11th Donut	t	\N
+15584	Choose Donut 12	t	\N
+15592	Munchkins® Count	t	\N
+15593	Munchkins® Flavors	t	\N
+15594	Choose 1st Bagel	t	\N
+15595	Choose Prep	t	\N
+15598	Choose 2nd Bagel	t	\N
+15599	Choose 3rd Bagel	t	\N
+15600	Choose 4th Bagel	t	\N
+15601	Choose 5th Bagel	t	\N
+15602	Choose 6th Bagel	t	\N
 7384	Choose Soup Protein	t	\N
+15609	Choose 7th Bagel	t	\N
+15610	Choose 8th Bagel	t	\N
+15611	Choose 9th Bagel	t	\N
+15612	Choose 10th Bagel	t	\N
+15613	Choose 11th Bagel	t	\N
+15614	Choose 12th Bagel	t	\N
 7394	Choose Soup Base	t	\N
 7397	Drink	t	\N
 7398	How would you like your food cooked?	t	\N
+15626	B.Choose Blend	t	\N
+15629	Choose Bread Style	t	\N
+15632	Choose Sauces	f	\N
+15633	Choose Seasonings	f	\N
+15635	Choose Veggies	f	\N
+15636	Extras	f	\N
 7466	Dipping Sauce Choice	t	\N
 7467	Extra Dipping Sauce	f	\N
 7470	Homemade Dessert	f	\N
 7471	Angel's Wing Flavors	t	\N
 7484	Choose 2 Dipping Sauce Servings	f	\N
-17549	Number of Wings	t	\N
-17550	Would you like to add ranch dipping?	f	\N
-17551	Choose French Fries	t	\N
-17555	Add to burger	f	\N
-17556	Add fries	f	\N
-17561	How would you like your burger done?	t	\N
-17573	Would you like to add items?	f	\N
 7539	How spicy would you like that?	t	\N
 7543	How would you like that?	t	\N
 7544	What kind of noodles would you like?	t	\N
@@ -49169,111 +49225,83 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 7562	Choose Flavor:	t	\N
 7566	Choose size:	t	\N
 7602	Choose flavor	t	\N
-17631	Omlette Fixins	f	\N
-17633	Dipping Sauces	f	\N
-17634	Shake Flavors	t	\N
-17635	Make it a Malt!	f	\N
-17639	Add Extra Dipping Sauces	f	\N
-17648	Add Sides	f	\N
 7642	Select Flavor	t	\N
-17660	Choose Milkshake Flavor	t	\N
-17664	Add Extra Fries	f	\N
 7656	Elenita	t	\N
 7667	Choose Bagel	t	\N
 7669	Add Spread	f	\N
 7676	Choose Egg	t	\N
-17713	Add Side of Fries, Onion Rings, or Salad !	f	\N
+15890	Choose Sub to become Wrap	t	\N
 7714	Choose Tortilla	t	\N
-17723	Combo Side Option	t	\N
-17734	Choice of side	t	\N
-17736	Substitutions	f	\N
 7756	Add Extra Pump	f	\N
 7762	Taco Selection 1	t	\N
 7763	Taco Selection 2	t	\N
 7764	Taco Selection 3	t	\N
-17763	Choose your size	t	\N
-17764	Options	f	\N
-17768	Option	f	\N
 7782	Which taco would you like?	t	\N
 7783	HOT SAUCE	f	\N
 7784	GUACAMOLE	f	\N
 7785	ONION/CILANTRO	f	\N
 7786	LETTUCE	f	\N
-17793	Choice of meat	t	\N
 7819	Would you like to add?	f	\N
 7822	RICE	f	\N
 7823	BEANS	f	\N
 7824	CHEESE	f	\N
-17806	Choice of cheese	t	\N
 7828	ADD EXTRA MEAT	f	\N
-17823	How would like it cooked?	t	\N
-17852	Choice of bread	t	\N
 7878	TOMATO	f	\N
-17902	Choice of first side	t	\N
-17903	Choice of second side	t	\N
-17909	Choice of sauce	t	\N
+16109	Choose Wrap Flavor	t	\N
 7957	Add Fries	f	\N
 7959	Which drink would you like?	t	\N
-17940	Chose your size	t	\N
-17943	Choice of flavor	t	\N
-17949	Burger Patty	t	\N
-17951	Gravy	t	\N
-17952	Add-ons	f	\N
 7994	Would you like beef or chicken?	t	\N
-17957	What kind of meat?	t	\N
-17963	Make it spicy?	f	\N
 8003	Which second drink would you like?	t	\N
 8004	Which third drink would you like?	t	\N
 8005	Which fourth drink would you like?	t	\N
-17967	Add Rice?	f	\N
-17968	Add-Ons	t	\N
 8019	Would you like to add proteins?	f	\N
 8028	Pick Your Doughnuts	f	\N
 8034	Choose Your Coffee Blend	f	\N
 8035	Ramen	t	\N
 8038	How Spicy	t	\N
-17995	Which dipping sauce would you like?	t	\N
 8049	Tteok-bokki	f	\N
 8050	Udon	f	\N
 8051	jjigae option	t	\N
 8052	Bento Box Choice of meat	t	\N
 8054	Fried Rice	f	\N
-18006	Would you like to add dolma?	f	\N
 8059	Unagi Bowl	f	\N
 8060	Bulgogi	f	\N
 8061	classic Roll combo	t	\N
 8062	Choose Roll Size	t	\N
 8063	Roll	f	\N
-18009	Would you like to add extra dressing?	f	\N
-18010	Would you like to add chicken breast?	f	\N
 8108	Add Avocado	f	\N
 8109	Choose Soup of the Day	t	\N
 8119	Add Sunny-Side Egg	f	\N
-18046	Would you like add extra to your burger?	f	\N
 8126	Add Extra Shot	f	\N
 8127	Choose Regular or Decaf	t	\N
 8135	Choose Still or Sparkling	t	\N
-18058	Would you like to add fries?	f	\N
 8148	Choose Single or Double	t	\N
+16306	Which potato would you like?	t	\N
+16307	Would you like to add breakfast add ons?	f	\N
+16309	Would you like to add extra eggs?	f	\N
 8163	Choose Tea	t	\N
 8171	Second Burger Option (Select up to 1)	t	\N
 8172	First Drink Option (Select up to 1)	t	\N
 8173	First Burger Option (Select up to 1)	t	\N
 8174	Second Drink Option (Select up to 1)	t	\N
 8175	Side Option (Select up to 1)	t	\N
-18113	Would you like to add salad?	f	\N
+16321	Would you like to add egg whites?	f	\N
+16344	Would you like to add additional fillings?	f	\N
 8221	Choose Wings Sauce	t	\N
 8222	Add Extra Pizza Toppings	f	\N
-18134	Which salad would you like?	t	\N
-18135	Which appetizer would you like?	t	\N
+16390	Would you like to add buckwheat or buttermilk?	t	\N
+16391	Would you like to add avocado?	f	\N
+16392	Which breakfast meat would you like?	t	\N
 8264	Choose Egg Cooking Style	t	\N
-18167	Which back up choice would you like?	t	\N
+16406	Which topping would you like?	t	\N
 8286	Choose Ingredients	f	\N
-18176	Choose English Muffin or Sliced Bread	t	\N
 8301	Choose Ingredient	t	\N
-18184	Choose Tuna Salad Or Chef Salad	t	\N
-18195	Choose Avocado Or Bacon	t	\N
-18196	Choose Pizza Or B.B.Q Cheese Steak	t	\N
+16422	How would you like your bagel cooked?	t	\N
+16427	Which danish would you like?	t	\N
+16429	Would you like to add extras?	f	\N
+16430	Would you like to substitute with toasted english muffin?	f	\N
+16431	Would you like to upgrade your burger?	f	\N
+16438	Would you like to add buffalo or BBQ sauce?	t	\N
 8347	Which sauce would you like?	t	\N
 8348	How would you like your egg cooked?	t	\N
 8350	Which side would you like?	t	\N
@@ -49285,96 +49313,79 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 8386	Choose 3rd Flavor	t	\N
 8390	Which cookie would you like in your sandwich?	t	\N
 8391	Which second cookie would you like in your sandwich?	t	\N
+16486	Which protein would you like to add?	f	\N
 8395	Which third cookie would you like in your sandwich?	t	\N
 8398	Which cone would you like?	t	\N
 8403	Choose Wet Toppings	f	\N
 8432	Choose Cheese Flavor	t	\N
 8470	Add Sandwich Toppings	f	\N
+16526	Would you like to add crispy or grilled chicken?	t	\N
+16579	Would you like to add salad or soup?	t	\N
 8555	Choose Sandwich Bread	t	\N
 8566	Choose Sandwich Style	t	\N
 8568	Choose Burger Cooking Style	t	\N
-18424	Add Salad Drinks	f	\N
-18425	Add Salad Extra Protein	f	\N
-18438	Add Pasta Extra Side	f	\N
-18439	Add Pasta Protein	f	\N
 8600	Make it Hero	f	\N
-18452	Add Extra Drinks	f	\N
-18455	Choose Wings SIze	t	\N
-18460	Choose Pizza Crust	t	\N
-18462	Add Pizza Extra Toppings	f	\N
+16623	Which vegetable would you like?	t	\N
 8643	Add Extra Preparation	f	\N
 8645	Choose Muffin Flavor	t	\N
 8651	Make it a Platter	f	\N
-18493	Which croissants would you like?	t	\N
 8672	Substitute Brown Rice	f	\N
+16674	Which 2nd flavor would you like?	t	\N
+16678	Which 3rd flavor would you like?	t	\N
+16680	How would you like your beverage prepared?	t	\N
+16681	How sweetener would you like?	t	\N
+16684	Would you like to add leaded or unleaded?	t	\N
 8696	Add  Toppings	f	\N
-18531	Choose Diet Snapple Flavor	t	\N
 8698	Choose Egg Preparation	t	\N
-18533	Choose 2 Liter Drink Flavor	t	\N
-18534	Choose a Size - Cheese	t	\N
-18535	Choose a Size - Specialty	t	\N
-18549	Flavor of Wings	t	\N
+16693	Would you like to add yogurt or soy milk?	t	\N
+16702	Would you like hot or steamed?	t	\N
+16708	Choose Soup Style	t	\N
+16709	Customize Your Soup	f	\N
+16713	Choose Salad Fruit	t	\N
 8723	Choose Muffin	t	\N
-18574	Add Extra Cake	f	\N
 8754	Add  Platter	f	\N
-18599	Make It a Spicy	t	\N
-18619	Add-on	f	\N
-18640	Add Extra Wraps Side	f	\N
-18650	Add Extra Dessert	f	\N
-18669	Wing Size	t	\N
-18670	Which would you prefer?	t	\N
 8847	Substitute Sandwich	f	\N
-18676	Would you like to add sauce?	f	\N
-18677	Which Pita bread would you like?	t	\N
-18682	Choose one	f	\N
-18684	Which dressing would you like to add?	t	\N
 8883	Choose Juice	f	\N
-18696	Would you like extra topping?	f	\N
+16825	Add Extra Burger Patty	f	\N
 8901	Choose Vitamin Water	t	\N
-18714	Would you like extra topping?.	f	\N
 8913	Choose Size`	t	\N
 8923	Add Additions	f	\N
-18764	Which three option would you like?	f	\N
-18776	what would like to add?	f	\N
-18788	Focaccia Bread	t	\N
+16886	Add Extra Juice Toppings	f	\N
 8985	Choose Soup Of The Day	t	\N
-18797	flavor	t	\N
-18799	Which flavor would you like to add?	t	\N
-18800	Monster Flavors	t	\N
-18801	What would you like to add?	t	\N
-18802	Which flavor would you like to add?.	t	\N
-18810	Choose Doritos Flavor	t	\N
-18811	Choose Cheetos flavor	t	\N
-18812	Choose Ruffles Flavor	t	\N
+16925	Choose Smoothie Milk	t	\N
 9013	Choose Water	t	\N
+16952	Choose Milk Flavor	t	\N
 9063	Choose Veggie	f	\N
-18844	Add Extra  Sandwich Protein	f	\N
-18845	Add Extra Sandwich Side	f	\N
 9066	Substitute Egg	f	\N
 9067	Upgrade to Platter	f	\N
 9072	Substitute Arugula	f	\N
+16986	Choose Bar Flavor	t	\N
 9079	Choose Premium Toppings	t	\N
 9082	Choose Toppings	f	\N
-18900	What's the size?	t	\N
-18904	What salad dressing would you like?	t	\N
-18913	Ch - Cheese	t	\N
-18917	Add a Protein	f	\N
-18919	Choose a Sauce	t	\N
-18921	TEST PIZZA TOPPINGS	f	\N
-18922	TEST BURGER OPTIONS	f	\N
-18938	Choose flavor.	t	\N
-18939	Would you like to have combo side and drink?	f	\N
+17010	Choose Popcorn Flavor	t	\N
+17020	Choose Granola Flavor	t	\N
+17029	Choose Coffee Milk	t	\N
+17030	Choose Sweeteners	t	\N
+17056	Choose Tea Size	t	\N
 9184	Add Toast	f	\N
 9185	Add Home Fries	f	\N
 9186	Make it a Sandwich	f	\N
+17102	Choose Windex Size	t	\N
+17104	Choose Feast	t	\N
+17106	Choose Toilet Paper	t	\N
+17107	Choose Ice Size	t	\N
+17108	Would you like hot or mild?	t	\N
+17111	Which salad dressing  would you like?	t	\N
+17114	Would you like to add extra protein?	t	\N
 9220	Make it on Platter	f	\N
 9221	Make it on Sandwich	f	\N
-18974	Choose wing type.	t	\N
+17119	Would you like to add grilled chicken?	t	\N
 9227	Make it a Wrap	f	\N
-18979	Would you like fries or biscuit?	t	\N
-18992	Choose Substitution for Bread	f	\N
+17123	Would you like to add roumanian steak?	t	\N
 9256	Choose Substitution for Eggs	f	\N
+17129	Would you like chicken or tuna?	t	\N
 9259	Add Jelly	f	\N
+17131	Would you like tuna or salmon?	t	\N
 9271	Add Meat	f	\N
 9273	Choose Oatmeal Size	t	\N
 9276	Add Eggs	f	\N
@@ -49386,43 +49397,80 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 9313	Add Veggies	f	\N
 9317	Choose Side Size	t	\N
 9320	Choose Wrap	t	\N
+17184	Which sandwich would you like?	t	\N
+17185	Which burger would you like?	t	\N
+17186	Would you like to add bacon?	t	\N
 9332	Choose Pasta Sauce	t	\N
 9334	Add Extra Vegetables	f	\N
 9345	Choose Coffee Size	t	\N
 9358	Choose Smoothie Size	t	\N
-19084	Extra Meat	f	\N
+17233	Would you like to make it deluxe?	t	\N
 9387	Choose Juice Size	t	\N
+17237	Would you like vegetarian or meat?	t	\N
+17239	Would you like your dish prepared?	t	\N
+17241	Would you like vegetable or chicken?	t	\N
+17244	Would you like cheese or spinach?	t	\N
 9431	Add Sauces	f	\N
 9440	Choose Upto Three Toppings	f	\N
 9441	Choose Ice Cream Flavor	t	\N
+17258	Would you like vegetable or cheese?	t	\N
 9454	Choose Dessert Size	t	\N
+17273	How would you like your dish cooked?	t	\N
 9467	Choose Toast / Muffin	t	\N
 9469	Substitute Side	f	\N
 9471	Choose Temperature	t	\N
 9481	Add Egg Whites Only	f	\N
+17298	Would you like potato or pasta?	t	\N
+17311	Would you like to add extra topping?	t	\N
+17312	Would you like granola or hot oatmeal?	t	\N
+17317	Would you like to add greek salad?	f	\N
+17318	Would you like jelly or marmalade?	t	\N
+17320	Which fries would you like?	t	\N
+17321	Would you like potato or cole?	t	\N
 9516	Add Veggie	f	\N
+17328	Would you like to make it a la mode?	t	\N
+17333	Would you like cranberry or grapefruit?	t	\N
+17336	Would you like carrot or celery?	t	\N
 9546	Choose Scallions / Basil	t	\N
-19232	Choose your bacon or sausage	t	\N
+17355	Add Extra Drink	f	\N
+17368	Add Extra Bacon	f	\N
 9598	Add Condiments	f	\N
 9599	Make it Deluxe	f	\N
 9603	Add Tomato	f	\N
+17393	Add Extra Burger Side	f	\N
 9625	Add Parmigiana	f	\N
+17403	Add Extra Sandwich Filling	f	\N
+17405	Add Pita Bread	f	\N
+17411	Choose Wings Spicy Level	t	\N
+17421	Add Extra Double Cheese	f	\N
+17432	Choose Hot Dog	t	\N
+17433	Choose Substitute For Protein	f	\N
 9663	Add Ham	f	\N
+17445	Make it a deep dish?	f	\N
+17446	Add - Toppings	f	\N
+17452	Would you like to add garlic?	f	\N
+17462	Would you like to add  toppings?	f	\N
 9694	Choose Vegetable	t	\N
-19354	Add Strawberry Topping	f	\N
-19390	Add Extra Calzone Toppings	f	\N
 9772	Choose 1st Vegetable	t	\N
 9773	Choose 2nd Vegetable	t	\N
 9774	Choose 3rd Vegetable	t	\N
-19406	Choose Buffalo Wings Flavor	t	\N
 9777	Add Real Maple Syrup	f	\N
-19409	Bread	t	\N
-19411	Veggies	f	\N
-19413	Seasonings	f	\N
 9802	Add Meat Sauce	f	\N
+17549	Number of Wings	t	\N
+17550	Would you like to add ranch dipping?	f	\N
+17551	Choose French Fries	t	\N
+17555	Add to burger	f	\N
+17556	Add fries	f	\N
+17561	How would you like your burger done?	t	\N
+17573	Would you like to add items?	f	\N
 9905	Add Cream Cheese	f	\N
 9906	Make it Toasted	f	\N
 9920	Add Brown Gravy	f	\N
+17631	Omlette Fixins	f	\N
+17633	Dipping Sauces	f	\N
+17634	Shake Flavors	t	\N
+17635	Make it a Malt!	f	\N
+17639	Add Extra Dipping Sauces	f	\N
 9931	Choose Regular / Decaf	t	\N
 9935	Add Whipped Cream	f	\N
 9939	Choose Apple / Blueberry	t	\N
@@ -49430,41 +49478,70 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 9941	Choose Cheese / Cinnamon	t	\N
 9943	Choose Vanilla / Chocolate	t	\N
 9944	Choose Plain / Marble	t	\N
+17648	Add Sides	f	\N
 9948	Choose Substitute for Bread	f	\N
+17660	Choose Milkshake Flavor	t	\N
+17664	Add Extra Fries	f	\N
 9998	Choose Wrap Toppings	t	\N
 9999	Add Extra Tea	f	\N
 10007	Choose Wings Size	t	\N
 10008	Which garnish would you like?	t	\N
 10009	Would you like to add fresh onions?	f	\N
 10014	How do you like your hamburger cooked?	t	\N
+17713	Add Side of Fries, Onion Rings, or Salad !	f	\N
 10019	Would you like to add cheese or fresh onions?	f	\N
+17723	Combo Side Option	t	\N
 10032	Upgrade Your Size	f	\N
+17734	Choice of side	t	\N
+17736	Substitutions	f	\N
 10071	Choose Salad Protein	t	\N
+17763	Choose your size	t	\N
 10077	Add Extra Sandwich Toppings	f	\N
+17764	Options	f	\N
 10079	Choose Substitution for Side	f	\N
+17768	Option	f	\N
+17793	Choice of meat	t	\N
+17806	Choice of cheese	t	\N
 10126	Add Extra Sandwich Sides	f	\N
+17823	How would like it cooked?	t	\N
 10140	Choose Sandwich Protein	t	\N
 10145	Add Extra Sandwich Protein	f	\N
 10167	Add Extra Plate	f	\N
+17852	Choice of bread	t	\N
+17902	Choice of first side	t	\N
+17903	Choice of second side	t	\N
 10205	Choose Meat Cooking Style	t	\N
+17909	Choice of sauce	t	\N
 10218	Add Extra Burger Toppings	f	\N
+17940	Chose your size	t	\N
+17943	Choice of flavor	t	\N
+17949	Burger Patty	t	\N
+17951	Gravy	t	\N
+17952	Add-ons	f	\N
+17957	What kind of meat?	t	\N
+17963	Make it spicy?	f	\N
 10270	Add Extra Pasta Protein	f	\N
+17967	Add Rice?	f	\N
+17968	Add-Ons	t	\N
 10276	Add Extra Protein	f	\N
 10299	Choose Substitution for Egg	f	\N
-20018	Would you like extra dressing?	f	\N
-20019	Would you like add chicken?	f	\N
-20048	Which crust would you like?	t	\N
+17995	Which dipping sauce would you like?	t	\N
+18006	Would you like to add dolma?	f	\N
+18009	Would you like to add extra dressing?	f	\N
+18010	Would you like to add chicken breast?	f	\N
+18046	Would you like add extra to your burger?	f	\N
+18058	Would you like to add fries?	f	\N
 10387	Add Extra Wrap Protein	f	\N
 10388	Add Extra Wrap Toppings	f	\N
-20115	Add Wings Extra	f	\N
-20125	Choose Fries	t	\N
-20126	Add Salad Extras	f	\N
-20130	Add Extra Snapple Flavor	f	\N
+18113	Would you like to add salad?	f	\N
 10438	Choose Bagel Style	t	\N
-20152	Would you like chicken or shrimp?	t	\N
-20153	Would you like to make it for your ravioli?	t	\N
-20154	How would you like your cook style?	t	\N
-20177	Would you like to add extra toppings?	f	\N
+18134	Which salad would you like?	t	\N
+18135	Which appetizer would you like?	t	\N
+18167	Which back up choice would you like?	t	\N
+18176	Choose English Muffin or Sliced Bread	t	\N
+18184	Choose Tuna Salad Or Chef Salad	t	\N
+18195	Choose Avocado Or Bacon	t	\N
+18196	Choose Pizza Or B.B.Q Cheese Steak	t	\N
 10525	Choose Snapple Flavor	t	\N
 10527	Choose Smoothie Flavor	t	\N
 10528	Add Extra Whipped Cream	f	\N
@@ -49481,61 +49558,64 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 10654	Would you like to add extra proteins?	f	\N
 10662	Which soup would you like?	t	\N
 10672	Would you like hot or iced?	t	\N
-20335	Add Extra Ranch	f	\N
-20373	Add Extra Pizza Sauce	f	\N
 10754	Make it Egg Whites Only	f	\N
 10760	Add Extra Eggs	f	\N
-20426	Choose Sandwich Garnish	f	\N
-20427	Choose Sandwich Sauce	f	\N
-20429	Add Extra Avocado	f	\N
-20431	Extra	f	\N
-20432	Would you like to add a side?	f	\N
-20433	Select a size	t	\N
+18424	Add Salad Drinks	f	\N
+18425	Add Salad Extra Protein	f	\N
+18438	Add Pasta Extra Side	f	\N
+18439	Add Pasta Protein	f	\N
+18452	Add Extra Drinks	f	\N
+18455	Choose Wings SIze	t	\N
 10808	Choose Omelette Cheese	t	\N
 10809	Add Extra Omelette Toppings	f	\N
 10813	Choose Spread	t	\N
 10814	Choose Bagel Flavor	t	\N
+18460	Choose Pizza Crust	t	\N
 10816	Add Extra Bagels Toppings	f	\N
 10818	Choose Yogurt Muffin Flavor	t	\N
 10819	Choose Cake Flavor	t	\N
+18462	Add Pizza Extra Toppings	f	\N
 10829	Choose Salad Base	t	\N
 10831	Choose Salad Items	f	\N
 10833	Choose Items	f	\N
+18493	Which croissants would you like?	t	\N
 10887	Add Extra Signature Sandwich Side	f	\N
+18531	Choose Diet Snapple Flavor	t	\N
+18533	Choose 2 Liter Drink Flavor	t	\N
+18534	Choose a Size - Cheese	t	\N
+18535	Choose a Size - Specialty	t	\N
 10894	Add Extra Signature Sandwich Second Toppings	f	\N
+18549	Flavor of Wings	t	\N
 10900	Add Extra Combo Sandwich Toppings	f	\N
-20525	Choose a sauce	t	\N
-20534	Choose a dressing	t	\N
-20543	Choose a side	t	\N
-20544	Choose a drink	t	\N
-20545	Choose a toy	t	\N
-20550	Add Extra Mozzarella Sticks	f	\N
+18574	Add Extra Cake	f	\N
 10929	Add Extra Panini Toppings	f	\N
-20553	Make it a Spicy	f	\N
 10945	Add Salsa	f	\N
-20581	Choose Substitution Salad Dressing	f	\N
+18599	Make It a Spicy	t	\N
 10969	Add Extra Brown Rice	f	\N
+18619	Add-on	f	\N
 10973	Add Extra Ingredients	f	\N
+18640	Add Extra Wraps Side	f	\N
+18650	Add Extra Dessert	f	\N
 11006	Choose Substitution for Noodle	f	\N
-20645	Choose Cheesesteak Size	t	\N
 11010	Add Extra Veggies	f	\N
-20647	Add Extra Cheesesteak Toppings	f	\N
-20648	Add Side of Fries	f	\N
-20653	Choose Sandwich Size	t	\N
-20663	Choose Jalapeno Popper Size	t	\N
-20665	Choose Hot Wing Size	t	\N
+18669	Wing Size	t	\N
+18670	Which would you prefer?	t	\N
+18676	Would you like to add sauce?	f	\N
+18677	Which Pita bread would you like?	t	\N
+18682	Choose one	f	\N
+18684	Which dressing would you like to add?	t	\N
 11034	Choose Chips Size	t	\N
 11035	Choose Chips Flavor	t	\N
 11036	Choose Pretzel Flavor	t	\N
-20676	Choose Bread Size	t	\N
+18696	Would you like extra topping?	f	\N
 11049	Choose First Veggie	t	\N
 11050	Choose Second Veggie	t	\N
 11051	Choose Third Veggie	t	\N
 11053	Add Extra Omelette Proteins	f	\N
+18714	Would you like extra topping?.	f	\N
 11072	Add Extra Burrito Toppings	f	\N
 11073	Add Extra Burrito Proteins	f	\N
 11074	Add Extra French Fries	f	\N
-20709	Choose Thick Crust	f	\N
 11090	Add Extra Bagel Toppings	f	\N
 11098	Choose Red Bull Flavor	t	\N
 11108	Which toast would you like?	t	\N
@@ -49543,20 +49623,28 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 11110	Would you like to substitute?	f	\N
 11111	How would you like your egg preparation?	t	\N
 11112	Which meat would you like?	t	\N
-20744	What would you like to add on your burger?	f	\N
-20745	Would you like to add veggies?	f	\N
-20748	How would you like your burger cooked?	t	\N
-20749	Would you like to add protein?	f	\N
+18764	Which three option would you like?	f	\N
 11134	Which omelette cheese would you like?	t	\N
-20760	Would you like any dipping sauces?	f	\N
+18776	what would like to add?	f	\N
+18788	Focaccia Bread	t	\N
+18797	flavor	t	\N
+18799	Which flavor would you like to add?	t	\N
+18800	Monster Flavors	t	\N
+18801	What would you like to add?	t	\N
+18802	Which flavor would you like to add?.	t	\N
 11170	Which cheese you would like?	t	\N
-20834	Choose Wings Dipping Sauce	f	\N
-20846	Add Extra drink	f	\N
+18810	Choose Doritos Flavor	t	\N
+18811	Choose Cheetos flavor	t	\N
+18812	Choose Ruffles Flavor	t	\N
+18844	Add Extra  Sandwich Protein	f	\N
+18845	Add Extra Sandwich Side	f	\N
 11232	Which sandwich bread would you like?	t	\N
 11233	Which cheese would you like?	f	\N
 11253	Would you like to add meat?	f	\N
 11261	Which entree salad would you like?	t	\N
 11268	How would you like your meat cooked?	t	\N
+18900	What's the size?	t	\N
+18904	What salad dressing would you like?	t	\N
 11276	Which muffin would you like?	t	\N
 11277	Which cereal would you like?	t	\N
 11278	Would you like to add sliced banana?	f	\N
@@ -49565,7 +49653,14 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 11281	How would you like your pirogies?	t	\N
 11282	Which side sauce would you like?	t	\N
 11286	Which dressing style you would like?	t	\N
+18913	Ch - Cheese	t	\N
+18917	Add a Protein	f	\N
+18919	Choose a Sauce	t	\N
+18921	TEST PIZZA TOPPINGS	f	\N
+18922	TEST BURGER OPTIONS	f	\N
 11295	Would you like to add chicken?	f	\N
+18938	Choose flavor.	t	\N
+18939	Would you like to have combo side and drink?	f	\N
 11317	Which slice bread would you like?	t	\N
 11318	Would you like to add tomato?	f	\N
 11320	Would you like to add french fries?	f	\N
@@ -49573,7 +49668,11 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 11332	Which sandwich side would you like?	t	\N
 11338	Would you like to add burger add-ons?	f	\N
 11342	How would you like your Texas burger?	t	\N
+18974	Choose wing type.	t	\N
+18979	Would you like fries or biscuit?	t	\N
 11349	Which burger cheese would you like?	t	\N
+18992	Choose Substitution for Bread	f	\N
+19084	Extra Meat	f	\N
 11432	Which pasta would you like?	t	\N
 11438	Which would you like?	t	\N
 11452	Which ingredient would you like?	t	\N
@@ -49590,6 +49689,7 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 11556	Would you like to add side?	f	\N
 11558	Would you like to add ham?	f	\N
 11569	How would you like your dressing?	t	\N
+19232	Choose your bacon or sausage	t	\N
 11581	Choose Water Style	t	\N
 11585	Choose Decaf	t	\N
 11608	Choose Rice Style	t	\N
@@ -49597,10 +49697,16 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 11612	Add Soba	t	\N
 11619	Add Fruit	t	\N
 11664	Make It With	f	\N
+19354	Add Strawberry Topping	f	\N
 11751	Add Extra Quesadilla Toppings	f	\N
 11754	Add Extra Omelette Protein	f	\N
 11757	Choose Egg Size	t	\N
 11759	Choose Dumpling Protein	t	\N
+19390	Add Extra Calzone Toppings	f	\N
+19406	Choose Buffalo Wings Flavor	t	\N
+19409	Bread	t	\N
+19411	Veggies	f	\N
+19413	Seasonings	f	\N
 11820	Add On	f	\N
 11831	Make It a La Mode	f	\N
 11920	Extra Toppings	f	\N
@@ -49635,189 +49741,53 @@ COPY public.stores_optioncategory (id, name, is_required, option_category_id) FR
 12273	Add Extra Dressing	f	\N
 12279	Add Caesar Dressing	f	\N
 12310	Make It Deluxe	f	\N
+20018	Would you like extra dressing?	f	\N
+20019	Would you like add chicken?	f	\N
 12387	Choose Hot or Cold	t	\N
+20048	Which crust would you like?	t	\N
 12473	Choose Coffee Flavor	t	\N
+20115	Add Wings Extra	f	\N
 12483	Choose Gatorade Size	t	\N
 12484	Choose Gatorade Flavor	t	\N
+20125	Choose Fries	t	\N
+20126	Add Salad Extras	f	\N
 12492	Choose Nesquik Flavor	t	\N
-12513	Choose Tea Flavor	t	\N
-12515	Choose Soft Drink Flavor	t	\N
-12522	Choose Tropicana Flavor	t	\N
-12527	Choose Yogurt Flavor	t	\N
-12529	Choose Milk Size	t	\N
-12617	Choose Smoothie Sttyle	f	\N
-12620	Choose Regular Tea Flavor	t	\N
-12621	Choose Chocolate Size	t	\N
-12625	Add Extra Bagels & Croissants	f	\N
-12692	Choose Platter Side	t	\N
-12710	Choose Omelette Style	t	\N
-12738	Greek Omelette Sandwich	t	\N
-12744	Add Salad Ingredients	f	\N
-12747	Make it with Wrap or Hero	f	\N
-12748	Add Extra Salad Sandwich	f	\N
-12782	Make it Style	f	\N
-12845	Add Extras Sandwich	f	\N
-12871	Choose Special Sandwich Bread	t	\N
-12872	Add Extras Special Sandwich	f	\N
-12891	Choose Tea Bags Size	t	\N
-12892	Choose Cafe Bustelo Size	t	\N
-12893	Choose Toilet Paper Style	t	\N
-12894	Choose Fruit Snacks Flavor	t	\N
-12895	Choose Listerine Mouthwash Size	t	\N
-12896	Choose Listerine Mouthwash Flavor	t	\N
-12897	Choose Skippy Peanut Butter Style	t	\N
-12898	Choose Mayonnaise Size	t	\N
-12900	Choose Deodorant Style	t	\N
-12901	Choose Vaseline Lotion Style	t	\N
-12902	Choose Salsa Style	t	\N
-12903	Choose Clorox Bleach Size	t	\N
-12904	Choose Plastic Cutlery Style	t	\N
-12905	Choose Light Bulb Style	t	\N
-12906	Choose Gillette Shave Gel Size	t	\N
-12907	Choose Head & Shoulders Style	t	\N
-12908	Choose Duracell Batteries Size	t	\N
-12909	Choose Sabra Hummus Flavor	t	\N
-12910	Choose Noodles Style	t	\N
-12911	Choose Cat Food Flavor	t	\N
-12912	Choose Cat Food - 9 Lives Flavor	t	\N
-12913	Choose Cat Food - Friskies Flavor	t	\N
-12914	Choose Domino Sugar Size	t	\N
-12915	Choose Emergen-C Flavor	t	\N
-12916	Choose 5-Hour Energy Flavor	t	\N
-12917	Choose Detergent Style	t	\N
-12918	Choose Cottage Cheese Style	t	\N
-12919	Choose Lipton Coffee Size	t	\N
-12920	Choose Lipton Tea Flavor	t	\N
-12921	Choose Lipton Tea Size	t	\N
-12922	Choose Haribo Flavor	t	\N
-12923	Choose Bounty White Size	t	\N
-12924	Choose Bag	t	\N
-12926	Choose Dip Salsa Flavor	t	\N
-12927	Choose Cat Food - Fancy Feast Style	t	\N
-12928	Choose Easy Off Style	t	\N
-12929	Choose Toothbrush Style	t	\N
-12930	Choose Bazzini Style	t	\N
-12933	Choose Puffs Size	t	\N
-12945	Choose Pringles Size	t	\N
-12946	Choose Pringles Flavor	t	\N
-12962	Choose Gum Flavor	t	\N
-12964	Choose Candy	t	\N
-12966	Choose Ice Cream Size	t	\N
-12971	Choose Cookie Flavor	t	\N
-12972	Choose Brownie Flavor	t	\N
-12975	Choose Cookie Size	t	\N
-12976	Choose Condom Style	t	\N
-12977	Choose Tampax Style	t	\N
-12984	Choose Cereal Size	t	\N
-12985	Choose Cereal Flavor	t	\N
-12989	Choose Halls Flavor	t	\N
-12990	Choose Ricola Flavor	t	\N
-12991	Choose Green & Blacks Organic Bar Flavor	t	\N
-12992	Choose Medicine	t	\N
-12995	Make It Platter	f	\N
-13029	Choose Meat Temperature	t	\N
-13033	Choose Substitution for Sandwich Bread	f	\N
-13097	Add Omelette Side	f	\N
-13103	Choose Pancake Size	t	\N
-13104	Add Pancake Toppings	f	\N
-13105	Choose French Toast Size	t	\N
-13106	Add French Toast Toppings	f	\N
-13118	Choose Salad First Vegetable	t	\N
-13119	Choose Salad Second Vegetable	t	\N
-13120	Choose Salad Third Vegetable	t	\N
-13121	Make It Chopped	f	\N
-13122	Add Extra Salad Protein	f	\N
-13123	Add Extra Salad Vegetables	f	\N
-13128	Choose Salad First Protein	t	\N
-13129	Choose Salad Second Protein	t	\N
-13133	Choose Salad Fourth Vegetable	t	\N
-13139	Make it With	t	\N
-13197	Add Burger Extra	f	\N
-13216	Choose Burger Cheese	t	\N
-13229	Choose Omelette First Vegetable	t	\N
-13230	Choose Omelette Second Vegetable	t	\N
-13231	Choose Omelette Third Vegetable	t	\N
-13232	Choose Omelette Protein	t	\N
-13233	Add Extra Omelette Vegetables	f	\N
-13237	Make it with all Egg Whites	f	\N
-13241	Add Lox Spread	f	\N
-13266	Add Espresso Shot	f	\N
-13269	Choose Espresso Size	t	\N
-13291	Which bagel would you like?	t	\N
-13294	Which dressing would you like?	t	\N
-13295	Would you like to add boiled egg peeled?	f	\N
-13309	How would you like your dish?	t	\N
-13310	Which wrap would you like?	t	\N
-13311	Which would you like to add?	f	\N
-13328	How would you like your sandwich?	t	\N
-13343	Which bread would you like?	t	\N
-13349	How would you like your sandwich roll or platter?	t	\N
-13358	Which extra would you like to add?	f	\N
-13411	Would you like to make it crunch time or smoothy?	t	\N
-13412	Which size would you like?	t	\N
-13416	Which fruit would you like?	t	\N
-13417	How would you like your yogurt fage?	t	\N
-13424	Which kashi would you like?	t	\N
-13452	Make It a Wrap	f	\N
-13595	Add Bowls Extra	f	\N
-13653	Choose Chip Flavor	t	\N
-13672	Choose Donut Flavor	t	\N
-13673	Choose Green	t	\N
-13678	Add Extra Salad Toppings	f	\N
-13683	Choose Candy Flavor	t	\N
-13686	Choose Chocolate Flavor	t	\N
-13692	Which bread would you prefer?	t	\N
-13694	Which extras would you like?	f	\N
-13698	How would you like your eggs to be cooked?	t	\N
-13700	Would you like a side salad?	t	\N
-13701	Would you like fruit?	t	\N
-13702	Which breakfast meat would you prefer?	f	\N
-13744	Would you like 2 eggs?	t	\N
-13759	How would you like your bagel?	t	\N
-13760	Which bagel would you prefer?	t	\N
-13764	Which flavor would you prefer?	t	\N
-13771	Which croissant would you like?	t	\N
-13772	Which type of danish would you prefer?	t	\N
-13777	Which dressing style would you like?	t	\N
-13779	Which salad greens would you like?	t	\N
-13782	Which toppings would you like to add?	f	\N
-13784	Would you like your salad chopped?	f	\N
-13805	Would you like air fries?	t	\N
-13859	How would you like your panini?	t	\N
-13861	Which fillings would you like?	t	\N
-13862	Which panini bread would you prefer?	t	\N
-13868	Which add ons would you like to add?	f	\N
-13935	How would you like your potatoes?	t	\N
-13936	How would you like your veggies?	t	\N
-13937	Would you like cup of soup?	t	\N
-13938	Would you like side house salad?	t	\N
-13939	Which type of fajita would you like?	t	\N
-13948	Which entree side you would like?	t	\N
-13971	Which pasta would you prefer?	t	\N
-13993	Which pasta sauce would you like?	t	\N
-13995	Which quesadilla would you like?	t	\N
-13996	Which tortilla chips would you like?	t	\N
-13998	Which coffee style would you like	t	\N
-13999	Which sweetner type would you like?	t	\N
-14010	Which milk would you like?	t	\N
-14012	Would you like to add extra shot espresso?	t	\N
-14045	Which tea would you like?	t	\N
-14046	Would you like to add lemon?	f	\N
-14079	Which snapple would you like?	t	\N
-14082	Which water would you like?	t	\N
-14083	Which soda flavor would  you like?	t	\N
-14085	Which tropicana would you like?	t	\N
-14094	Which base would you like?	t	\N
-14095	Would you like to add banana?	t	\N
-14097	Would you like to add extras ?	f	\N
-14115	Which ice cream flavor would you like?	t	\N
-14120	Add Melted Cheese	f	\N
-14126	Add Large Shrimp	f	\N
-14168	Add Egg White	f	\N
-14187	Add Wrap Extra	f	\N
-14288	Add Omelette Toppings	f	\N
-14289	Choose Omelette Toppings	f	\N
-14291	Add Omelette Extra	f	\N
+20130	Add Extra Snapple Flavor	f	\N
+20152	Would you like chicken or shrimp?	t	\N
+20153	Would you like to make it for your ravioli?	t	\N
+20154	How would you like your cook style?	t	\N
+20177	Would you like to add extra toppings?	f	\N
+20335	Add Extra Ranch	f	\N
+20373	Add Extra Pizza Sauce	f	\N
+20426	Choose Sandwich Garnish	f	\N
+20427	Choose Sandwich Sauce	f	\N
+20429	Add Extra Avocado	f	\N
+20431	Extra	f	\N
+20432	Would you like to add a side?	f	\N
+20433	Select a size	t	\N
+20525	Choose a sauce	t	\N
+20534	Choose a dressing	t	\N
+20543	Choose a side	t	\N
+20544	Choose a drink	t	\N
+20545	Choose a toy	t	\N
+20550	Add Extra Mozzarella Sticks	f	\N
+20553	Make it a Spicy	f	\N
+20581	Choose Substitution Salad Dressing	f	\N
+20645	Choose Cheesesteak Size	t	\N
+20647	Add Extra Cheesesteak Toppings	f	\N
+20648	Add Side of Fries	f	\N
+20653	Choose Sandwich Size	t	\N
+20663	Choose Jalapeno Popper Size	t	\N
+20665	Choose Hot Wing Size	t	\N
+20676	Choose Bread Size	t	\N
+20709	Choose Thick Crust	f	\N
+20744	What would you like to add on your burger?	f	\N
+20745	Would you like to add veggies?	f	\N
+20748	How would you like your burger cooked?	t	\N
+20749	Would you like to add protein?	f	\N
+20760	Would you like any dipping sauces?	f	\N
+20834	Choose Wings Dipping Sauce	f	\N
+20846	Add Extra drink	f	\N
 \.
 
 
@@ -50140,13 +50110,6 @@ SELECT pg_catalog.setval('public.members_user_groups_id_seq', 1, false);
 
 
 --
--- Name: members_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev_postmates
---
-
-SELECT pg_catalog.setval('public.members_user_id_seq', 1, true);
-
-
---
 -- Name: members_user_user_permissions_id_seq; Type: SEQUENCE SET; Schema: public; Owner: dev_postmates
 --
 
@@ -50343,11 +50306,19 @@ ALTER TABLE ONLY public.members_user_groups
 
 
 --
+-- Name: members_user members_user_id_key; Type: CONSTRAINT; Schema: public; Owner: dev_postmates
+--
+
+ALTER TABLE ONLY public.members_user
+    ADD CONSTRAINT members_user_id_key UNIQUE (id);
+
+
+--
 -- Name: members_user members_user_pkey; Type: CONSTRAINT; Schema: public; Owner: dev_postmates
 --
 
 ALTER TABLE ONLY public.members_user
-    ADD CONSTRAINT members_user_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT members_user_pkey PRIMARY KEY (email);
 
 
 --
@@ -50561,6 +50532,13 @@ CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING 
 
 
 --
+-- Name: django_admin_log_user_id_c564eba6_like; Type: INDEX; Schema: public; Owner: dev_postmates
+--
+
+CREATE INDEX django_admin_log_user_id_c564eba6_like ON public.django_admin_log USING btree (user_id varchar_pattern_ops);
+
+
+--
 -- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: dev_postmates
 --
 
@@ -50589,6 +50567,20 @@ CREATE INDEX members_favorite_user_id_d7ed7b2d ON public.members_favorite USING 
 
 
 --
+-- Name: members_favorite_user_id_d7ed7b2d_like; Type: INDEX; Schema: public; Owner: dev_postmates
+--
+
+CREATE INDEX members_favorite_user_id_d7ed7b2d_like ON public.members_favorite USING btree (user_id varchar_pattern_ops);
+
+
+--
+-- Name: members_user_email_fb50dde1_like; Type: INDEX; Schema: public; Owner: dev_postmates
+--
+
+CREATE INDEX members_user_email_fb50dde1_like ON public.members_user USING btree (email varchar_pattern_ops);
+
+
+--
 -- Name: members_user_groups_group_id_39b83d85; Type: INDEX; Schema: public; Owner: dev_postmates
 --
 
@@ -50603,6 +50595,13 @@ CREATE INDEX members_user_groups_user_id_db5cba0f ON public.members_user_groups 
 
 
 --
+-- Name: members_user_groups_user_id_db5cba0f_like; Type: INDEX; Schema: public; Owner: dev_postmates
+--
+
+CREATE INDEX members_user_groups_user_id_db5cba0f_like ON public.members_user_groups USING btree (user_id varchar_pattern_ops);
+
+
+--
 -- Name: members_user_user_permissions_permission_id_5f80148e; Type: INDEX; Schema: public; Owner: dev_postmates
 --
 
@@ -50614,6 +50613,13 @@ CREATE INDEX members_user_user_permissions_permission_id_5f80148e ON public.memb
 --
 
 CREATE INDEX members_user_user_permissions_user_id_3371a207 ON public.members_user_user_permissions USING btree (user_id);
+
+
+--
+-- Name: members_user_user_permissions_user_id_3371a207_like; Type: INDEX; Schema: public; Owner: dev_postmates
+--
+
+CREATE INDEX members_user_user_permissions_user_id_3371a207_like ON public.members_user_user_permissions USING btree (user_id varchar_pattern_ops);
 
 
 --
@@ -50754,11 +50760,11 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
--- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_members_user_id; Type: FK CONSTRAINT; Schema: public; Owner: dev_postmates
+-- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_members_user_email; Type: FK CONSTRAINT; Schema: public; Owner: dev_postmates
 --
 
 ALTER TABLE ONLY public.django_admin_log
-    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_members_user_id FOREIGN KEY (user_id) REFERENCES public.members_user(id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT django_admin_log_user_id_c564eba6_fk_members_user_email FOREIGN KEY (user_id) REFERENCES public.members_user(email) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -50770,11 +50776,11 @@ ALTER TABLE ONLY public.members_favorite
 
 
 --
--- Name: members_favorite members_favorite_user_id_d7ed7b2d_fk_members_user_id; Type: FK CONSTRAINT; Schema: public; Owner: dev_postmates
+-- Name: members_favorite members_favorite_user_id_d7ed7b2d_fk_members_user_email; Type: FK CONSTRAINT; Schema: public; Owner: dev_postmates
 --
 
 ALTER TABLE ONLY public.members_favorite
-    ADD CONSTRAINT members_favorite_user_id_d7ed7b2d_fk_members_user_id FOREIGN KEY (user_id) REFERENCES public.members_user(id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT members_favorite_user_id_d7ed7b2d_fk_members_user_email FOREIGN KEY (user_id) REFERENCES public.members_user(email) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -50786,11 +50792,11 @@ ALTER TABLE ONLY public.members_user_groups
 
 
 --
--- Name: members_user_groups members_user_groups_user_id_db5cba0f_fk_members_user_id; Type: FK CONSTRAINT; Schema: public; Owner: dev_postmates
+-- Name: members_user_groups members_user_groups_user_id_db5cba0f_fk_members_user_email; Type: FK CONSTRAINT; Schema: public; Owner: dev_postmates
 --
 
 ALTER TABLE ONLY public.members_user_groups
-    ADD CONSTRAINT members_user_groups_user_id_db5cba0f_fk_members_user_id FOREIGN KEY (user_id) REFERENCES public.members_user(id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT members_user_groups_user_id_db5cba0f_fk_members_user_email FOREIGN KEY (user_id) REFERENCES public.members_user(email) DEFERRABLE INITIALLY DEFERRED;
 
 
 --
@@ -50806,7 +50812,7 @@ ALTER TABLE ONLY public.members_user_user_permissions
 --
 
 ALTER TABLE ONLY public.members_user_user_permissions
-    ADD CONSTRAINT members_user_user_pe_user_id_3371a207_fk_members_u FOREIGN KEY (user_id) REFERENCES public.members_user(id) DEFERRABLE INITIALLY DEFERRED;
+    ADD CONSTRAINT members_user_user_pe_user_id_3371a207_fk_members_u FOREIGN KEY (user_id) REFERENCES public.members_user(email) DEFERRABLE INITIALLY DEFERRED;
 
 
 --

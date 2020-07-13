@@ -39,6 +39,7 @@ JWT_AUTH = {
 
 AUTHENTICATION_BACKENDS = [
     'members.backends.EmailBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 DJANGO_APPS = [

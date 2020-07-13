@@ -4,7 +4,7 @@ from .models import User, Favorite
 
 @admin.register(User)
 class MembersAdmin(admin.ModelAdmin):
-    list_display = ['id', 'username', 'phone', 'is_staff', 'favorite_count']
+    list_display = ['id', 'email', 'username', 'phone', 'is_staff', 'favorite_count']
     fields = ['username', 'password', 'address', 'email', 'phone']
     list_display_links = ['username']
 

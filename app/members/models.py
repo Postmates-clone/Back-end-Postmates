@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from stores.models import Store
@@ -8,8 +10,10 @@ def profile_img_dir(instance, filename):
 
 
 class User(AbstractUser):
-    # uid = models.CharField(
-    #     max_length=28, unique=True, primary_key=True, help_text='유저 고유 값 uid')
+    id = models.UUIDField(
+         unique=True, default=uuid.uuid4, editable=False, help_text='유저 고유 값 uid')
+    email = models.EmailField(
+        primary_key=True, help_text='이메일')
     username = models.CharField(
         max_length=30, unique=True, help_text='닉네임')
     phone = models.CharField(

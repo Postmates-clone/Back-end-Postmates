@@ -37,6 +37,10 @@ JWT_AUTH = {
     'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(days=28),
 }
 
+AUTHENTICATION_BACKENDS = [
+    'members.backends.EmailBackend',
+]
+
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

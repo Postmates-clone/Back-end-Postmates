@@ -21,7 +21,7 @@ class FeedFilter(FilterSet):
             float(self.data['lng'])
         )
         ret = Store.objects.filter(
-            latlng__distance_lt=(pnt, D(km=30))
+            latlng__distance_lt=(pnt, D(km=100))
         ).annotate(
             favorite_counts=Count('favorites'),
             distance=Distance(pnt, 'latlng')
@@ -39,7 +39,7 @@ class FeedFilter(FilterSet):
         }
         if qs_value[value] == 'favorites':
             return self._filter_store('-favorite_counts', 'distance')
-        return self._filter_store(qs_value[value])
+        return self._filter_store(qs_value[value], 'distance')
 
     def order_by_distance(self, qs, name, value):
         return self._filter_store('distance')

@@ -22,7 +22,7 @@ class FeedFilter(FilterSet):
             'time': 'estimated_prep_time'
         }
         if qs_value[value] == 'favorites':
-            return Store.objects.annotate(favorite_counts=Count('favorites')).order_by('favorite_counts')
+            return Store.objects.annotate(favorite_counts=Count('favorites')).order_by('favorites')
         return Store.objects.order_by(qs_value[value])
 
     def order_by_distance(self, qs, name, value):
@@ -30,7 +30,7 @@ class FeedFilter(FilterSet):
             float(self.data['lat']),
             float(self.data['lng']))
         ret = Store.objects.filter(
-            latlng__distance_lt=(pnt, D(km=50)),
+            latlng__distance_lt=(pnt, D(km=30)),
         ).annotate(distance=Distance(pnt, 'latlng')).order_by('distance')
 
         return ret

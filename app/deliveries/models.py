@@ -23,5 +23,4 @@ class OrderedMenu(models.Model):
         Menu, on_delete=models.PROTECT, related_name='ordered_menus')
     delivery = models.ForeignKey(
         'Delivery', on_delete=models.CASCADE, related_name='ordered_menus')
-    quantity = models.IntegerField()
     options = models.ManyToManyField(Option, related_name='ordered_menus')

@@ -3,6 +3,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from deliveries.models import Delivery as DeliveryModel
 from deliveries.serializers import DeliverySerializer
+from stores.models import Store
 
 
 class Delivery(ModelViewSet):
@@ -11,4 +12,8 @@ class Delivery(ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        store = Store.objects.get(url=self.request.data.pop('url'))
+        serializer.save(
+            user=self.request.user,
+            store=store
+        )

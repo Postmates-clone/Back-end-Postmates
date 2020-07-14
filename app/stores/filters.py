@@ -7,10 +7,12 @@ from django_filters.rest_framework import FilterSet, CharFilter
 from .models import Store
 
 
-class InitialFeedFilter(FilterSet):
-    search = CharFilter(
-        method='search_city', lookup_expr='exact', help_text='도시 검색')
-    category = CharFilter(
+class FeedFilter(FilterSet):
+    lat = NumberFilter(
+        method='order_by_distance', help_text='위도')
+    lng = NumberFilter(
+        method='order_by_distance', help_text='경도')
+    filter = CharFilter(
         method='order_by_category', lookup_expr='exact', help_text='Feed 카테고리')
 
     def order_by_category(self, qs, name, value):
@@ -22,20 +24,6 @@ class InitialFeedFilter(FilterSet):
         if qs_value[value] == 'favorites':
             return Store.objects.annotate(favorite_counts=Count('favorites')).order_by('favorite_counts')
         return Store.objects.order_by(qs_value[value])
-
-    def search_city(self, qs, name, value):
-        return Store.objects.filter(city__exact=value)
-
-    class Meta:
-        model = Store
-        fields = ['category']
-
-
-class NearbyFilter(FilterSet):
-    lat = NumberFilter(
-        method='order_by_distance', help_text='위도')
-    lng = NumberFilter(
-        method='order_by_distance', help_text='경도')
 
     def order_by_distance(self, qs, name, value):
         pnt = Point(
@@ -49,4 +37,4 @@ class NearbyFilter(FilterSet):
 
     class Meta:
         model = Store
-        fields = ['lat', 'lng']
+        fields = ['lat', 'lng', 'filter']

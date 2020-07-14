@@ -14,4 +14,4 @@ class MembersAdmin(admin.ModelAdmin):
 
 @admin.register(Favorite)
 class MembersAdmin(admin.ModelAdmin):
-    pass
+    list_display = ['user', 'store']

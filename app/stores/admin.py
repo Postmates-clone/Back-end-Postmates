@@ -13,9 +13,12 @@ from .models import (
 
 @admin.register(Store)
 class StoresAdmin(admin.ModelAdmin):
-    list_display = ['name', 'address']
-    list_filter = ['name', 'address']
-    search_fields = ['username', 'phone']
+    list_display = ['name', 'address', 'city', 'favorites']
+    list_filter = ['city']
+    search_fields = ['name', 'address', 'description']
+
+    def favorites(self, obj):
+        return obj.favorites.count()
 
 
 @admin.register(Badge)

@@ -15,6 +15,22 @@ class FeedFilter(FilterSet):
     filter = CharFilter(
         method='order_by_category', lookup_expr='exact', help_text='Feed 카테고리')
 
+    def _filter_store(self, *args):
+        pnt = Point(
+            float(self.data['lat']),
+            float(self.data['lng'])
+        )
+        ret = Store.objects.filter(
+            latlng__distance_lt=(pnt, D(km=30))
+        ).annotate(
+            favorite_counts=Count('favorites'),
+            distance=Distance(pnt, 'latlng')
+        ).order_by(
+            *args
+        )
+
+        return ret
+
     def order_by_category(self, qs, name, value):
         qs_value = {
             'favorite': 'favorites',
@@ -22,18 +38,11 @@ class FeedFilter(FilterSet):
             'time': 'estimated_prep_time'
         }
         if qs_value[value] == 'favorites':
-            return Store.objects.annotate(favorite_counts=Count('favorites')).order_by('favorites')
-        return Store.objects.order_by(qs_value[value])
+            return self._filter_store('-favorite_counts', 'distance')
+        return self._filter_store(qs_value[value])
 
     def order_by_distance(self, qs, name, value):
-        pnt = Point(
-            float(self.data['lat']),
-            float(self.data['lng']))
-        ret = Store.objects.filter(
-            latlng__distance_lt=(pnt, D(km=30)),
-        ).annotate(distance=Distance(pnt, 'latlng')).order_by('distance')
-
-        return ret
+        return self._filter_store('distance')
 
     class Meta:
         model = Store

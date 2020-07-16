@@ -8,9 +8,9 @@ def store_img_dir(instance, filename):
 
 class Store(models.Model):
     url = models.TextField(
-        max_length=100, unique=True, help_text='가게 url')
+        unique=True, help_text='가게 url')
     name = models.TextField(
-        max_length=50, help_text='가게 이름')
+        help_text='가게 이름')
     description = models.TextField(
         help_text='가게 설명')
     delivery_message = models.TextField(

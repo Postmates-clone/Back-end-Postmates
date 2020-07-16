@@ -45,4 +45,4 @@ class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         model = Delivery
         fields = ['id', 'url', 'name', 'store_img', 'total_price', 'ordered_date', 'ordered_menus']
-        read_only_fields = ['ordered_dated', 'store_img']
+        read_only_fields = ['ordered_dated', 'store_img', 'name']

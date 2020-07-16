@@ -24,7 +24,7 @@ class DeliverySerializer(serializers.ModelSerializer):
     ordered_menus = serializers.SerializerMethodField(
         method_name='get_ordered_menu')
     url = serializers.CharField(source='store.url')
-    name = serializers.CharField(source='store.name')
+    name = serializers.CharField(source='store.name', read_only=True)
     store_img = serializers.CharField(source='store.store_img', read_only=True)
 
     def create(self, validated_data):

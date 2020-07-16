@@ -9,6 +9,8 @@ class OrderedMenuSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='menu.id')
     name = serializers.CharField(source='menu.name')
     price = serializers.FloatField(source='menu.price')
+    total_price = serializers.SerializerMethodField(
+        method_name='get_total_price')
     options = serializers.SerializerMethodField(
         method_name='get_options')
 
@@ -16,9 +18,15 @@ class OrderedMenuSerializer(serializers.ModelSerializer):
         options = obj.options
         return OptionSerializer(options, many=True).data
 
+    def get_total_price(self, obj):
+        ret = obj.menu.price
+        for option in obj.options.all():
+            ret += option.price
+        return ret
+
     class Meta:
         model = OrderedMenu
-        fields = ['id', 'name', 'price', 'options']
+        fields = ['id', 'name', 'total_price', 'price', 'options']
 
 
 class DeliverySerializer(serializers.ModelSerializer):

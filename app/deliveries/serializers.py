@@ -8,6 +8,7 @@ from stores.serializers import OptionSerializer
 class OrderedMenuSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='menu.id')
     name = serializers.CharField(source='menu.name')
+    price = serializers.FloatField(source='menu.price')
     options = serializers.SerializerMethodField(
         method_name='get_options')
 
@@ -17,7 +18,7 @@ class OrderedMenuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderedMenu
-        fields = ['id', 'name', 'options']
+        fields = ['id', 'name', 'price', 'options']
 
 
 class DeliverySerializer(serializers.ModelSerializer):
@@ -26,6 +27,7 @@ class DeliverySerializer(serializers.ModelSerializer):
     url = serializers.CharField(source='store.url')
     name = serializers.CharField(source='store.name', read_only=True)
     store_img = serializers.CharField(source='store.store_img', read_only=True)
+    delivery_fee = serializers.FloatField(source='store.delivery_fee', read_only=True)
 
     def create(self, validated_data):
         delivery = super(DeliverySerializer, self).create(validated_data)
@@ -44,5 +46,5 @@ class DeliverySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Delivery
-        fields = ['id', 'url', 'name', 'store_img', 'total_price', 'ordered_date', 'ordered_menus']
+        fields = ['id', 'url', 'name', 'store_img', 'total_price', 'delivery_fee', 'ordered_date', 'ordered_menus']
         read_only_fields = ['ordered_dated', 'store_img', 'name']

@@ -17,3 +17,7 @@ class Delivery(ModelViewSet):
             user=self.request.user,
             store=store
         )
+
+    def get_queryset(self):
+        qs = super(Delivery, self).get_queryset()
+        return qs.filter(user=self.request.user)

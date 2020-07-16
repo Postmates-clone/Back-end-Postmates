@@ -17,6 +17,10 @@ class Delivery(models.Model):
     items = models.ManyToManyField(
         Menu, through='OrderedMenu', related_name='delivery')
 
+    class Meta:
+        verbose_name = '배달'
+        verbose_name_plural = '배달'
+
 
 class OrderedMenu(models.Model):
     menu = models.ForeignKey(

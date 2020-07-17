@@ -33,8 +33,9 @@ class StoresAdmin(admin.ModelAdmin):
 
 @admin.register(Menu)
 class StoresAdmin(admin.ModelAdmin):
-    list_display = ['name', 'menu_category', 'store']
+    list_display = ['id', 'name', 'menu_category', 'store']
     search_fields = ['name', 'menu_categories__name', 'menu_categories__store__name']
+    list_display_links = ['name']
 
     def menu_category(self, obj):
         all_mc = [mc.name for mc in obj.menu_categories.all()]

@@ -26,7 +26,7 @@ class OrderedMenuSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = OrderedMenu
-        fields = ['id', 'name', 'total_price', 'price', 'options']
+        fields = ['id', 'name', 'quantity', 'total_price', 'price', 'options']
 
 
 class DeliverySerializer(serializers.ModelSerializer):

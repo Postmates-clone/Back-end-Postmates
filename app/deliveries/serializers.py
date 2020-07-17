@@ -9,20 +9,13 @@ class OrderedMenuSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='menu.id')
     name = serializers.CharField(source='menu.name')
     price = serializers.FloatField(source='menu.price')
-    total_price = serializers.SerializerMethodField(
-        method_name='get_total_price')
+
     options = serializers.SerializerMethodField(
         method_name='get_options')
 
     def get_options(self, obj):
         options = obj.options
         return OptionSerializer(options, many=True).data
-
-    def get_total_price(self, obj):
-        ret = obj.menu.price
-        for option in obj.options.all():
-            ret += option.price
-        return ret
 
     class Meta:
         model = OrderedMenu
@@ -41,7 +34,11 @@ class DeliverySerializer(serializers.ModelSerializer):
         delivery = super(DeliverySerializer, self).create(validated_data)
         for item in self.initial_data.pop('ordered_menus'):
             menu = Menu.objects.get(id=item['id'])
-            ordered_menu = OrderedMenu.objects.create(menu=menu, delivery=delivery)
+            ordered_menu = OrderedMenu.objects.create(
+                menu=menu,
+                delivery=delivery,
+                total_price=item['total_price'],
+            )
             for option in item['options']:
                 ordered_menu.options.add(
                     Option.objects.get(name=option['name'])

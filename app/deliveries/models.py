@@ -29,3 +29,4 @@ class OrderedMenu(models.Model):
     delivery = models.ForeignKey(
         'Delivery', on_delete=models.CASCADE, related_name='ordered_menus')
     options = models.ManyToManyField(Option, related_name='ordered_menus')
+    total_price = models.FloatField()

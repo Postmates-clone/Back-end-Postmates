@@ -2,7 +2,7 @@ from .base import *
 
 SECRETS_PRODUCTION = SECRETS_FULL['production']
 
-DEBUG = False
+DEBUG = True
 
 WSGI_APPLICATION = 'config.wsgi.production.application'
 

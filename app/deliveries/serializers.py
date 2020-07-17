@@ -39,7 +39,7 @@ class DeliverySerializer(serializers.ModelSerializer):
                 delivery=delivery,
                 total_price=item['total_price'],
             )
-            for option in item['options']:
+            for option in item.get('options', []):
                 ordered_menu.options.add(
                     Option.objects.get(name=option['name'])
                 )

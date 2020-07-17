@@ -26,9 +26,23 @@ class StoresAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Menu, MenuCategory)
+@admin.register(MenuCategory)
 class StoresAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Menu)
+class StoresAdmin(admin.ModelAdmin):
+    list_display = ['name', 'menu_category', 'store']
+    search_fields = ['name', 'menu_categories__name', 'menu_categories__store__name']
+
+    def menu_category(self, obj):
+        all_mc = [mc.name for mc in obj.menu_categories.all()]
+        return ' '.join(all_mc)
+
+    def store(self, obj):
+        store = [mc.store.url for mc in obj.menu_categories.all()]
+        return ' '.join(store)
 
 
 @admin.register(Option, OptionCategory)
